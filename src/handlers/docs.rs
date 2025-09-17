@@ -3,6 +3,11 @@ use std::sync::Arc;
 use url::Url;
 use utoipa::openapi::ServerBuilder;
 use utoipa::OpenApi;
+
+/// Generate and return the OpenAPI specification for the ToDo API
+///
+/// This function dynamically generates the OpenAPI JSON specification,
+/// including the appropriate server URL based on the runtime environment.
 pub fn get_openapi_description(req: Request, _: Params) -> anyhow::Result<impl IntoResponse> {
     let mut openapi_description = OpenApiDocs::openapi();
     let (url, description) = get_server_info(&req);
@@ -17,6 +22,11 @@ pub fn get_openapi_description(req: Request, _: Params) -> anyhow::Result<impl I
         .build())
 }
 
+/// Determine the server URL and description based on the runtime environment
+///
+/// Returns a tuple of (server_url, description) where the server URL
+/// is dynamically determined based on whether the app is running locally
+/// or in production.
 fn get_server_info(req: &Request) -> (String, String) {
     match is_local_spin_runtime(&req) {
         true => {
@@ -55,9 +65,18 @@ fn get_server_info(req: &Request) -> (String, String) {
     }
 }
 
+/// Check if the application is running in the local Spin runtime
+///
+/// Returns true if running locally with `spin up`, false if running
+/// in production (e.g., Fermyon Cloud).
 fn is_local_spin_runtime(req: &Request) -> bool {
     req.header("spin-client-addr").is_some()
 }
+
+/// Serve the Swagger UI documentation interface
+///
+/// This function serves the interactive Swagger UI that allows users to
+/// explore and test the API endpoints directly in their browser.
 pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl IntoResponse> {
     let mut path = req
         .header("spin-path-info")
@@ -87,19 +106,27 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
 #[openapi(
   info(
     title = "ToDo API",
-    description = "An awesome ToDo API",
-    terms_of_service = include_str!("../../fake_terms_of_service.txt"),
+    description = "A RESTful API for managing ToDo items built with Spin and Rust. This API allows you to create, read, update, and delete ToDo items with persistent storage using Spin's key-value store.",
+    version = "1.0.0",
+    license(name = "MIT"),
     contact(
-      name = "Fermyon Engineering", 
-      email = "engineering@fermyon.com", 
-      url = "https://www.fermyon.com"
+      name = "Tyler Harpool",
+      email = "tylerharpool@gmail.com",
+      url = "https://github.com/tyler-harpool/spin-todo-api"
     )
   ),
   tags(
-  	(name = "todos", description = "ToDo API Endpoints")
+    (name = "todos", description = "Operations for managing ToDo items")
   ),
   paths(
-  	crate::handlers::todo::get_by_id,
+    crate::handlers::todo::get_all,
+    crate::handlers::todo::get_by_id,
+    crate::handlers::todo::create_todo,
+    crate::handlers::todo::toggle_by_id,
+    crate::handlers::todo::delete_by_id,
+  ),
+  components(
+    schemas(crate::handlers::todo::ToDoModel, crate::handlers::todo::CreateToDoModel)
   )
 )]
 struct OpenApiDocs {}
