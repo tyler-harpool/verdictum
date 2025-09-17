@@ -1,0 +1,22 @@
+[package]
+name = "spin-utopia"
+authors = ["Tyler Harpool <tylerharpool@gmail.com>"]
+description = "Wagger with utopia and spin"
+version = "0.1.0"
+rust-version = "1.78"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.142"
+spin-sdk = "3.1.0"
+url = "2.5.4"
+utoipa = { version = "5.4.0", features = ["uuid"] }
+utoipa-swagger-ui = "9.0.2"
+uuid = { version = "1.18.0", features = ["v4", "serde"] }
+
+[workspace]
