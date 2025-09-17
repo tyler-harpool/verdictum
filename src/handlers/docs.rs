@@ -106,8 +106,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
 #[openapi(
   info(
     title = "ToDo API",
-    description = "A RESTful API for managing ToDo items built with Spin and Rust. This API allows you to create, read, update, and delete ToDo items with persistent storage using Spin's key-value store.",
-    version = "1.0.0",
+    description = "A RESTful API for managing ToDo items built with Spin and Rust. This API allows you to create, read, update, and delete ToDo items with persistent storage using Spin's key-value store.\n\n## Features\n- Complete CRUD operations\n- Pagination support\n- Filtering by completion status\n- Health monitoring endpoint\n- Soft delete functionality\n- Input validation\n- Comprehensive error handling",
+    version = "2.0.0",
     license(name = "MIT"),
     contact(
       name = "Tyler Harpool",
@@ -116,7 +116,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     )
   ),
   tags(
-    (name = "todos", description = "Operations for managing ToDo items")
+    (name = "todos", description = "Operations for managing ToDo items"),
+    (name = "monitoring", description = "Health and monitoring endpoints")
   ),
   paths(
     crate::handlers::todo::get_all,
@@ -124,9 +125,17 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     crate::handlers::todo::create_todo,
     crate::handlers::todo::toggle_by_id,
     crate::handlers::todo::delete_by_id,
+    crate::handlers::health::health_check,
   ),
   components(
-    schemas(crate::handlers::todo::ToDoModel, crate::handlers::todo::CreateToDoModel)
+    schemas(
+      crate::handlers::todo::ToDoModel,
+      crate::handlers::todo::CreateToDoModel,
+      crate::handlers::todo::PaginatedResponse<crate::handlers::todo::ToDoModel>,
+      crate::handlers::todo::PaginationParams,
+      crate::handlers::health::HealthStatus,
+      crate::error::ErrorResponse,
+    )
   )
 )]
 struct OpenApiDocs {}

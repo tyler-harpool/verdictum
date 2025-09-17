@@ -3,8 +3,22 @@
 //! Provides custom error types and conversions for consistent error handling
 //! across the application.
 
+use serde::{Deserialize, Serialize};
 use spin_sdk::http::{IntoResponse, Response};
 use std::fmt;
+use utoipa::ToSchema;
+
+/// Error response model for API errors
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+pub struct ErrorResponse {
+    /// Error message
+    pub error: String,
+    /// HTTP status code
+    pub status: u16,
+    /// Optional error details
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub details: Option<String>,
+}
 
 /// API Error type representing all possible errors in the application
 #[derive(Debug)]
@@ -37,21 +51,32 @@ impl std::error::Error for ApiError {}
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
-        let (status, message) = match self {
-            ApiError::NotFound(msg) => (404, msg),
-            ApiError::BadRequest(msg) => (400, msg),
-            ApiError::Internal(msg) => (500, msg),
-            ApiError::StorageError(_) => (500, "Storage operation failed".to_string()),
-            ApiError::SerializationError(_) => (400, "Invalid data format".to_string()),
+        let (status, message, details) = match self {
+            ApiError::NotFound(msg) => (404, "Not Found".to_string(), Some(msg)),
+            ApiError::BadRequest(msg) => (400, "Bad Request".to_string(), Some(msg)),
+            ApiError::Internal(msg) => (500, "Internal Server Error".to_string(), Some(msg)),
+            ApiError::StorageError(err) => (
+                500,
+                "Storage operation failed".to_string(),
+                Some(err.to_string()),
+            ),
+            ApiError::SerializationError(msg) => (
+                400,
+                "Invalid data format".to_string(),
+                Some(msg),
+            ),
+        };
+
+        let error_response = ErrorResponse {
+            error: message,
+            status,
+            details,
         };
 
         Response::builder()
             .status(status)
             .header("content-type", "application/json")
-            .body(serde_json::json!({
-                "error": message,
-                "status": status
-            }).to_string())
+            .body(serde_json::to_vec(&error_response).unwrap_or_default())
             .build()
     }
 }

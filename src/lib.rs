@@ -23,6 +23,7 @@ use spin_sdk::http::{IntoResponse, Request, Router};
 use spin_sdk::http_component;
 
 mod domain;
+mod error;
 mod handlers;
 
 /// Main HTTP component handler for the Spin ToDo API
@@ -32,6 +33,9 @@ mod handlers;
 #[http_component]
 fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     let mut router = Router::default();
+
+    // Health check endpoint
+    router.get("/api/health", handlers::health::health_check);
 
     // ToDo API endpoints
     router.get("/api/todos", handlers::todo::get_all);
