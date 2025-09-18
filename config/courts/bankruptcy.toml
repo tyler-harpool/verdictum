@@ -36,10 +36,7 @@ means_testing = true
 automatic_stay_immediate = true
 creditor_matrix_required = true
 means_test_median_income_check = true
-discharge_waiting_periods = {
-    chapter_7 = 180,
-    chapter_13 = 1095
-}
+discharge_waiting_periods = { chapter_7 = 180, chapter_13 = 1095 }
 
 [deadlines]
 # Bankruptcy-specific deadlines
