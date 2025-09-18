@@ -140,7 +140,7 @@ A comprehensive federal court case management system built with [Spin](https://g
 - 📊 **Per-District Analytics** - Usage statistics and resource monitoring per district
 - 🎯 **District-Specific Configuration** - Custom settings and features per federal district
 
-### 13. PDF Document Generation System (13 Endpoints)
+### 13. PDF Document Generation System (15 Endpoints)
 **Federal Court Forms and Document Generation**
 - 📄 **Rule 16(b) Orders** - Auto-generate scheduling orders for criminal cases
 - ✍️ **Electronic Signatures** - Apply judge signatures with secure authentication
@@ -153,8 +153,8 @@ A comprehensive federal court case management system built with [Spin](https://g
 - 🔐 **Signature Management** - Secure storage and application of judicial signatures
 - 📊 **Document Templates** - Reusable templates with variable substitution
 - 🎯 **Auto-Generation** - Test endpoints with pre-populated data for all forms
-- 📁 **Batch Generation** - Generate multiple documents in a single operation
-- 🔒 **Document Security** - Tamper-proof document generation with verification codes
+- 📁 **Batch Generation** - Generate multiple documents in a single API call with `/api/pdf/batch`
+- 📦 **Base64 Response** - Batch endpoint returns PDFs as base64-encoded strings in JSON
 
 ### 14. Legacy ToDo System (5 Endpoints)
 **Simple Task Management (Demo/Testing)**
@@ -171,7 +171,7 @@ Once the application is running, you can access the comprehensive interactive Sw
 - **Local Development**: `http://localhost:3000/docs`
 - **OpenAPI JSON Specification**: `http://localhost:3000/docs/openapi-description.json`
 
-The interactive documentation includes complete schemas, examples, and testing capabilities for all 240+ endpoints across the 10 major system modules.
+The interactive documentation includes complete schemas, examples, and testing capabilities for all 250+ endpoints across the 14 major system modules.
 
 ### System Overview
 

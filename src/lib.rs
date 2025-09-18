@@ -408,6 +408,10 @@ fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     router.get("/api/pdf/auto/conditions-release/:case_id", handlers::federal_forms::auto_generate_conditions);
     router.get("/api/pdf/auto/criminal-judgment/:case_id", handlers::federal_forms::auto_generate_judgment);
 
+    // Batch PDF Generation
+    router.post("/api/pdf/batch", handlers::pdf_batch::generate_batch_pdfs);
+    router.post("/api/pdf/batch/zip", handlers::pdf_batch::generate_batch_pdfs_zip);
+
     // Documentation endpoints
     router.get(
         "/docs/openapi-description.json",

@@ -445,6 +445,87 @@
       "settingEncodeUrl": true,
       "settingRebuildPath": true,
       "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_group_batch",
+      "_type": "request_group",
+      "parentId": "wrk_pdf_api",
+      "modified": 1705449600012,
+      "created": 1705449600012,
+      "name": "Batch PDF Generation",
+      "description": "Generate multiple PDFs in a single request",
+      "environment": {},
+      "metaSortKey": -1705449600002
+    },
+    {
+      "_id": "req_post_batch",
+      "_type": "request",
+      "parentId": "req_group_batch",
+      "modified": 1705449600013,
+      "created": 1705449600013,
+      "url": "{{ _.base_url }}/api/pdf/batch",
+      "name": "Generate Multiple PDFs",
+      "description": "Generate multiple PDFs in a single request and receive them as base64-encoded strings",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"documents\": [\n    {\n      \"type\": \"rule16b\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\",\n      \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n    },\n    {\n      \"type\": \"waiver_indictment\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_name\": \"John Doe\",\n      \"charges\": \"18 U.S.C. § 1343 (Wire Fraud) - Count 1\\n18 U.S.C. § 1001 (False Statements) - Count 2\"\n    },\n    {\n      \"type\": \"conditions_release\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_name\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\",\n      \"conditions\": [\n        \"Report to Pretrial Services as directed\",\n        \"Not commit any federal, state, or local crime\",\n        \"Surrender all passports\",\n        \"Travel restricted to SDNY and EDNY\"\n      ]\n    },\n    {\n      \"type\": \"court_order\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\",\n      \"order_title\": \"ORDER TO SHOW CAUSE\",\n      \"order_content\": \"The Court orders the defendant to appear and show cause.\",\n      \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n    },\n    {\n      \"type\": \"minute_entry\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\",\n      \"minute_text\": \"Defendant appeared with counsel. Plea agreement discussed.\"\n    },\n    {\n      \"type\": \"criminal_judgment\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_name\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\",\n      \"plea\": \"Guilty\",\n      \"counts\": \"Count 1: 18 U.S.C. § 1343 (Wire Fraud)\",\n      \"sentence\": \"36 months imprisonment\"\n    }\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600013,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_batch_zip",
+      "_type": "request",
+      "parentId": "req_group_batch",
+      "modified": 1705449600014,
+      "created": 1705449600014,
+      "url": "{{ _.base_url }}/api/pdf/batch/zip",
+      "name": "Generate PDFs as ZIP (Not Implemented)",
+      "description": "Generate multiple PDFs and download as a ZIP file (placeholder for future implementation)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"documents\": [\n    {\n      \"type\": \"rule16b\",\n      \"case_number\": \"24-cr-00100\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Sarah Johnson\"\n    }\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600014,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
     }
   ]
 }

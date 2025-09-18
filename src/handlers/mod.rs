@@ -30,6 +30,8 @@ pub(crate) mod order;
 pub(crate) mod pdf_working;
 /// Federal forms generation handlers
 pub(crate) mod federal_forms;
+/// Batch PDF generation handlers
+pub(crate) mod pdf_batch;
 /// Federal sentencing management handlers
 pub(crate) mod sentencing;
 /// ToDo item CRUD operation handlers

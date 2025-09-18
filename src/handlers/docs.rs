@@ -361,6 +361,9 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     crate::handlers::federal_forms::auto_generate_waiver,
     crate::handlers::federal_forms::auto_generate_conditions,
     crate::handlers::federal_forms::auto_generate_judgment,
+    // Batch PDF Generation
+    crate::handlers::pdf_batch::generate_batch_pdfs,
+    crate::handlers::pdf_batch::generate_batch_pdfs_zip,
     // Attorney Management API
     crate::handlers::attorney::create_attorney,
     crate::handlers::attorney::get_attorney,
@@ -655,6 +658,11 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
       crate::handlers::federal_forms::WaiverOfIndictmentRequest,
       crate::handlers::federal_forms::ConditionsOfReleaseRequest,
       crate::handlers::federal_forms::CriminalJudgmentRequest,
+      // Batch PDF Generation Models
+      crate::handlers::pdf_batch::BatchPdfRequest,
+      crate::handlers::pdf_batch::BatchPdfResponse,
+      crate::handlers::pdf_batch::DocumentRequest,
+      crate::handlers::pdf_batch::GeneratedDocument,
       // Health & Error Models
       crate::handlers::health::HealthStatus,
       crate::error::ErrorResponse,
