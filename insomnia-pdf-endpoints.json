@@ -1,0 +1,450 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-01-17T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_pdf_api",
+      "_type": "workspace",
+      "parentId": null,
+      "modified": 1705449600000,
+      "created": 1705449600000,
+      "name": "Lexodus PDF Generation API",
+      "description": "Federal court forms and document generation",
+      "scope": "collection"
+    },
+    {
+      "_id": "req_group_auto",
+      "_type": "request_group",
+      "parentId": "wrk_pdf_api",
+      "modified": 1705449600000,
+      "created": 1705449600000,
+      "name": "Auto-Generate (GET with test data)",
+      "description": "Pre-filled forms with test data",
+      "environment": {},
+      "metaSortKey": -1705449600000
+    },
+    {
+      "_id": "req_group_custom",
+      "_type": "request_group",
+      "parentId": "wrk_pdf_api",
+      "modified": 1705449600000,
+      "created": 1705449600000,
+      "name": "Custom Data (POST)",
+      "description": "Forms with custom data",
+      "environment": {},
+      "metaSortKey": -1705449600001
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_pdf_api",
+      "modified": 1705449600000,
+      "created": 1705449600000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "district": "SDNY"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "district"]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1705449600000
+    },
+    {
+      "_id": "req_auto_rule16b",
+      "_type": "request",
+      "parentId": "req_group_auto",
+      "modified": 1705449600000,
+      "created": 1705449600000,
+      "url": "{{ _.base_url }}/api/pdf/auto/rule-16b/23-cr-00123",
+      "name": "Rule 16(b) Scheduling Order",
+      "description": "Auto-generates Rule 16(b) order with test data",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_auto_waiver",
+      "_type": "request",
+      "parentId": "req_group_auto",
+      "modified": 1705449600001,
+      "created": 1705449600001,
+      "url": "{{ _.base_url }}/api/pdf/auto/waiver-indictment/24-cr-00789",
+      "name": "Waiver of Indictment (AO 455)",
+      "description": "Auto-generates waiver of indictment form",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600001,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_auto_conditions",
+      "_type": "request",
+      "parentId": "req_group_auto",
+      "modified": 1705449600002,
+      "created": 1705449600002,
+      "url": "{{ _.base_url }}/api/pdf/auto/conditions-release/24-cr-00789",
+      "name": "Conditions of Release (AO 199A)",
+      "description": "Auto-generates conditions of release order",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600002,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_auto_judgment",
+      "_type": "request",
+      "parentId": "req_group_auto",
+      "modified": 1705449600003,
+      "created": 1705449600003,
+      "url": "{{ _.base_url }}/api/pdf/auto/criminal-judgment/23-cr-00456",
+      "name": "Criminal Judgment (AO 245B)",
+      "description": "Auto-generates criminal judgment form",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600003,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_rule16b",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600004,
+      "created": 1705449600004,
+      "url": "{{ _.base_url }}/api/pdf/rule-16b-order",
+      "name": "Rule 16(b) Order",
+      "description": "Generate Rule 16(b) order with custom data",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-cr-00999\",\n  \"defendant_names\": \"John Doe, Jane Smith\",\n  \"judge_name\": \"Hon. Sarah Johnson\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600004,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_rule16b_signed",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600005,
+      "created": 1705449600005,
+      "url": "{{ _.base_url }}/api/pdf/rule-16b-signed",
+      "name": "Rule 16(b) with Signature",
+      "description": "Generate Rule 16(b) order with electronic signature",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-cr-00999\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. Sarah Johnson\",\n  \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600005,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_court_order",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600006,
+      "created": 1705449600006,
+      "url": "{{ _.base_url }}/api/pdf/court-order",
+      "name": "Court Order",
+      "description": "Generate generic court order",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-cr-00999\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. Sarah Johnson\",\n  \"order_title\": \"ORDER TO SHOW CAUSE\",\n  \"order_content\": \"The Court hereby orders the defendant to appear and show cause why the requested relief should not be granted. The defendant shall file a written response within 14 days of this order.\",\n  \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600006,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_minute_entry",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600007,
+      "created": 1705449600007,
+      "url": "{{ _.base_url }}/api/pdf/minute-entry",
+      "name": "Minute Entry",
+      "description": "Generate court minute entry",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-cr-00999\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. Sarah Johnson\",\n  \"minute_text\": \"Defendant appeared with counsel. Plea agreement discussed. The Court reviewed the terms of the agreement with the parties. Matter set for sentencing on January 15, 2025 at 2:00 PM. Defendant to remain on current conditions of release.\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600007,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_waiver",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600008,
+      "created": 1705449600008,
+      "url": "{{ _.base_url }}/api/pdf/waiver-indictment/25-cr-00999",
+      "name": "Waiver of Indictment",
+      "description": "Generate waiver of indictment form",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"defendant_name\": \"Jane Doe\",\n  \"charges\": \"18 U.S.C. § 1343 (Wire Fraud) - Count 1\\n18 U.S.C. § 1001 (False Statements) - Count 2\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600008,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_conditions",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600009,
+      "created": 1705449600009,
+      "url": "{{ _.base_url }}/api/pdf/conditions-release/25-cr-00999",
+      "name": "Conditions of Release",
+      "description": "Generate conditions of release order",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"defendant_name\": \"Jane Doe\",\n  \"judge_name\": \"Hon. Michael Davis\",\n  \"conditions\": [\n    \"Report to Pretrial Services as directed\",\n    \"Not commit any federal, state, or local crime\",\n    \"Surrender all passports and not obtain new travel documents\",\n    \"Travel restricted to SDNY and EDNY\",\n    \"Maintain or seek employment\",\n    \"Not possess firearms or destructive devices\",\n    \"Submit to drug testing as directed\"\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600009,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_judgment",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600010,
+      "created": 1705449600010,
+      "url": "{{ _.base_url }}/api/pdf/criminal-judgment/25-cr-00999",
+      "name": "Criminal Judgment",
+      "description": "Generate criminal judgment form",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"defendant_name\": \"Jane Doe\",\n  \"judge_name\": \"Hon. Sarah Johnson\",\n  \"plea\": \"Guilty\",\n  \"counts\": \"Count 1: 18 U.S.C. § 1343 (Wire Fraud)\",\n  \"sentence\": \"36 months imprisonment\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600010,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_post_signature",
+      "_type": "request",
+      "parentId": "req_group_custom",
+      "modified": 1705449600011,
+      "created": 1705449600011,
+      "url": "{{ _.base_url }}/api/pdf/judge-signature",
+      "name": "Upload Judge Signature",
+      "description": "Upload judge signature for document signing",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"judge_id\": \"judge-123\",\n  \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.district }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1705449600011,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}

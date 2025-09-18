@@ -139,10 +139,24 @@ A comprehensive federal court case management system built with [Spin](https://g
 - 🔒 **Tenant-Aware Routing** - Automatic tenant detection via headers, subdomains, or query params
 - 📊 **Per-District Analytics** - Usage statistics and resource monitoring per district
 - 🎯 **District-Specific Configuration** - Custom settings and features per federal district
-- 🔄 **Repository Factory Pattern** - Centralized tenant-specific repository creation
-- 📈 **Scalability** - Enterprise-grade architecture supporting all federal courts
 
-### 13. Legacy ToDo System (5 Endpoints)
+### 13. PDF Document Generation System (13 Endpoints)
+**Federal Court Forms and Document Generation**
+- 📄 **Rule 16(b) Orders** - Auto-generate scheduling orders for criminal cases
+- ✍️ **Electronic Signatures** - Apply judge signatures with secure authentication
+- 📋 **Federal Forms Library** - Complete implementation of official federal court forms:
+  - **Form AO 455** - Waiver of Indictment
+  - **Form AO 199A** - Order Setting Conditions of Release
+  - **Form AO 245B** - Judgment in a Criminal Case
+- 🏛️ **Court Orders** - Generate custom court orders with electronic signing
+- 📝 **Minute Entries** - Professional minute entry generation with clerk signatures
+- 🔐 **Signature Management** - Secure storage and application of judicial signatures
+- 📊 **Document Templates** - Reusable templates with variable substitution
+- 🎯 **Auto-Generation** - Test endpoints with pre-populated data for all forms
+- 📁 **Batch Generation** - Generate multiple documents in a single operation
+- 🔒 **Document Security** - Tamper-proof document generation with verification codes
+
+### 14. Legacy ToDo System (5 Endpoints)
 **Simple Task Management (Demo/Testing)**
 - 📝 **CRUD Operations** - Basic task management functionality
 - 🔄 **Status Toggle** - Task completion tracking

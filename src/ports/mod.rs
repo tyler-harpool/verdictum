@@ -11,3 +11,4 @@ pub mod docket_repository;
 pub mod document_repository;
 pub mod judge_repository;
 pub mod sentencing_repository;
+pub mod signature_repository;

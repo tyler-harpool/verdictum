@@ -1,7 +1,7 @@
 [package]
 name = "spin-utopia"
 authors = ["Tyler Harpool <tylerharpool@gmail.com>"]
-description = "Lexodus - Federal Judicial Case Management System - Complete federal court case management with 240+ REST endpoints including judicial orders and opinions, built with Spin and Rust"
+description = "Lexodus - Federal Judicial Case Management System - Complete federal court case management with 250+ REST endpoints including PDF generation for all federal court forms, built with Spin and Rust"
 version = "5.0.0"
 rust-version = "1.78"
 edition = "2021"
@@ -12,11 +12,14 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1"
 async-trait = "0.1"
+base64 = "0.22"
 chrono = { version = "0.4", features = ["serde"] }
+image = { version = "0.24", default-features = false, features = ["jpeg", "png"] }
 pdf-writer = "0.11"
 rand = "0.8"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.142"
+sha2 = "0.10"
 spin-sdk = "3.1.0"
 url = "2.5.4"
 utoipa = { version = "5.4.0", features = ["uuid", "chrono"] }

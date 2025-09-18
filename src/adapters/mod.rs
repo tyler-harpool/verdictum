@@ -10,3 +10,4 @@ pub mod spin_kv_docket_repository;
 pub mod spin_kv_document_repository;
 pub mod spin_kv_judge_repository;
 pub mod spin_kv_sentencing_repository;
+pub mod spin_kv_signature_repository;

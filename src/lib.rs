@@ -392,11 +392,21 @@ fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     router.post("/api/service-records/bulk/:document_id", handlers::attorney::bulk_add_to_service);
     router.post("/api/representations/migrate", handlers::attorney::migrate_representations);
 
-    // PDF Generation endpoints
+    // PDF Generation endpoints - Court Orders
     router.post("/api/pdf/rule-16b-order", handlers::pdf_working::generate_rule_16b_order);
+    router.post("/api/pdf/rule-16b-signed", handlers::pdf_working::generate_signed_rule_16b_order);
     router.post("/api/pdf/court-order", handlers::pdf_working::generate_court_order);
     router.post("/api/pdf/minute-entry", handlers::pdf_working::generate_minute_entry);
-    router.post("/api/pdf/auto-rule-16b/:case_id", handlers::pdf_working::auto_generate_rule_16b);
+    router.get("/api/pdf/auto/rule-16b/:case_id", handlers::pdf_working::auto_generate_rule_16b);
+    router.post("/api/pdf/judge-signature", handlers::pdf_working::upload_judge_signature);
+
+    // PDF Generation endpoints - Federal Forms
+    router.post("/api/pdf/waiver-indictment/:case_id", handlers::federal_forms::generate_waiver_of_indictment);
+    router.post("/api/pdf/conditions-release/:case_id", handlers::federal_forms::generate_conditions_of_release);
+    router.post("/api/pdf/criminal-judgment/:case_id", handlers::federal_forms::generate_criminal_judgment);
+    router.get("/api/pdf/auto/waiver-indictment/:case_id", handlers::federal_forms::auto_generate_waiver);
+    router.get("/api/pdf/auto/conditions-release/:case_id", handlers::federal_forms::auto_generate_conditions);
+    router.get("/api/pdf/auto/criminal-judgment/:case_id", handlers::federal_forms::auto_generate_judgment);
 
     // Documentation endpoints
     router.get(

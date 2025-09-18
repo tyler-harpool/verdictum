@@ -28,6 +28,8 @@ pub(crate) mod opinion;
 pub(crate) mod order;
 /// PDF generation handlers for court documents
 pub(crate) mod pdf_working;
+/// Federal forms generation handlers
+pub(crate) mod federal_forms;
 /// Federal sentencing management handlers
 pub(crate) mod sentencing;
 /// ToDo item CRUD operation handlers
