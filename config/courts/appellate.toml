@@ -1,0 +1,62 @@
+# Base configuration for Courts of Appeals
+# Managed by Circuit Court IT staff
+# Individual circuits can override these values
+
+[features]
+court_level = "appellate"
+court_type = "appellate"
+
+[features.core]
+case_management = true
+docket_management = true
+document_filing = true
+party_management = true
+attorney_management = true
+calendar_scheduling = true
+deadline_tracking = true
+notification_system = true
+
+[features.appellate]
+enabled = true
+panel_assignments = true
+en_banc_proceedings = true
+interlocutory_appeals = true
+habeas_corpus = true
+prisoner_petitions = true
+agency_appeals = true
+immigration_appeals = true
+circuit_precedent = true
+oral_argument_scheduling = true
+opinion_circulation = true
+senior_judges = true
+visiting_judges = true
+
+[appellate_specific]
+# Appeals-specific settings
+panel_size = 3
+en_banc_threshold_judges = 9
+opinion_types = ["published", "unpublished", "per_curiam"]
+rehearing_allowed = true
+sua_sponte_rehearing = true
+
+[deadlines]
+# Appellate-specific deadlines
+notice_of_appeal_days = 30
+brief_filing_days = 40
+reply_brief_days = 14
+petition_rehearing_days = 14
+petition_rehearing_en_banc_days = 14
+
+[document_rules]
+max_size_mb = 25
+allowed_formats = ["pdf"]  # Appeals courts typically require PDF only
+max_pages_opening_brief = 30
+max_pages_reply_brief = 15
+require_table_of_contents = true
+require_table_of_authorities = true
+
+[oral_arguments]
+default_time_per_side_minutes = 15
+allow_remote_arguments = true
+record_arguments = true
+livestream_arguments = false

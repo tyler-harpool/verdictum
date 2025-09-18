@@ -6,9 +6,12 @@
 pub mod pdf_writer_adapter;
 pub mod spin_kv_attorney_repository;
 pub mod spin_kv_case_repository;
+pub mod spin_kv_config_repository;
 pub mod spin_kv_deadline_repository;
 pub mod spin_kv_docket_repository;
 pub mod spin_kv_document_repository;
 pub mod spin_kv_judge_repository;
 pub mod spin_kv_sentencing_repository;
 pub mod spin_kv_signature_repository;
+pub mod toml_config_loader;
+pub mod unified_config_feature_repository;

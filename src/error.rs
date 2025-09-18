@@ -29,6 +29,10 @@ pub enum ApiError {
     BadRequest(String),
     /// Internal server error (500)
     Internal(String),
+    /// Internal server error with details (500)
+    InternalServerError(String),
+    /// Forbidden access (403)
+    Forbidden(String),
     /// Storage operation failed
     StorageError(String),
     /// JSON serialization/deserialization error
@@ -45,6 +49,8 @@ impl fmt::Display for ApiError {
             ApiError::NotFound(msg) => write!(f, "Not found: {}", msg),
             ApiError::BadRequest(msg) => write!(f, "Bad request: {}", msg),
             ApiError::Internal(msg) => write!(f, "Internal error: {}", msg),
+            ApiError::InternalServerError(msg) => write!(f, "Internal server error: {}", msg),
+            ApiError::Forbidden(msg) => write!(f, "Forbidden: {}", msg),
             ApiError::StorageError(msg) => write!(f, "Storage error: {}", msg),
             ApiError::SerializationError(msg) => write!(f, "Serialization error: {}", msg),
             ApiError::ValidationError(msg) => write!(f, "Validation error: {}", msg),
@@ -61,6 +67,8 @@ impl IntoResponse for ApiError {
             ApiError::NotFound(msg) => (404, "Not Found".to_string(), Some(msg)),
             ApiError::BadRequest(msg) => (400, "Bad Request".to_string(), Some(msg)),
             ApiError::Internal(msg) => (500, "Internal Server Error".to_string(), Some(msg)),
+            ApiError::InternalServerError(msg) => (500, "Internal Server Error".to_string(), Some(msg)),
+            ApiError::Forbidden(msg) => (403, "Forbidden".to_string(), Some(msg)),
             ApiError::StorageError(msg) => (
                 500,
                 "Storage operation failed".to_string(),

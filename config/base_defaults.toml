@@ -1,0 +1,24 @@
+# Default configuration values that apply system-wide
+# Individual courts and districts override these in their own config files
+# This file contains only the absolute minimum defaults
+
+[system]
+# System-wide settings
+environment = "production"
+version = "1.0.0"
+
+[defaults]
+# Default values that any court can override
+session_timeout_minutes = 60
+max_login_attempts = 5
+lockout_duration_minutes = 30
+
+[formatting]
+# Default formatting rules
+date_format = "MM/DD/YYYY"
+time_format = "12"
+
+[security]
+# Minimum security requirements
+require_https = true
+min_password_length = 8

@@ -1,0 +1,61 @@
+# Base configuration for Bankruptcy Courts
+# Managed by Bankruptcy Court IT staff
+# Individual bankruptcy districts can override these values
+
+[features]
+court_level = "specialized"
+court_type = "bankruptcy"
+
+[features.core]
+case_management = true
+docket_management = true
+document_filing = true
+party_management = true
+attorney_management = true
+calendar_scheduling = true
+deadline_tracking = true
+notification_system = true
+
+[features.bankruptcy]
+enabled = true
+chapter_7_liquidation = true
+chapter_11_reorganization = true
+chapter_13_adjustment = true
+creditor_management = true
+trustee_assignment = true
+proof_of_claim = true
+automatic_stay_tracking = true
+discharge_management = true
+adversary_proceedings = true
+first_day_motions = true
+plan_confirmation = true
+means_testing = true
+
+[bankruptcy_specific]
+# Bankruptcy-specific settings
+automatic_stay_immediate = true
+creditor_matrix_required = true
+means_test_median_income_check = true
+discharge_waiting_periods = {
+    chapter_7 = 180,
+    chapter_13 = 1095
+}
+
+[deadlines]
+# Bankruptcy-specific deadlines
+proof_of_claim_days = 70
+objection_to_discharge_days = 60
+plan_confirmation_days = 45
+first_meeting_creditors_days = 21
+
+[document_rules]
+max_size_mb = 50  # Larger for bankruptcy petitions
+allowed_formats = ["pdf", "docx", "doc", "txt", "xlsx", "xls"]
+require_creditor_matrix = true
+require_schedules_a_through_j = true
+
+[notifications]
+email_enabled = true
+notify_creditors = true
+notify_trustee = true
+notify_us_trustee = true

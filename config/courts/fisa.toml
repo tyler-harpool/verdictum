@@ -1,0 +1,59 @@
+# Base configuration for FISA Courts
+# Managed by FISA Court IT staff (highly secure environment)
+
+[features]
+court_level = "specialized"
+court_type = "fisa"
+
+[features.core]
+case_management = true
+docket_management = true
+document_filing = true
+party_management = false  # Limited party info for security
+attorney_management = true
+calendar_scheduling = true
+deadline_tracking = true
+notification_system = true
+
+[features.fisa]
+enabled = true
+surveillance_applications = true
+minimization_procedures = true
+targeting_procedures = true
+quarterly_reviews = true
+compliance_incidents = true
+declassification_review = true
+amicus_briefs = true
+
+[security]
+# FISA courts require maximum security
+require_2fa = true
+require_https = true
+min_password_length = 16
+session_timeout_minutes = 15
+max_login_attempts = 3
+require_security_clearance = true
+classification_levels = ["UNCLASSIFIED", "CONFIDENTIAL", "SECRET", "TOP SECRET"]
+
+[document_rules]
+# Special handling for classified documents
+max_size_mb = 100
+allowed_formats = ["pdf"]  # Only PDF for consistency
+require_classification_marking = true
+require_redaction_review = true
+allow_sealed = true
+default_sealed = true  # Most FISA documents are sealed by default
+
+[workflow]
+auto_docket_on_filing = false
+notify_parties_on_filing = false  # Limited notifications for security
+require_judge_approval = true
+enable_e_filing = true
+allow_pro_se = false  # No pro se in FISA courts
+
+[audit]
+# Enhanced audit requirements
+audit_all_access = true
+audit_all_views = true
+audit_all_downloads = true
+retain_audit_days = 2555  # 7 years

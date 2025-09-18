@@ -55,12 +55,16 @@
 use crate::adapters::{
     spin_kv_attorney_repository::SpinKvAttorneyRepository,
     spin_kv_case_repository::SpinKvCaseRepository,
+    spin_kv_config_repository::SpinKvConfigRepository,
     spin_kv_deadline_repository::SpinKvDeadlineRepository,
     spin_kv_docket_repository::SpinKvDocketRepository,
     spin_kv_document_repository::SpinKvDocumentRepository,
     spin_kv_judge_repository::SpinKvJudgeRepository,
     spin_kv_sentencing_repository::SpinKvSentencingRepository,
+    unified_config_feature_repository::UnifiedConfigFeatureRepository,
 };
+use crate::ports::feature_repository::FeatureRepository;
+use std::sync::Arc;
 use crate::utils::tenant;
 use spin_sdk::http::Request;
 
@@ -144,6 +148,79 @@ impl RepositoryFactory {
         SpinKvSentencingRepository::with_store(store_name)
     }
 
-    // Note: Additional helper methods for tenant access control can be added here
-    // For now, tenant isolation is handled at the store level
+    /// Creates a tenant-specific configuration repository.
+    ///
+    /// # Arguments
+    ///
+    /// * `req` - The HTTP request containing tenant identification
+    ///
+    /// # Returns
+    ///
+    /// A `SpinKvConfigRepository` instance scoped to the identified tenant
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let repo = RepositoryFactory::config_repo(&req);
+    /// let config = repo.get_merged_config("SDNY", Some("judge-123")).await?;
+    /// ```
+    pub fn config_repo(req: &Request) -> SpinKvConfigRepository {
+        let tenant_id = tenant::get_tenant_id(req);
+        let store_name = tenant::get_store_name(&tenant_id);
+
+        // Determine court type from tenant ID or headers
+        let court_type = Self::determine_court_type(req, &tenant_id);
+
+        SpinKvConfigRepository::with_district(store_name, tenant_id.clone(), court_type)
+    }
+
+    /// Creates a tenant-specific feature repository.
+    ///
+    /// This returns a unified repository that bridges features to the config system.
+    ///
+    /// # Arguments
+    ///
+    /// * `req` - The HTTP request containing tenant identification
+    ///
+    /// # Returns
+    ///
+    /// A boxed `FeatureRepository` trait object
+    pub fn feature_repo(req: &Request) -> Box<dyn FeatureRepository> {
+        let config_repo = Arc::new(Self::config_repo(req));
+        let tenant_id = tenant::get_tenant_id(req);
+        let store_name = tenant::get_store_name(&tenant_id);
+
+        Box::new(UnifiedConfigFeatureRepository::new(
+            config_repo,
+            store_name,
+        ))
+    }
+
+    /// Determine the court type from the request or tenant ID
+    fn determine_court_type(req: &Request, tenant_id: &str) -> String {
+        // Check for explicit court type header
+        for (name, value) in req.headers() {
+            if name == "x-court-type" {
+                if let Ok(ct) = std::str::from_utf8(value.as_ref()) {
+                    return ct.to_lowercase();
+                }
+            }
+        }
+
+        // Infer from tenant ID patterns
+        match tenant_id {
+            id if id.contains("bk") || id.contains("bankruptcy") => "bankruptcy".to_string(),
+            id if id.ends_with("ca") => "appellate".to_string(),  // Circuit Appeals
+            id if id == "scotus" => "supreme".to_string(),
+            id if id.contains("tax") => "tax".to_string(),
+            id if id.contains("trade") => "trade".to_string(),
+            id if id.contains("claims") => "claims".to_string(),
+            id if id.contains("fisa") => "fisa".to_string(),
+            id if id.contains("ptab") => "patent".to_string(),
+            id if id.contains("ttab") => "trademark".to_string(),
+            id if id.contains("itc") => "itc".to_string(),
+            id if id.contains("mspb") => "merit".to_string(),
+            _ => "district".to_string(),  // Default to district court
+        }
+    }
 }

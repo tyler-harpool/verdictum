@@ -150,7 +150,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     (name = "process-service", description = "Legal process service and proof of delivery"),
     (name = "Sentencing", description = "Federal sentencing guidelines and calculations"),
     (name = "pdf-generation", description = "PDF document generation for court orders and filings. Supports dual response formats based on Accept header."),
-    (name = "signature-management", description = "Electronic signature storage and retrieval for judge signatures")
+    (name = "signature-management", description = "Electronic signature storage and retrieval for judge signatures"),
+    (name = "configuration", description = "Hierarchical configuration management for districts and judges. Supports base configuration with district and judge-level overrides.")
   ),
   paths(
     // ToDo API
@@ -432,6 +433,15 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     crate::handlers::attorney::get_attorney_win_rate,
     crate::handlers::attorney::get_attorney_metrics,
     crate::handlers::attorney::get_top_attorneys,
+    // Configuration Management API
+    crate::handlers::config::get_config,
+    crate::handlers::config::get_district_overrides,
+    crate::handlers::config::get_judge_overrides,
+    crate::handlers::config::update_district_config,
+    crate::handlers::config::update_judge_config,
+    crate::handlers::config::clear_district_overrides,
+    crate::handlers::config::clear_judge_overrides,
+    crate::handlers::config::preview_config,
     // Health Monitoring
     crate::handlers::health::health_check,
   ),
@@ -655,6 +665,11 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
       crate::handlers::pdf_hexagonal::BatchPdfResponse,
       crate::handlers::pdf_hexagonal::DocumentRequestDto,
       crate::handlers::pdf_hexagonal::StoreSignatureRequest,
+      // Configuration Models
+      crate::domain::config::Configuration,
+      crate::domain::config::ConfigOverride,
+      crate::domain::config::ConfigResponse,
+      crate::domain::config::ConfigMetadata,
       // Health & Error Models
       crate::handlers::health::HealthStatus,
       crate::error::ErrorResponse,

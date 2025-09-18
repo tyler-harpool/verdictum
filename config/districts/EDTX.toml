@@ -1,0 +1,36 @@
+# Eastern District of Texas specific configuration
+# Managed by EDTX IT staff
+# Known for high volume of patent litigation
+
+[district_info]
+name = "Eastern District of Texas"
+circuit = "5"
+divisions = ["Tyler", "Marshall", "Sherman", "Beaumont", "Lufkin", "Texarkana"]
+
+[features.advanced]
+# EDTX opts into patent-specific features
+ai_assisted_research = true
+automated_transcription = true
+predictive_analytics = true
+patent_case_management = true  # Custom feature for EDTX
+
+[features.integrations]
+pacer_sync = true
+cm_ecf_integration = true
+westlaw_integration = true
+lexis_integration = true
+uspto_integration = true  # Patent office integration
+
+[local_rules]
+# EDTX-specific patent case rules
+patent_local_rules_enabled = true
+infringement_contentions_days = 45
+invalidity_contentions_days = 45
+claim_construction_briefing_days = 60
+expert_discovery_days = 90
+
+[scheduling]
+# EDTX Rocket Docket preferences
+markman_hearing_days = 120  # Days from case filing
+trial_date_target_months = 18  # Fast track to trial
+discovery_cutoff_before_trial = 30

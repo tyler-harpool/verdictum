@@ -1,0 +1,87 @@
+# Base configuration for District Courts
+# Managed by District Court IT staff
+# Individual districts can override these values
+
+[features]
+court_level = "district"
+court_type = "district"
+
+[features.core]
+case_management = true
+docket_management = true
+document_filing = true
+party_management = true
+attorney_management = true
+calendar_scheduling = true
+deadline_tracking = true
+notification_system = true
+
+[features.district]
+enabled = true
+criminal_cases = true
+civil_cases = true
+jury_management = true
+sentencing_guidelines = true
+speedy_trial_tracking = true
+pretrial_services = true
+probation_management = true
+magistrate_judges = true
+sealed_cases = true
+grand_jury = true
+consent_decrees = true
+class_actions = true
+
+[case_assignment]
+auto_generate_pdf = false
+require_attorney_signature = true
+max_days_to_file = 30
+auto_docket_on_assignment = false
+require_judge_approval = true
+
+[document_rules]
+max_size_mb = 25
+allowed_formats = ["pdf", "docx", "doc", "txt"]
+require_ocr = true
+require_digital_signature = false
+allow_sealed = true
+max_pages = 500
+
+[deadlines]
+default_response_days = 21
+motion_response_days = 14
+appeal_window_days = 30
+discovery_deadline_days = 120
+expert_disclosure_days = 90
+pretrial_motion_days = 30
+
+[workflow]
+auto_docket_on_filing = false
+notify_parties_on_filing = true
+require_judge_approval = false
+enable_e_filing = true
+allow_pro_se = true
+require_attorney_admission = true
+
+[notifications]
+email_enabled = true
+sms_enabled = false
+push_enabled = false
+notify_new_filing = true
+notify_deadline_approaching = true
+deadline_warning_days = 7
+
+[sentencing]
+enable_guidelines_calculator = true
+require_presentence_report = true
+allow_variance_requests = true
+allow_departure_motions = true
+default_supervised_release_months = 36
+require_victim_impact = false
+
+[scheduling]
+default_hearing_duration = 30
+min_hearing_notice_days = 7
+allow_video_hearings = true
+allow_telephone_hearings = true
+business_hours_start = 9
+business_hours_end = 17

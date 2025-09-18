@@ -1,0 +1,54 @@
+# Base configuration for United States Tax Court
+# Managed by Tax Court IT staff
+
+[features]
+court_level = "specialized"
+court_type = "tax"
+
+[features.core]
+case_management = true
+docket_management = true
+document_filing = true
+party_management = true
+attorney_management = true
+calendar_scheduling = true
+deadline_tracking = true
+notification_system = true
+
+[features.tax]
+enabled = true
+deficiency_proceedings = true
+innocent_spouse_relief = true
+collection_due_process = true
+whistleblower_awards = true
+partnership_disputes = true
+s_cases = true  # Small tax cases under $50k
+regular_cases = true
+declaratory_judgments = true
+interest_abatement = true
+worker_classification = true
+
+[tax_specific]
+# Tax court specific settings
+s_case_limit = 50000  # Dollar limit for small cases
+s_case_no_appeal = true  # S cases cannot be appealed
+require_irs_notice = true  # Must attach IRS notice to petition
+petition_filing_days = 90  # From IRS notice date
+
+[document_rules]
+max_size_mb = 25
+allowed_formats = ["pdf", "xlsx", "xls"]  # Excel for financial data
+require_irs_notice_attachment = true
+require_financial_statements = true
+
+[deadlines]
+# Tax court specific deadlines
+petition_response_days = 60  # IRS has 60 days to respond
+trial_memorandum_days = 15  # Before trial
+post_trial_brief_days = 75  # After trial
+
+[workflow]
+allow_pro_se = true  # Many taxpayers represent themselves
+pro_se_assistance_available = true
+require_admission = false  # Non-attorneys can practice
+irs_automatic_party = true  # IRS is always respondent

@@ -1,0 +1,42 @@
+# Southern District of New York specific configuration
+# Managed by SDNY IT staff
+# Overrides district court defaults
+
+[district_info]
+name = "Southern District of New York"
+circuit = "2"
+divisions = ["Manhattan", "White Plains", "Poughkeepsie"]
+
+[features.advanced]
+# SDNY opts into advanced features
+ai_assisted_research = true
+automated_transcription = true
+predictive_analytics = true
+automated_scheduling = true
+e_filing_mandatory = true
+
+[features.integrations]
+pacer_sync = true
+cm_ecf_integration = true
+westlaw_integration = true
+lexis_integration = true
+bloomberg_law = true
+
+[local_rules]
+# SDNY-specific local rules
+ecf_registration_required = true
+pro_hac_vice_fee = 250
+courtesy_copies_required = true
+chambers_copy_required = true
+
+[document_rules]
+# SDNY has stricter page limits
+max_pages_motion = 25
+max_pages_memorandum = 25
+max_pages_sur_reply = 10
+
+[scheduling]
+# SDNY-specific scheduling preferences
+motion_days = ["Tuesday", "Thursday"]
+settlement_conferences_mandatory = true
+initial_conference_days = 60

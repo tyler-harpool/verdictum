@@ -44,6 +44,16 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     // Health check endpoint
     router.get("/api/health", handlers::health::health_check);
 
+    // Configuration Management endpoints
+    router.get("/api/config", handlers::config::get_config);
+    router.get("/api/config/overrides/district", handlers::config::get_district_overrides);
+    router.get("/api/config/overrides/judge", handlers::config::get_judge_overrides);
+    router.put("/api/config/overrides/district", handlers::config::update_district_config);
+    router.put("/api/config/overrides/judge", handlers::config::update_judge_config);
+    router.delete("/api/config/overrides/district", handlers::config::clear_district_overrides);
+    router.delete("/api/config/overrides/judge", handlers::config::clear_judge_overrides);
+    router.post("/api/config/preview", handlers::config::preview_config);
+
     // ToDo API endpoints
     router.get("/api/todos", handlers::todo::get_all);
     router.get("/api/todos/:id", handlers::todo::get_by_id);
