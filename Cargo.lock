@@ -617,6 +617,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d"
 
 [[package]]
+name = "pdf-writer"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "315bd599c75e149b51ad109a01f05cf887ccbab9a7b18d4852303f5c8823be71"
+dependencies = [
+ "bitflags",
+ "itoa",
+ "memchr",
+ "ryu",
+]
+
+[[package]]
 name = "percent-encoding"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -956,6 +968,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "chrono",
+ "pdf-writer",
  "rand",
  "serde",
  "serde_json",

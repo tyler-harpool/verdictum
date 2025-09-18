@@ -1,0 +1,402 @@
+//! PDF generation utilities for court documents
+
+use pdf_writer::{Content, Finish, Name, Pdf, Rect, Ref, Str};
+use chrono::Local;
+use crate::domain::criminal_case::CriminalCase;
+use crate::domain::judge::Judge;
+use crate::domain::docket::DocketEntry;
+
+/// Generate a Rule 16(b) Scheduling Order PDF
+pub fn generate_rule_16b_order(
+    case: &CriminalCase,
+    judge: &Judge,
+    district: &str,
+) -> Vec<u8> {
+    // Create a new PDF
+    let mut pdf = Pdf::new();
+
+    // Create catalog and page tree
+    let catalog_id = Ref::new(1);
+    let page_tree_id = Ref::new(2);
+    let page_id = Ref::new(3);
+    let font_id = Ref::new(4);
+    let content_id = Ref::new(5);
+
+    // Create catalog
+    pdf.catalog(catalog_id).pages(page_tree_id);
+
+    // Create page tree
+    pdf.pages(page_tree_id).kids([page_id]).count(1);
+
+    // Create page (8.5" x 11" in points: 612 x 792)
+    let mut page = pdf.page(page_id);
+    page.parent(page_tree_id);
+    page.media_box(Rect::new(0.0, 0.0, 612.0, 792.0));
+    // Add fonts dictionary
+    let fonts_dict_id = Ref::new(6);
+    page.resources().fonts().pair(Name(b"F1"), fonts_dict_id);
+    page.contents(content_id);
+    page.finish();
+
+    // Add Helvetica font via the fonts dictionary
+    pdf.type1_font(fonts_dict_id).base_font(Name(b"Helvetica"));
+
+    // Create content stream
+    let mut content = Content::new();
+
+    // Helper function to add text at position
+    let mut add_text = |x: f32, y: f32, text: &str, size: f32| {
+        content.begin_text();
+        content.set_font(Name(b"F1"), size);
+        content.next_line(x, y);
+        content.show(Str(text.as_bytes()));
+        content.end_text();
+    };
+
+    // Header
+    let mut y_pos = 720.0;
+    add_text(200.0, y_pos, "UNITED STATES DISTRICT COURT", 14.0);
+    y_pos -= 20.0;
+
+    // District
+    let district_text = format!("{}", get_full_district_name(district));
+    add_text(180.0, y_pos, &district_text, 14.0);
+    y_pos -= 40.0;
+
+    // Case caption
+    add_text(72.0, y_pos, "UNITED STATES OF AMERICA", 12.0);
+    y_pos -= 20.0;
+    add_text(250.0, y_pos, ")", 12.0);
+    y_pos -= 20.0;
+    add_text(250.0, y_pos, "v.", 12.0);
+    add_text(350.0, y_pos, &format!("Case No. {}", case.case_number), 10.0);
+    y_pos -= 20.0;
+    add_text(250.0, y_pos, ")", 12.0);
+    y_pos -= 20.0;
+
+    // Defendant name(s)
+    // Get defendant names - assuming defendants is a Vec<String> of names
+    let defendant_names = if case.defendants.is_empty() {
+        "Unknown Defendant".to_string()
+    } else {
+        case.defendants.join(", ")
+    };
+    add_text(72.0, y_pos, &defendant_names, 12.0);
+    y_pos -= 20.0;
+    add_text(250.0, y_pos, "Defendant(s).", 12.0);
+    y_pos -= 40.0;
+
+    // Title
+    add_text(180.0, y_pos, "SCHEDULING ORDER", 16.0);
+    add_text(170.0, y_pos - 20.0, "(Fed. R. Crim. P. 16(b))", 12.0);
+    y_pos -= 60.0;
+
+    // Introduction
+    let intro = format!(
+        "This matter comes before the Court for scheduling pursuant to Federal Rule of Criminal Procedure 16(b). \
+        The Court, having reviewed the case file and considered the nature of the charges, hereby enters the following scheduling order:"
+    );
+    add_wrapped_text(&mut content, 72.0, y_pos, &intro, 11.0, 468.0);
+    y_pos -= 60.0;
+
+    // Orders
+    add_text(72.0, y_pos, "IT IS HEREBY ORDERED:", 12.0);
+    y_pos -= 30.0;
+
+    // 1. Discovery deadline
+    add_text(72.0, y_pos, "1. DISCOVERY:", 11.0);
+    y_pos -= 20.0;
+    let discovery_text = "The Government shall provide all discovery materials pursuant to Rule 16 \
+        within 14 days of this order. The defense shall provide reciprocal discovery \
+        within 14 days thereafter.";
+    add_wrapped_text(&mut content, 90.0, y_pos, discovery_text, 10.0, 450.0);
+    y_pos -= 60.0;
+
+    // 2. Motion deadline
+    add_text(72.0, y_pos, "2. PRETRIAL MOTIONS:", 11.0);
+    y_pos -= 20.0;
+    let motion_text = "All pretrial motions shall be filed within 30 days of this order. \
+        Responses shall be filed within 14 days of service. Replies, if any, \
+        shall be filed within 7 days of service of the response.";
+    add_wrapped_text(&mut content, 90.0, y_pos, motion_text, 10.0, 450.0);
+    y_pos -= 60.0;
+
+    // 3. Plea deadline
+    add_text(72.0, y_pos, "3. CHANGE OF PLEA:", 11.0);
+    y_pos -= 20.0;
+    let plea_text = "Any change of plea shall occur no later than 14 days before trial. \
+        The parties shall notify the Court immediately if a plea agreement is reached.";
+    add_wrapped_text(&mut content, 90.0, y_pos, plea_text, 10.0, 450.0);
+    y_pos -= 60.0;
+
+    // 4. Trial date
+    add_text(72.0, y_pos, "4. TRIAL:", 11.0);
+    y_pos -= 20.0;
+    let trial_text = "This matter is set for trial on a date to be determined. \
+        The Court will issue a separate trial scheduling order after the pretrial motion deadline.";
+    add_wrapped_text(&mut content, 90.0, y_pos, trial_text, 10.0, 450.0);
+    y_pos -= 60.0;
+
+    // 5. Status conference
+    add_text(72.0, y_pos, "5. STATUS CONFERENCE:", 11.0);
+    y_pos -= 20.0;
+    let conference_text = "A status conference is scheduled for 45 days from the date of this order \
+        at 2:00 PM in the courtroom of the undersigned.";
+    add_wrapped_text(&mut content, 90.0, y_pos, conference_text, 10.0, 450.0);
+    y_pos -= 60.0;
+
+    // Closing
+    add_text(72.0, y_pos, "IT IS SO ORDERED.", 12.0);
+    y_pos -= 40.0;
+
+    // Date
+    let date = Local::now().format("%B %d, %Y").to_string();
+    add_text(72.0, y_pos, &format!("DATED: {}", date), 10.0);
+    y_pos -= 60.0;
+
+    // Signature line
+    add_text(350.0, y_pos, "_______________________________", 10.0);
+    y_pos -= 15.0;
+    add_text(350.0, y_pos, &judge.name, 10.0);
+    y_pos -= 15.0;
+    add_text(350.0, y_pos, &format!("{:?}", judge.title), 10.0);
+    y_pos -= 15.0;
+    add_text(350.0, y_pos, "United States District Judge", 10.0);
+
+    // Write content stream
+    pdf.stream(content_id, &content.finish());
+
+    // Finish and return PDF bytes
+    pdf.finish()
+}
+
+/// Generate a standard criminal case order PDF
+pub fn generate_criminal_order(
+    case: &CriminalCase,
+    judge: &Judge,
+    order_title: &str,
+    order_content: &str,
+    district: &str,
+) -> Vec<u8> {
+    let mut pdf = Pdf::new();
+
+    let catalog_id = Ref::new(1);
+    let page_tree_id = Ref::new(2);
+    let page_id = Ref::new(3);
+    let font_id = Ref::new(4);
+    let content_id = Ref::new(5);
+
+    pdf.catalog(catalog_id).pages(page_tree_id);
+    pdf.pages(page_tree_id).kids([page_id]).count(1);
+
+    let mut page = pdf.page(page_id);
+    page.parent(page_tree_id);
+    page.media_box(Rect::new(0.0, 0.0, 612.0, 792.0));
+    // Add fonts dictionary
+    let fonts_dict_id = Ref::new(6);
+    page.resources().fonts().pair(Name(b"F1"), fonts_dict_id);
+    page.contents(content_id);
+    page.finish();
+
+    pdf.type1_font(font_id).base_font(Name(b"Helvetica"));
+
+    let mut content = Content::new();
+
+    // Add header
+    content.begin_text();
+    content.set_font(Name(b"F1"), 14.0);
+    content.next_line(200.0, 720.0);
+    content.show(Str(b"UNITED STATES DISTRICT COURT"));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 14.0);
+    content.next_line(180.0, 700.0);
+    content.show(Str(get_full_district_name(district).as_bytes()));
+    content.end_text();
+
+    // Add case information
+    content.begin_text();
+    content.set_font(Name(b"F1"), 12.0);
+    content.next_line(72.0, 650.0);
+    content.show(Str(format!("Case No. {}", case.case_number).as_bytes()));
+    content.end_text();
+
+    // Add order title
+    content.begin_text();
+    content.set_font(Name(b"F1"), 16.0);
+    content.next_line(250.0, 600.0);
+    content.show(Str(order_title.as_bytes()));
+    content.end_text();
+
+    // Add order content
+    content.begin_text();
+    content.set_font(Name(b"F1"), 11.0);
+    content.next_line(72.0, 550.0);
+    content.show(Str(order_content.as_bytes()));
+    content.end_text();
+
+    // Add judge signature
+    content.begin_text();
+    content.set_font(Name(b"F1"), 10.0);
+    content.next_line(350.0, 200.0);
+    content.show(Str(b"_______________________________"));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 10.0);
+    content.next_line(350.0, 180.0);
+    content.show(Str(judge.name.as_bytes()));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 10.0);
+    content.next_line(350.0, 165.0);
+    content.show(Str(format!("{:?}", judge.title).as_bytes()));
+    content.end_text();
+
+    pdf.stream(content_id, &content.finish());
+    pdf.finish()
+}
+
+/// Helper function to add wrapped text
+fn add_wrapped_text(
+    content: &mut Content,
+    x: f32,
+    y: f32,
+    text: &str,
+    size: f32,
+    max_width: f32,
+) {
+    // Simple text wrapping (in production, you'd want more sophisticated wrapping)
+    let words = text.split_whitespace();
+    let mut current_line = String::new();
+    let mut current_y = y;
+    let chars_per_line = (max_width / (size * 0.5)) as usize;
+
+    for word in words {
+        if current_line.len() + word.len() + 1 > chars_per_line {
+            // Write current line
+            content.begin_text();
+            content.set_font(Name(b"F1"), size);
+            content.next_line(x, current_y);
+            content.show(Str(current_line.trim().as_bytes()));
+            content.end_text();
+
+            current_y -= size * 1.5;
+            current_line = word.to_string();
+        } else {
+            if !current_line.is_empty() {
+                current_line.push(' ');
+            }
+            current_line.push_str(word);
+        }
+    }
+
+    // Write remaining text
+    if !current_line.is_empty() {
+        content.begin_text();
+        content.set_font(Name(b"F1"), size);
+        content.next_line(x, current_y);
+        content.show(Str(current_line.trim().as_bytes()));
+        content.end_text();
+    }
+}
+
+/// Get full district name from abbreviation
+fn get_full_district_name(district: &str) -> String {
+    match district.to_uppercase().as_str() {
+        "SDNY" => "SOUTHERN DISTRICT OF NEW YORK",
+        "EDNY" => "EASTERN DISTRICT OF NEW YORK",
+        "NDCA" => "NORTHERN DISTRICT OF CALIFORNIA",
+        "CDCA" => "CENTRAL DISTRICT OF CALIFORNIA",
+        "NDIL" => "NORTHERN DISTRICT OF ILLINOIS",
+        "SDTX" => "SOUTHERN DISTRICT OF TEXAS",
+        "EDPA" => "EASTERN DISTRICT OF PENNSYLVANIA",
+        "SDFL" => "SOUTHERN DISTRICT OF FLORIDA",
+        "DDC" => "DISTRICT OF COLUMBIA",
+        "EDVA" => "EASTERN DISTRICT OF VIRGINIA",
+        _ => district,
+    }.to_string()
+}
+
+/// Generate a minute entry PDF for docket
+pub fn generate_minute_entry_pdf(
+    case: &CriminalCase,
+    entry: &DocketEntry,
+    judge: &Judge,
+    district: &str,
+) -> Vec<u8> {
+    let mut pdf = Pdf::new();
+
+    let catalog_id = Ref::new(1);
+    let page_tree_id = Ref::new(2);
+    let page_id = Ref::new(3);
+    let font_id = Ref::new(4);
+    let content_id = Ref::new(5);
+
+    pdf.catalog(catalog_id).pages(page_tree_id);
+    pdf.pages(page_tree_id).kids([page_id]).count(1);
+
+    let mut page = pdf.page(page_id);
+    page.parent(page_tree_id);
+    page.media_box(Rect::new(0.0, 0.0, 612.0, 792.0));
+    // Add fonts dictionary
+    let fonts_dict_id = Ref::new(6);
+    page.resources().fonts().pair(Name(b"F1"), fonts_dict_id);
+    page.contents(content_id);
+    page.finish();
+
+    pdf.type1_font(font_id).base_font(Name(b"Helvetica"));
+
+    let mut content = Content::new();
+
+    // Header
+    content.begin_text();
+    content.set_font(Name(b"F1"), 14.0);
+    content.next_line(200.0, 720.0);
+    content.show(Str(b"UNITED STATES DISTRICT COURT"));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 14.0);
+    content.next_line(180.0, 700.0);
+    content.show(Str(get_full_district_name(district).as_bytes()));
+    content.end_text();
+
+    // Case information
+    content.begin_text();
+    content.set_font(Name(b"F1"), 12.0);
+    content.next_line(72.0, 650.0);
+    content.show(Str(format!("Case No. {}", case.case_number).as_bytes()));
+    content.end_text();
+
+    // Title
+    content.begin_text();
+    content.set_font(Name(b"F1"), 16.0);
+    content.next_line(250.0, 600.0);
+    content.show(Str(b"MINUTE ENTRY"));
+    content.end_text();
+
+    // Entry details
+    content.begin_text();
+    content.set_font(Name(b"F1"), 11.0);
+    content.next_line(72.0, 550.0);
+    content.show(Str(format!("Date: {}", entry.date_filed.format("%B %d, %Y")).as_bytes()));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 11.0);
+    content.next_line(72.0, 530.0);
+    content.show(Str(format!("Docket Entry: #{}", entry.entry_number).as_bytes()));
+    content.end_text();
+
+    content.begin_text();
+    content.set_font(Name(b"F1"), 11.0);
+    content.next_line(72.0, 500.0);
+    content.show(Str(entry.description.as_bytes()));
+    content.end_text();
+
+    pdf.stream(content_id, &content.finish());
+    pdf.finish()
+}

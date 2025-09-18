@@ -3,4 +3,5 @@
 pub mod json_response;
 pub mod query_parser;
 pub mod repository_factory;
+pub mod simple_pdf;
 pub mod tenant;

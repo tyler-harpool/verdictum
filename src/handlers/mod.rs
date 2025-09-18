@@ -26,6 +26,8 @@ pub(crate) mod judge;
 pub(crate) mod opinion;
 /// Judicial order management handlers
 pub(crate) mod order;
+/// PDF generation handlers for court documents
+pub(crate) mod pdf_working;
 /// Federal sentencing management handlers
 pub(crate) mod sentencing;
 /// ToDo item CRUD operation handlers

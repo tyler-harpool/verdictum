@@ -392,6 +392,12 @@ fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     router.post("/api/service-records/bulk/:document_id", handlers::attorney::bulk_add_to_service);
     router.post("/api/representations/migrate", handlers::attorney::migrate_representations);
 
+    // PDF Generation endpoints
+    router.post("/api/pdf/rule-16b-order", handlers::pdf_working::generate_rule_16b_order);
+    router.post("/api/pdf/court-order", handlers::pdf_working::generate_court_order);
+    router.post("/api/pdf/minute-entry", handlers::pdf_working::generate_minute_entry);
+    router.post("/api/pdf/auto-rule-16b/:case_id", handlers::pdf_working::auto_generate_rule_16b);
+
     // Documentation endpoints
     router.get(
         "/docs/openapi-description.json",

@@ -148,7 +148,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     (name = "representation", description = "Attorney representation tracking"),
     (name = "conflicts", description = "Conflict of interest checking"),
     (name = "process-service", description = "Legal process service and proof of delivery"),
-    (name = "Sentencing", description = "Federal sentencing guidelines and calculations")
+    (name = "Sentencing", description = "Federal sentencing guidelines and calculations"),
+    (name = "pdf-generation", description = "PDF document generation for court orders and filings")
   ),
   paths(
     // ToDo API
@@ -346,6 +347,11 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     crate::handlers::sentencing::calculate_offense_level,
     crate::handlers::sentencing::lookup_guidelines_range,
     crate::handlers::sentencing::check_safety_valve_eligible,
+    // PDF Generation API
+    crate::handlers::pdf_working::generate_rule_16b_order,
+    crate::handlers::pdf_working::generate_court_order,
+    crate::handlers::pdf_working::generate_minute_entry,
+    crate::handlers::pdf_working::auto_generate_rule_16b,
     // Attorney Management API
     crate::handlers::attorney::create_attorney,
     crate::handlers::attorney::get_attorney,
@@ -630,6 +636,10 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
       crate::domain::attorney::ServiceMethod,
       crate::domain::attorney::ServiceStatus,
       crate::handlers::attorney::WinRateRequest,
+      // PDF Generation Models
+      crate::handlers::pdf_working::GenerateRule16bRequest,
+      crate::handlers::pdf_working::GenerateOrderRequest,
+      crate::handlers::pdf_working::GenerateMinuteEntryRequest,
       // Health & Error Models
       crate::handlers::health::HealthStatus,
       crate::error::ErrorResponse,
