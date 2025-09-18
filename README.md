@@ -685,6 +685,101 @@ Content-Type: application/json
 
 ---
 
+## 📄 PDF Document Generation API Endpoints
+
+### Generate Court Documents with Supreme Court Rule 33 Formatting
+
+#### Generate Rule 16(b) Scheduling Order - PDF Format
+```http
+POST /api/pdf/rule16b/pdf
+X-Tenant-Id: sdny
+Content-Type: application/json
+
+{
+  "case_number": "24-CR-00123",
+  "defendant_names": "John Doe, Jane Smith",
+  "judge_name": "Hon. Patricia Johnson",
+  "trial_date": "2024-06-15",
+  "discovery_deadline": "2024-04-01",
+  "motion_deadline": "2024-05-01",
+  "pretrial_conference_date": "2024-06-01",
+  "judge_id": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+**Response:** Binary PDF file suitable for direct download
+
+#### Generate Rule 16(b) Order - JSON Format with Base64 PDF
+```http
+POST /api/pdf/rule16b/json
+X-Tenant-Id: sdny
+Content-Type: application/json
+
+{
+  "case_number": "24-CR-00123",
+  "defendant_names": "John Doe",
+  "judge_name": "Hon. Patricia Johnson"
+}
+```
+**Response:** `200 OK`
+```json
+{
+  "pdf_base64": "JVBERi0xLjQKJeLj...",
+  "filename": "rule16b_order_24-CR-00123.pdf",
+  "content_type": "application/pdf"
+}
+```
+
+#### Store Judge Electronic Signature
+```http
+POST /api/signatures
+X-Tenant-Id: sdny
+Content-Type: application/json
+
+{
+  "judge_id": "123e4567-e89b-12d3-a456-426614174000",
+  "signature_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA..."
+}
+```
+
+#### Retrieve Judge Signature (Tenant-Isolated)
+```http
+GET /api/signatures/123e4567-e89b-12d3-a456-426614174000
+X-Tenant-Id: sdny
+```
+**Response:** `200 OK`
+```json
+{
+  "judge_id": "123e4567-e89b-12d3-a456-426614174000",
+  "signature_base64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...",
+  "uploaded_at": "2025-09-18T06:22:21.867663+00:00",
+  "signature_hash": "624fc0a006e31b1610bb226be8b1a87911b9c54a390e789e1f30c2517d64db19"
+}
+```
+
+#### Batch Generate Multiple Documents
+```http
+POST /api/pdf/batch
+X-Tenant-Id: sdny
+Content-Type: application/json
+
+{
+  "requests": [
+    {
+      "type": "rule16b",
+      "case_number": "24-CR-00123",
+      "defendant_names": "John Doe"
+    },
+    {
+      "type": "waiver_of_indictment",
+      "case_number": "24-CR-00456",
+      "defendant_name": "Jane Smith"
+    }
+  ]
+}
+```
+
+---
+
 ## 🏢 Multi-Tenant Administration API Endpoints
 
 ### Enterprise Tenant Management

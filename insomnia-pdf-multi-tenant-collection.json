@@ -1,0 +1,370 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-09-18T06:30:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.7",
+  "resources": [
+    {
+      "_id": "req_pdf_rule16b_sdny_pdf",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/rule16b/pdf",
+      "name": "Generate Rule 16(b) Order - SDNY (PDF)",
+      "description": "Generate a Rule 16(b) scheduling order for SDNY in PDF format",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-CR-00123\",\n  \"defendant_names\": \"John Doe, Jane Smith\",\n  \"judge_name\": \"Hon. Patricia Johnson\",\n  \"trial_date\": \"2024-06-15\",\n  \"discovery_deadline\": \"2024-04-01\",\n  \"motion_deadline\": \"2024-05-01\",\n  \"pretrial_conference_date\": \"2024-06-01\",\n  \"judge_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "sdny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200001
+    },
+    {
+      "_id": "req_pdf_rule16b_edny_json",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/rule16b/json",
+      "name": "Generate Rule 16(b) Order - EDNY (JSON)",
+      "description": "Generate a Rule 16(b) scheduling order for EDNY in JSON format with base64 PDF",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-CR-00456\",\n  \"defendant_names\": \"Robert Johnson\",\n  \"judge_name\": \"Hon. Michael Williams\",\n  \"trial_date\": \"2024-07-20\",\n  \"discovery_deadline\": \"2024-05-01\",\n  \"motion_deadline\": \"2024-06-01\",\n  \"pretrial_conference_date\": \"2024-07-10\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "edny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200002
+    },
+    {
+      "_id": "req_signature_store_sdny",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/signatures",
+      "name": "Store Judge Signature - SDNY",
+      "description": "Store a judge's electronic signature in SDNY tenant database",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"judge_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"signature_base64\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "sdny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200003
+    },
+    {
+      "_id": "req_signature_store_edny",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/signatures",
+      "name": "Store Judge Signature - EDNY",
+      "description": "Store a judge's electronic signature in EDNY tenant database",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"judge_id\": \"987f6543-e21b-12d3-a456-426614174999\",\n  \"signature_base64\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAIAQMA/xXXkgAAAABJRU5ErkJggg==\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "edny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200004
+    },
+    {
+      "_id": "req_signature_get_sdny",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/signatures/123e4567-e89b-12d3-a456-426614174000",
+      "name": "Get Judge Signature - SDNY",
+      "description": "Retrieve a judge's signature from SDNY tenant database",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Tenant-Id",
+          "value": "sdny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200005
+    },
+    {
+      "_id": "req_signature_isolation_test",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/signatures/123e4567-e89b-12d3-a456-426614174000",
+      "name": "Test Tenant Isolation - EDNY accessing SDNY signature",
+      "description": "This should fail - EDNY cannot access SDNY's signatures",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Tenant-Id",
+          "value": "edny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200006
+    },
+    {
+      "_id": "req_pdf_signed_rule16b_sdny",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/signed/rule16b/pdf",
+      "name": "Generate Signed Rule 16(b) - SDNY",
+      "description": "Generate a signed Rule 16(b) order using stored signature",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-CR-00789\",\n  \"defendant_names\": \"Alice Cooper\",\n  \"judge_name\": \"Hon. Patricia Johnson\",\n  \"judge_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"trial_date\": \"2024-08-15\",\n  \"discovery_deadline\": \"2024-06-01\",\n  \"motion_deadline\": \"2024-07-01\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "sdny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200007
+    },
+    {
+      "_id": "req_pdf_waiver_ndca_pdf",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/waiver_of_indictment/pdf",
+      "name": "Generate Waiver of Indictment - NDCA",
+      "description": "Generate Form AO 455 for Northern District of California",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"24-CR-00234\",\n  \"defendant_name\": \"Tech Startup Inc.\",\n  \"charges\": \"Securities Fraud\",\n  \"court_address\": \"450 Golden Gate Avenue, San Francisco, CA 94102\",\n  \"judge_name\": \"Hon. Silicon Valley Judge\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "ndca"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200008
+    },
+    {
+      "_id": "req_pdf_batch_sdny",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/batch",
+      "name": "Batch Generate Documents - SDNY",
+      "description": "Generate multiple documents in a single request",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"requests\": [\n    {\n      \"type\": \"rule16b\",\n      \"case_number\": \"24-CR-00111\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Patricia Johnson\"\n    },\n    {\n      \"type\": \"waiver_of_indictment\",\n      \"case_number\": \"24-CR-00222\",\n      \"defendant_name\": \"Jane Smith\",\n      \"charges\": \"Wire Fraud\"\n    },\n    {\n      \"type\": \"conditions_of_release\",\n      \"case_number\": \"24-CR-00333\",\n      \"defendant_name\": \"Robert Brown\",\n      \"conditions\": [\"No travel outside SDNY\", \"$100,000 bond\", \"Weekly check-ins\"]\n    }\n  ]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Tenant-Id",
+          "value": "sdny"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200009
+    },
+    {
+      "_id": "req_pdf_auto_test",
+      "_type": "request",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "url": "{{ _.base_url }}/api/pdf/auto/rule16b/json",
+      "name": "Auto-Generate Test Rule 16(b) - Any Tenant",
+      "description": "Generate a test Rule 16(b) with pre-populated data",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Tenant-Id",
+          "value": "{{ _.tenant_id }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1736830200010
+    },
+    {
+      "_id": "wrk_lexodus",
+      "_type": "workspace",
+      "parentId": null,
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "name": "Lexodus PDF Multi-Tenant Collection",
+      "description": "Complete API collection for testing multi-tenant PDF generation and signature management across federal districts",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "tenant_id": "sdny"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "tenant_id"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1736830200000,
+      "_type": "environment"
+    },
+    {
+      "_id": "env_sdny",
+      "_type": "environment",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "name": "SDNY - Southern District of New York",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "tenant_id": "sdny",
+        "judge_id_sdny": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "tenant_id",
+          "judge_id_sdny"
+        ]
+      },
+      "color": "#3b82f6",
+      "isPrivate": false,
+      "metaSortKey": 1736830200001,
+      "_type": "environment"
+    },
+    {
+      "_id": "env_edny",
+      "_type": "environment",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "name": "EDNY - Eastern District of New York",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "tenant_id": "edny",
+        "judge_id_edny": "987f6543-e21b-12d3-a456-426614174999"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "tenant_id",
+          "judge_id_edny"
+        ]
+      },
+      "color": "#10b981",
+      "isPrivate": false,
+      "metaSortKey": 1736830200002,
+      "_type": "environment"
+    },
+    {
+      "_id": "env_ndca",
+      "_type": "environment",
+      "parentId": "wrk_lexodus",
+      "modified": 1736830200000,
+      "created": 1736830200000,
+      "name": "NDCA - Northern District of California",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "tenant_id": "ndca"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "tenant_id"
+        ]
+      },
+      "color": "#f59e0b",
+      "isPrivate": false,
+      "metaSortKey": 1736830200003,
+      "_type": "environment"
+    }
+  ]
+}
