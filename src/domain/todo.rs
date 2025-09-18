@@ -7,6 +7,7 @@ use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use spin_sdk::key_value::Store;
 use uuid::Uuid;
+use utoipa::ToSchema;
 
 /// Prefix used for all ToDo items in the key-value store
 const KEY_PREFIX: &str = "todo-";
@@ -15,7 +16,7 @@ const KEY_PREFIX: &str = "todo-";
 ///
 /// This struct represents a single ToDo item with its associated metadata.
 /// ToDo items are persisted to Spin's key-value store with soft delete support.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, ToSchema)]
 pub struct ToDo {
     /// Unique identifier for the ToDo item
     pub id: Uuid,

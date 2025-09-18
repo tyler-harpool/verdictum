@@ -21,7 +21,7 @@ pub struct ErrorResponse {
 }
 
 /// API Error type representing all possible errors in the application
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ApiError {
     /// Item not found (404)
     NotFound(String),
@@ -30,9 +30,13 @@ pub enum ApiError {
     /// Internal server error (500)
     Internal(String),
     /// Storage operation failed
-    StorageError(anyhow::Error),
+    StorageError(String),
     /// JSON serialization/deserialization error
     SerializationError(String),
+    /// Validation error
+    ValidationError(String),
+    /// Invalid input error (400)
+    InvalidInput(String),
 }
 
 impl fmt::Display for ApiError {
@@ -41,8 +45,10 @@ impl fmt::Display for ApiError {
             ApiError::NotFound(msg) => write!(f, "Not found: {}", msg),
             ApiError::BadRequest(msg) => write!(f, "Bad request: {}", msg),
             ApiError::Internal(msg) => write!(f, "Internal error: {}", msg),
-            ApiError::StorageError(err) => write!(f, "Storage error: {}", err),
+            ApiError::StorageError(msg) => write!(f, "Storage error: {}", msg),
             ApiError::SerializationError(msg) => write!(f, "Serialization error: {}", msg),
+            ApiError::ValidationError(msg) => write!(f, "Validation error: {}", msg),
+            ApiError::InvalidInput(msg) => write!(f, "Invalid input: {}", msg),
         }
     }
 }
@@ -55,14 +61,24 @@ impl IntoResponse for ApiError {
             ApiError::NotFound(msg) => (404, "Not Found".to_string(), Some(msg)),
             ApiError::BadRequest(msg) => (400, "Bad Request".to_string(), Some(msg)),
             ApiError::Internal(msg) => (500, "Internal Server Error".to_string(), Some(msg)),
-            ApiError::StorageError(err) => (
+            ApiError::StorageError(msg) => (
                 500,
                 "Storage operation failed".to_string(),
-                Some(err.to_string()),
+                Some(msg),
             ),
             ApiError::SerializationError(msg) => (
                 400,
                 "Invalid data format".to_string(),
+                Some(msg),
+            ),
+            ApiError::ValidationError(msg) => (
+                400,
+                "Validation error".to_string(),
+                Some(msg),
+            ),
+            ApiError::InvalidInput(msg) => (
+                400,
+                "Invalid input".to_string(),
                 Some(msg),
             ),
         };
@@ -83,7 +99,7 @@ impl IntoResponse for ApiError {
 
 impl From<anyhow::Error> for ApiError {
     fn from(err: anyhow::Error) -> Self {
-        ApiError::StorageError(err)
+        ApiError::StorageError(err.to_string())
     }
 }
 

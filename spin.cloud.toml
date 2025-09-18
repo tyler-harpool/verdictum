@@ -13,8 +13,20 @@ component = "spin-utopia"
 [component.spin-utopia]
 source = "target/wasm32-wasip1/release/spin_utopia.wasm"
 allowed_outbound_hosts = []
-# Declare all stores that will be used (runtime-config will provide paths)
-key_value_stores = ["default", "sdny", "edny", "ndca", "cdca"]
+# For Fermyon Cloud: declare ALL stores the app needs
+# Cloud will prompt to create/link each one during deployment
+key_value_stores = [
+    "default",
+    "sdny",
+    "edny",
+    "cdca",
+    "ndca",
+    "sdtx",
+    "ndil",
+    "ddc",
+    "ndny",
+    "wdny"
+]
 
 [component.spin-utopia.build]
 command = "cargo build --target wasm32-wasip1 --release"

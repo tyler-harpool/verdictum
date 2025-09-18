@@ -1,0 +1,37 @@
+# Cloud configuration for Fermyon Cloud deployment
+# Uses a single default store with key prefixes for tenant isolation
+
+# Single default store (Fermyon Cloud limitation)
+[key_value_store.default]
+type = "spin"
+
+# Map all tenant stores to default with prefixes
+[key_value_store.tenant_sdny]
+type = "spin"
+# Uses default store with prefix
+
+[key_value_store.tenant_edny]
+type = "spin"
+
+[key_value_store.tenant_cdca]
+type = "spin"
+
+[key_value_store.tenant_ndca]
+type = "spin"
+
+[key_value_store.tenant_sdtx]
+type = "spin"
+
+[key_value_store.tenant_ndil]
+type = "spin"
+
+[key_value_store.tenant_ddc]
+type = "spin"
+
+[key_value_store.tenant_ndny]
+type = "spin"
+
+[key_value_store.tenant_wdny]
+type = "spin"
+
+# For cloud, we'll need to update the repository to use key prefixes instead

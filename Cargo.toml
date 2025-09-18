@@ -1,8 +1,8 @@
 [package]
 name = "spin-utopia"
 authors = ["Tyler Harpool <tylerharpool@gmail.com>"]
-description = "A RESTful ToDo API built with Spin and Rust featuring OpenAPI documentation"
-version = "2.0.0"
+description = "Lexodus - Federal Judicial Case Management System - Complete federal court case management with 240+ REST endpoints including judicial orders and opinions, built with Spin and Rust"
+version = "5.0.0"
 rust-version = "1.78"
 edition = "2021"
 
@@ -11,7 +11,9 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1"
+async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
+rand = "0.8"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.142"
 spin-sdk = "3.1.0"

@@ -12,9 +12,15 @@ component = "spin-utopia"
 
 [component.spin-utopia]
 source = "target/wasm32-wasip1/release/spin_utopia.wasm"
-allowed_outbound_hosts = []
-# Declare all stores that will be used (runtime-config will provide paths)
-key_value_stores = ["default", "sdny", "edny", "ndca", "cdca"]
+allowed_outbound_hosts = ["https://lexodus-uscentral.fermyon.app"]
+# Minimal set for Fermyon Cloud demo (within free tier limits)
+key_value_stores = [
+    "default",
+    "sdny",
+    "edny",
+    "ndca",
+    "cdca"
+]
 
 [component.spin-utopia.build]
 command = "cargo build --target wasm32-wasip1 --release"

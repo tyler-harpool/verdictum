@@ -1,0 +1,46 @@
+# Runtime configuration for Spin application
+# This file configures the key-value stores at runtime for proper tenant isolation
+
+# Each federal court district gets its own isolated database file
+[key_value_store.sdny]
+type = "spin"
+path = ".spin/prod/stores/sdny.db"
+
+[key_value_store.edny]
+type = "spin"
+path = ".spin/prod/stores/edny.db"
+
+[key_value_store.cdca]
+type = "spin"
+path = ".spin/prod/stores/cdca.db"
+
+[key_value_store.ndca]
+type = "spin"
+path = ".spin/prod/stores/ndca.db"
+
+[key_value_store.sdtx]
+type = "spin"
+path = ".spin/prod/stores/sdtx.db"
+
+[key_value_store.ndil]
+type = "spin"
+path = ".spin/prod/stores/ndil.db"
+
+[key_value_store.ddc]
+type = "spin"
+path = ".spin/prod/stores/ddc.db"
+
+# Additional districts can be added here
+[key_value_store.ndny]
+type = "spin"
+path = ".spin/prod/stores/ndny.db"
+
+[key_value_store.wdny]
+type = "spin"
+path = ".spin/prod/stores/wdny.db"
+
+
+# Default store for non-tenant specific data (production)
+[key_value_store.default]
+type = "spin"
+path = ".spin/prod/stores/default.db"
