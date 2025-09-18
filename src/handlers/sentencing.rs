@@ -14,7 +14,10 @@ use spin_sdk::http::{Params, Request, Response};
         (status = 201, description = "Sentencing created", body = Sentencing),
         (status = 400, description = "Invalid input")
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_sentencing(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -54,13 +57,14 @@ pub fn create_sentencing(req: Request, _params: Params) -> Response {
     get,
     path = "/api/sentencing/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 200, description = "Sentencing found", body = Sentencing),
         (status = 404, description = "Not found")
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn get_sentencing(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -89,6 +93,7 @@ pub fn get_sentencing(req: Request, params: Params) -> Response {
     put,
     path = "/api/sentencing/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = Sentencing,
@@ -96,7 +101,7 @@ pub fn get_sentencing(req: Request, params: Params) -> Response {
         (status = 200, description = "Updated", body = Sentencing),
         (status = 404, description = "Not found")
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn update_sentencing(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -132,13 +137,14 @@ pub fn update_sentencing(req: Request, params: Params) -> Response {
     delete,
     path = "/api/sentencing/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 204, description = "Deleted"),
         (status = 404, description = "Not found")
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn delete_sentencing(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -161,12 +167,13 @@ pub fn delete_sentencing(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/case/{case_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "Sentencings found", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn find_by_case(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -191,12 +198,13 @@ pub fn find_by_case(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/defendant/{defendant_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("defendant_id" = String, Path, description = "Defendant ID")
     ),
     responses(
         (status = 200, description = "Sentencings found", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn find_by_defendant(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -221,12 +229,13 @@ pub fn find_by_defendant(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/judge/{judge_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = String, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "Sentencings found", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn find_by_judge(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -253,7 +262,10 @@ pub fn find_by_judge(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "Pending sentencings", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn find_pending(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -279,7 +291,10 @@ pub fn find_pending(req: Request, _params: Params) -> Response {
     responses(
         (status = 200, description = "Guidelines calculated", body = GuidelinesRange)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn calculate_guidelines(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -314,7 +329,10 @@ pub fn calculate_guidelines(req: Request, _params: Params) -> Response {
     responses(
         (status = 200, description = "Departure statistics", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_departure_stats(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -339,7 +357,10 @@ pub fn get_departure_stats(req: Request, _params: Params) -> Response {
     responses(
         (status = 200, description = "Variance statistics", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_variance_stats(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -362,13 +383,14 @@ pub fn get_variance_stats(req: Request, _params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/departure",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = Departure,
     responses(
         (status = 200, description = "Departure added", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn add_departure(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -402,13 +424,14 @@ pub fn add_departure(req: Request, params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/variance",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = Variance,
     responses(
         (status = 200, description = "Variance added", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn add_variance(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -444,7 +467,10 @@ pub fn add_variance(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "Substantial assistance cases", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_substantial_assistance(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -467,13 +493,14 @@ pub fn get_substantial_assistance(req: Request, _params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/special-condition",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = SpecialCondition,
     responses(
         (status = 200, description = "Special condition added", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn add_special_condition(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -507,13 +534,14 @@ pub fn add_special_condition(req: Request, params: Params) -> Response {
     put,
     path = "/api/sentencing/{id}/supervised-release",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = SupervisedRelease,
     responses(
         (status = 200, description = "Supervised release updated", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn update_supervised_release(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -549,7 +577,10 @@ pub fn update_supervised_release(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "Active supervision cases", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn find_active_supervision(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -572,13 +603,14 @@ pub fn find_active_supervision(req: Request, _params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/bop-designation",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = BOPDesignation,
     responses(
         (status = 200, description = "BOP designation added", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn add_bop_designation(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -614,7 +646,10 @@ pub fn add_bop_designation(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "RDAP eligible cases", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_rdap_eligible(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -637,12 +672,13 @@ pub fn get_rdap_eligible(req: Request, _params: Params) -> Response {
     get,
     path = "/api/sentencing/statistics/judge/{judge_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = String, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "Judge sentencing statistics", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn get_judge_stats(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -669,7 +705,10 @@ pub fn get_judge_stats(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "District sentencing statistics", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_district_stats(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -694,7 +733,10 @@ pub fn get_district_stats(req: Request, _params: Params) -> Response {
     responses(
         (status = 200, description = "Trial penalty analysis", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_trial_penalty(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -717,13 +759,14 @@ pub fn get_trial_penalty(req: Request, _params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/prior-sentence",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     request_body = PriorSentence,
     responses(
         (status = 200, description = "Prior sentence added", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn add_prior_sentence(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -757,12 +800,13 @@ pub fn add_prior_sentence(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/upcoming/{days}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("days" = i32, Path, description = "Days ahead to search")
     ),
     responses(
         (status = 200, description = "Upcoming sentencings", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn find_upcoming(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -790,7 +834,10 @@ pub fn find_upcoming(req: Request, params: Params) -> Response {
     responses(
         (status = 200, description = "Appeal deadlines approaching", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn find_appeal_deadlines(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -813,13 +860,14 @@ pub fn find_appeal_deadlines(req: Request, _params: Params) -> Response {
     get,
     path = "/api/sentencing/date-range",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("start" = String, Query, description = "Start date (YYYY-MM-DD)"),
         ("end" = String, Query, description = "End date (YYYY-MM-DD)")
     ),
     responses(
         (status = 200, description = "Sentencings in date range", body = Vec<Sentencing>)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn find_by_date_range(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -856,12 +904,13 @@ pub fn find_by_date_range(req: Request, _params: Params) -> Response {
     get,
     path = "/api/sentencing/statistics/offense/{offense_type}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("offense_type" = String, Path, description = "Offense type (e.g., '2B1' for fraud)")
     ),
     responses(
         (status = 200, description = "Offense type statistics", body = SentencingStatistics)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn get_offense_type_stats(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -886,12 +935,13 @@ pub fn get_offense_type_stats(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/{id}/criminal-history-points",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 200, description = "Criminal history points", body = i32)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn calculate_criminal_history_points(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -915,12 +965,13 @@ pub fn calculate_criminal_history_points(req: Request, params: Params) -> Respon
     post,
     path = "/api/sentencing/{id}/calculate-offense-level",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 200, description = "Final offense level calculated", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn calculate_offense_level(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -958,12 +1009,13 @@ pub fn calculate_offense_level(req: Request, params: Params) -> Response {
     post,
     path = "/api/sentencing/{id}/lookup-guidelines-range",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 200, description = "Guidelines range calculated", body = Sentencing)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn lookup_guidelines_range(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);
@@ -1001,12 +1053,13 @@ pub fn lookup_guidelines_range(req: Request, params: Params) -> Response {
     get,
     path = "/api/sentencing/{id}/safety-valve-eligible",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Sentencing ID")
     ),
     responses(
         (status = 200, description = "Safety valve eligibility", body = bool)
     ),
-    tags = ["Sentencing"]
+    tag = "Sentencing",
 )]
 pub fn check_safety_valve_eligible(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::sentencing_repo(&req);

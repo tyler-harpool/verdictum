@@ -126,7 +126,10 @@ impl WorkloadResponse {
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_judge(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -156,7 +159,10 @@ pub fn create_judge(req: Request, _params: Params) -> ApiResult<impl IntoRespons
         (status = 200, description = "List of all judges", body = [Judge]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_all_judges(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::judge_repo(&req);
@@ -173,6 +179,7 @@ pub fn get_all_judges(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/judges/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Judge ID")
     ),
     responses(
@@ -180,7 +187,7 @@ pub fn get_all_judges(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 404, description = "Judge not found"),
         (status = 400, description = "Invalid judge ID")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn get_judge_by_id(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -204,6 +211,7 @@ pub fn get_judge_by_id(req: Request, params: Params) -> ApiResult<impl IntoRespo
     patch,
     path = "/api/judges/{id}/status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Judge ID")
     ),
     request_body = UpdateJudgeStatusRequest,
@@ -212,7 +220,7 @@ pub fn get_judge_by_id(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 404, description = "Judge not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn update_judge_status(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -245,7 +253,10 @@ pub fn update_judge_status(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 200, description = "List of available judges", body = [Judge]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Assignment"
+    tag = "Judge Assignment",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_available_judges(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::judge_repo(&req);
@@ -267,7 +278,10 @@ pub fn get_available_judges(req: Request, _params: Params) -> ApiResult<impl Int
         (status = 400, description = "Invalid assignment request"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Assignment"
+    tag = "Judge Assignment",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn assign_case(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -312,6 +326,7 @@ pub fn assign_case(req: Request, _params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/cases/{case_id}/assignment",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -319,7 +334,7 @@ pub fn assign_case(req: Request, _params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Assignment not found"),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Judge Assignment"
+    tag = "Judge Assignment",
 )]
 pub fn get_case_assignment(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -343,6 +358,7 @@ pub fn get_case_assignment(req: Request, params: Params) -> ApiResult<impl IntoR
     post,
     path = "/api/judges/{judge_id}/recusals",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID")
     ),
     request_body = FileRecusalRequest,
@@ -351,7 +367,7 @@ pub fn get_case_assignment(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 400, description = "Invalid request data"),
         (status = 404, description = "Judge not found")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
 )]
 pub fn file_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -389,6 +405,7 @@ pub fn file_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse
     patch,
     path = "/api/recusals/{recusal_id}/ruling",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("recusal_id" = Uuid, Path, description = "Recusal motion ID")
     ),
     request_body = RuleOnRecusalRequest,
@@ -397,7 +414,7 @@ pub fn file_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Recusal motion not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
 )]
 pub fn rule_on_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let recusal_id = params
@@ -464,7 +481,10 @@ pub fn rule_on_recusal(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 200, description = "List of pending recusal motions", body = [RecusalMotion]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_pending_recusals(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::judge_repo(&req);
@@ -481,6 +501,7 @@ pub fn get_pending_recusals(req: Request, _params: Params) -> ApiResult<impl Int
     post,
     path = "/api/judges/{judge_id}/conflicts",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID")
     ),
     request_body = AddConflictRequest,
@@ -489,7 +510,7 @@ pub fn get_pending_recusals(req: Request, _params: Params) -> ApiResult<impl Int
         (status = 400, description = "Invalid request data"),
         (status = 404, description = "Judge not found")
     ),
-    tag = "Conflict Management"
+    tag = "Conflict Management",
 )]
 pub fn add_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -525,13 +546,14 @@ pub fn add_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/conflicts/check/{party}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("party" = String, Path, description = "Party name to check for conflicts")
     ),
     responses(
         (status = 200, description = "Conflict check results"),
         (status = 400, description = "Party name required")
     ),
-    tag = "Conflict Management"
+    tag = "Conflict Management",
 )]
 pub fn check_conflicts(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let party_name = params
@@ -562,7 +584,10 @@ pub fn check_conflicts(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 200, description = "Judge workload statistics", body = WorkloadResponse),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Analytics"
+    tag = "Judge Analytics",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_workload_stats(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::judge_repo(&req);
@@ -580,6 +605,7 @@ pub fn get_workload_stats(req: Request, _params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/judges/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("status" = Option<String>, Query, description = "Filter by judge status"),
         ("title" = Option<String>, Query, description = "Filter by judge title"),
         ("district" = Option<String>, Query, description = "Filter by district"),
@@ -593,7 +619,7 @@ pub fn get_workload_stats(req: Request, _params: Params) -> ApiResult<impl IntoR
         (status = 200, description = "Search results with judges and total count"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn search_judges(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let query_string = req.query();
@@ -627,13 +653,14 @@ pub fn search_judges(req: Request, _params: Params) -> ApiResult<impl IntoRespon
     get,
     path = "/api/judges/status/{status}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("status" = String, Path, description = "Judge status (active, inactive, retired, vacation)")
     ),
     responses(
         (status = 200, description = "List of judges with specified status", body = [Judge]),
         (status = 400, description = "Invalid status")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn get_judges_by_status(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let status_str = params
@@ -656,13 +683,14 @@ pub fn get_judges_by_status(req: Request, params: Params) -> ApiResult<impl Into
     get,
     path = "/api/judges/district/{district}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("district" = String, Path, description = "District name")
     ),
     responses(
         (status = 200, description = "List of judges in the specified district", body = [Judge]),
         (status = 400, description = "District required")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn get_judges_by_district(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let district = params
@@ -683,6 +711,7 @@ pub fn get_judges_by_district(req: Request, params: Params) -> ApiResult<impl In
     delete,
     path = "/api/judges/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Judge ID")
     ),
     responses(
@@ -690,7 +719,7 @@ pub fn get_judges_by_district(req: Request, params: Params) -> ApiResult<impl In
         (status = 404, description = "Judge not found"),
         (status = 400, description = "Invalid judge ID")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn delete_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -712,13 +741,14 @@ pub fn delete_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/cases/{case_id}/assignment-history",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "Assignment history for the case", body = [CaseAssignment]),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Judge Assignment"
+    tag = "Judge Assignment",
 )]
 pub fn get_assignment_history(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -740,6 +770,7 @@ pub fn get_assignment_history(req: Request, params: Params) -> ApiResult<impl In
     delete,
     path = "/api/assignments/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Assignment ID")
     ),
     responses(
@@ -747,7 +778,7 @@ pub fn get_assignment_history(req: Request, params: Params) -> ApiResult<impl In
         (status = 404, description = "Assignment not found"),
         (status = 400, description = "Invalid assignment ID")
     ),
-    tag = "Judge Assignment"
+    tag = "Judge Assignment",
 )]
 pub fn delete_assignment(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -769,13 +800,14 @@ pub fn delete_assignment(req: Request, params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/cases/{case_id}/recusals",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of recusal motions for the case", body = [RecusalMotion]),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
 )]
 pub fn get_recusals_by_case(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -797,13 +829,14 @@ pub fn get_recusals_by_case(req: Request, params: Params) -> ApiResult<impl Into
     get,
     path = "/api/judges/{judge_id}/recusals",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "List of recusal motions for the judge", body = [RecusalMotion]),
         (status = 400, description = "Invalid judge ID")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
 )]
 pub fn get_recusals_by_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -825,13 +858,14 @@ pub fn get_recusals_by_judge(req: Request, params: Params) -> ApiResult<impl Int
     get,
     path = "/api/judges/{judge_id}/conflicts",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "List of conflicts of interest for the judge", body = [ConflictOfInterest]),
         (status = 400, description = "Invalid judge ID")
     ),
-    tag = "Conflict Management"
+    tag = "Conflict Management",
 )]
 pub fn get_conflicts_by_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -853,6 +887,7 @@ pub fn get_conflicts_by_judge(req: Request, params: Params) -> ApiResult<impl In
     get,
     path = "/api/judges/{judge_id}/conflicts/check/{party}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID"),
         ("party" = String, Path, description = "Party name to check for conflicts")
     ),
@@ -860,7 +895,7 @@ pub fn get_conflicts_by_judge(req: Request, params: Params) -> ApiResult<impl In
         (status = 200, description = "Conflict check result"),
         (status = 400, description = "Invalid judge ID or party name required")
     ),
-    tag = "Conflict Management"
+    tag = "Conflict Management",
 )]
 pub fn has_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -886,6 +921,7 @@ pub fn has_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse
     delete,
     path = "/api/judges/{judge_id}/conflicts/{conflict_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID"),
         ("conflict_id" = Uuid, Path, description = "Conflict ID")
     ),
@@ -894,7 +930,7 @@ pub fn has_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Judge or conflict not found"),
         (status = 400, description = "Invalid judge ID or conflict ID")
     ),
-    tag = "Conflict Management"
+    tag = "Conflict Management",
 )]
 pub fn delete_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -921,6 +957,7 @@ pub fn delete_conflict(req: Request, params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/judges/vacation",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("start" = Option<String>, Query, description = "Start date (RFC3339 format)"),
         ("end" = Option<String>, Query, description = "End date (RFC3339 format)")
     ),
@@ -928,7 +965,7 @@ pub fn delete_conflict(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 200, description = "List of judges on vacation during the specified period", body = [Judge]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judge Management"
+    tag = "Judge Management",
 )]
 pub fn get_judges_on_vacation(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let query_string = req.query();
@@ -953,6 +990,7 @@ pub fn get_judges_on_vacation(req: Request, _params: Params) -> ApiResult<impl I
     post,
     path = "/api/recusals/{recusal_id}/process",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("recusal_id" = Uuid, Path, description = "Recusal motion ID")
     ),
     request_body(content = ProcessRequest, description = "Processing details including replacement judge and parties"),
@@ -961,7 +999,7 @@ pub fn get_judges_on_vacation(req: Request, _params: Params) -> ApiResult<impl I
         (status = 404, description = "Recusal motion not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Recusal Management"
+    tag = "Recusal Management",
 )]
 pub fn process_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let recusal_id = params

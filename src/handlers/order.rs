@@ -105,7 +105,10 @@ pub struct OrderListResponse {
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_order(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -139,6 +142,7 @@ pub fn create_order(req: Request, _params: Params) -> ApiResult<impl IntoRespons
     get,
     path = "/api/orders/{order_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     responses(
@@ -146,7 +150,7 @@ pub fn create_order(req: Request, _params: Params) -> ApiResult<impl IntoRespons
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -167,6 +171,7 @@ pub fn get_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     patch,
     path = "/api/orders/{order_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     request_body = UpdateOrderRequest,
@@ -175,7 +180,7 @@ pub fn get_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn update_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -221,6 +226,7 @@ pub fn update_order(req: Request, params: Params) -> ApiResult<impl IntoResponse
     delete,
     path = "/api/orders/{order_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     responses(
@@ -228,7 +234,7 @@ pub fn update_order(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn delete_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -245,6 +251,7 @@ pub fn delete_order(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/orders",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Option<String>, Query, description = "Filter by case ID"),
         ("judge_id" = Option<String>, Query, description = "Filter by judge ID"),
         ("status" = Option<String>, Query, description = "Filter by status"),
@@ -256,7 +263,7 @@ pub fn delete_order(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 200, description = "List of orders", body = OrderListResponse),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn list_orders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -302,6 +309,7 @@ pub fn list_orders(req: Request, _params: Params) -> ApiResult<impl IntoResponse
     post,
     path = "/api/orders/{order_id}/sign",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     request_body = SignOrderRequest,
@@ -311,7 +319,7 @@ pub fn list_orders(req: Request, _params: Params) -> ApiResult<impl IntoResponse
         (status = 400, description = "Order already signed"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn sign_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -351,6 +359,7 @@ pub fn sign_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> 
     post,
     path = "/api/orders/{order_id}/issue",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     responses(
@@ -359,7 +368,7 @@ pub fn sign_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> 
         (status = 400, description = "Order not signed"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn issue_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -387,6 +396,7 @@ pub fn issue_order(req: Request, params: Params) -> ApiResult<impl IntoResponse>
     post,
     path = "/api/orders/{order_id}/service",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_id" = String, Path, description = "Order ID")
     ),
     request_body = AddServiceRequest,
@@ -395,7 +405,7 @@ pub fn issue_order(req: Request, params: Params) -> ApiResult<impl IntoResponse>
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn add_service_record(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let order_id = params.get("order_id")
@@ -432,13 +442,14 @@ pub fn add_service_record(req: Request, params: Params) -> ApiResult<impl IntoRe
     get,
     path = "/api/cases/{case_id}/orders",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of orders for the case", body = Vec<JudicialOrder>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_orders_by_case(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params.get("case_id")
@@ -458,13 +469,14 @@ pub fn get_orders_by_case(req: Request, params: Params) -> ApiResult<impl IntoRe
     get,
     path = "/api/judges/{judge_id}/orders",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = String, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "List of orders by the judge", body = Vec<JudicialOrder>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_orders_by_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params.get("judge_id")
@@ -484,13 +496,14 @@ pub fn get_orders_by_judge(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/judges/{judge_id}/orders/pending-signatures",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = String, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "List of orders pending signature", body = Vec<JudicialOrder>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_pending_signatures(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params.get("judge_id")
@@ -510,13 +523,14 @@ pub fn get_pending_signatures(req: Request, params: Params) -> ApiResult<impl In
     get,
     path = "/api/orders/expiring",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("days" = Option<i64>, Query, description = "Number of days to look ahead")
     ),
     responses(
         (status = 200, description = "List of expiring orders", body = Vec<JudicialOrder>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_expiring_orders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -551,7 +565,10 @@ pub fn get_expiring_orders(req: Request, _params: Params) -> ApiResult<impl Into
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_template(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -582,6 +599,7 @@ pub fn create_template(req: Request, _params: Params) -> ApiResult<impl IntoResp
     get,
     path = "/api/templates/orders/{template_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("template_id" = String, Path, description = "Template ID")
     ),
     responses(
@@ -589,7 +607,7 @@ pub fn create_template(req: Request, _params: Params) -> ApiResult<impl IntoResp
         (status = 404, description = "Template not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
 )]
 pub fn get_template(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let template_id = params.get("template_id")
@@ -610,13 +628,14 @@ pub fn get_template(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/templates/orders",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("order_type" = Option<String>, Query, description = "Filter by order type")
     ),
     responses(
         (status = 200, description = "List of templates", body = Vec<OrderTemplate>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
 )]
 pub fn list_templates(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -651,7 +670,10 @@ pub fn list_templates(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 400, description = "Missing required variables"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_from_template(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -691,13 +713,14 @@ pub fn create_from_template(req: Request, _params: Params) -> ApiResult<impl Int
     get,
     path = "/api/orders/statistics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Option<String>, Query, description = "Filter by judge ID")
     ),
     responses(
         (status = 200, description = "Order statistics", body = OrderStatistics),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Orders"
+    tag = "Judicial Orders",
 )]
 pub fn get_order_statistics(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -725,6 +748,7 @@ pub fn get_order_statistics(req: Request, _params: Params) -> ApiResult<impl Int
     put,
     path = "/api/templates/orders/{template_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("template_id" = String, Path, description = "Template ID")
     ),
     request_body = OrderTemplate,
@@ -732,7 +756,7 @@ pub fn get_order_statistics(req: Request, _params: Params) -> ApiResult<impl Int
         (status = 200, description = "Template updated", body = OrderTemplate),
         (status = 404, description = "Template not found")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
 )]
 pub fn update_template(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -755,13 +779,14 @@ pub fn update_template(req: Request, params: Params) -> ApiResult<impl IntoRespo
     delete,
     path = "/api/templates/orders/{template_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("template_id" = String, Path, description = "Template ID")
     ),
     responses(
         (status = 204, description = "Template deleted"),
         (status = 404, description = "Template not found")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
 )]
 pub fn delete_template(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let template_id = params.get("template_id").unwrap_or("").to_string();
@@ -779,7 +804,10 @@ pub fn delete_template(req: Request, params: Params) -> ApiResult<impl IntoRespo
     responses(
         (status = 200, description = "List of active templates", body = Vec<OrderTemplate>)
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn find_active_templates(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = get_tenant_repo!(&req);
@@ -796,6 +824,7 @@ pub fn find_active_templates(req: Request, _params: Params) -> ApiResult<impl In
     get,
     path = "/api/orders/{id}/is-expired",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Order ID")
     ),
     responses(
@@ -803,7 +832,7 @@ pub fn find_active_templates(req: Request, _params: Params) -> ApiResult<impl In
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Orders"
+    tag = "Orders",
 )]
 pub fn check_order_expired(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params.get("id").unwrap_or("").to_string();
@@ -825,6 +854,7 @@ pub fn check_order_expired(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/orders/{id}/requires-attention",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Order ID")
     ),
     responses(
@@ -832,7 +862,7 @@ pub fn check_order_expired(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 404, description = "Order not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Orders"
+    tag = "Orders",
 )]
 pub fn check_requires_attention(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params.get("id").unwrap_or("").to_string();
@@ -854,6 +884,7 @@ pub fn check_requires_attention(req: Request, params: Params) -> ApiResult<impl 
     post,
     path = "/api/templates/{template_id}/generate-content",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("template_id" = String, Path, description = "Template ID")
     ),
     request_body = HashMap<String, String>,
@@ -862,7 +893,7 @@ pub fn check_requires_attention(req: Request, params: Params) -> ApiResult<impl 
         (status = 404, description = "Template not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Order Templates"
+    tag = "Order Templates",
 )]
 pub fn generate_template_content(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let template_id = params.get("template_id").unwrap_or("").to_string();

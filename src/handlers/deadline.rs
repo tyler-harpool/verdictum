@@ -120,7 +120,10 @@ impl ComplianceStatsResponse {
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_deadline(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -158,6 +161,7 @@ pub fn create_deadline(req: Request, _params: Params) -> ApiResult<impl IntoResp
     get,
     path = "/api/cases/{case_id}/deadlines",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -165,7 +169,7 @@ pub fn create_deadline(req: Request, _params: Params) -> ApiResult<impl IntoResp
         (status = 400, description = "Invalid case ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn get_case_deadlines(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -190,6 +194,7 @@ pub fn get_case_deadlines(req: Request, params: Params) -> ApiResult<impl IntoRe
     get,
     path = "/api/deadlines/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Deadline ID")
     ),
     responses(
@@ -197,7 +202,7 @@ pub fn get_case_deadlines(req: Request, params: Params) -> ApiResult<impl IntoRe
         (status = 404, description = "Deadline not found"),
         (status = 400, description = "Invalid deadline ID")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn get_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -221,6 +226,7 @@ pub fn get_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse
     patch,
     path = "/api/deadlines/{id}/complete",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Deadline ID")
     ),
     responses(
@@ -228,7 +234,7 @@ pub fn get_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Deadline not found"),
         (status = 400, description = "Invalid deadline ID")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn complete_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -254,6 +260,7 @@ pub fn complete_deadline(req: Request, params: Params) -> ApiResult<impl IntoRes
     post,
     path = "/api/deadlines/{deadline_id}/extensions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("deadline_id" = Uuid, Path, description = "Deadline ID")
     ),
     request_body = RequestExtensionRequest,
@@ -262,7 +269,7 @@ pub fn complete_deadline(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 404, description = "Deadline not found"),
         (status = 400, description = "Invalid request data or deadline not extendable")
     ),
-    tag = "Extension Management"
+    tag = "Extension Management",
 )]
 pub fn request_extension(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let deadline_id = params
@@ -311,6 +318,7 @@ pub fn request_extension(req: Request, params: Params) -> ApiResult<impl IntoRes
     patch,
     path = "/api/extensions/{extension_id}/ruling",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("extension_id" = Uuid, Path, description = "Extension request ID")
     ),
     request_body = RuleOnExtensionRequest,
@@ -319,7 +327,7 @@ pub fn request_extension(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 404, description = "Extension request not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Extension Management"
+    tag = "Extension Management",
 )]
 pub fn rule_on_extension(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let extension_id = params
@@ -367,13 +375,14 @@ pub fn rule_on_extension(req: Request, params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/deadlines/upcoming",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("days" = Option<i64>, Query, description = "Number of days to look ahead (default: 30)")
     ),
     responses(
         (status = 200, description = "List of upcoming deadlines", body = [Deadline]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn get_upcoming_deadlines(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let days = params
@@ -401,7 +410,10 @@ pub fn get_upcoming_deadlines(req: Request, params: Params) -> ApiResult<impl In
         (status = 200, description = "List of urgent deadlines requiring immediate attention", body = [Deadline]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_urgent_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::deadline_repo(&req);
@@ -424,7 +436,10 @@ pub fn get_urgent_deadlines(req: Request, _params: Params) -> ApiResult<impl Int
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Calculation"
+    tag = "Deadline Calculation",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn calculate_frcp_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -457,6 +472,7 @@ pub fn calculate_frcp_deadlines(req: Request, _params: Params) -> ApiResult<impl
     get,
     path = "/api/deadlines/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Option<Uuid>, Query, description = "Filter by case ID"),
         ("type" = Option<String>, Query, description = "Filter by deadline type"),
         ("status" = Option<String>, Query, description = "Filter by deadline status"),
@@ -471,7 +487,7 @@ pub fn calculate_frcp_deadlines(req: Request, _params: Params) -> ApiResult<impl
         (status = 200, description = "Search results with deadlines and total count"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn search_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let query_string = req.query();
@@ -506,13 +522,14 @@ pub fn search_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/deadlines/compliance-stats",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Option<Uuid>, Query, description = "Filter by case ID (optional)")
     ),
     responses(
         (status = 200, description = "Deadline compliance statistics", body = ComplianceStatsResponse),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Analytics"
+    tag = "Deadline Analytics",
 )]
 pub fn get_compliance_stats(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -534,6 +551,7 @@ pub fn get_compliance_stats(req: Request, params: Params) -> ApiResult<impl Into
     get,
     path = "/api/deadlines/compliance-report",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("start" = Option<String>, Query, description = "Start date (RFC3339 format, defaults to 30 days ago)"),
         ("end" = Option<String>, Query, description = "End date (RFC3339 format, defaults to now)")
     ),
@@ -541,7 +559,7 @@ pub fn get_compliance_stats(req: Request, params: Params) -> ApiResult<impl Into
         (status = 200, description = "Comprehensive compliance report"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Analytics"
+    tag = "Deadline Analytics",
 )]
 pub fn generate_compliance_report(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let start_date = params
@@ -570,13 +588,14 @@ pub fn generate_compliance_report(req: Request, params: Params) -> ApiResult<imp
     get,
     path = "/api/deadlines/performance-metrics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("party" = Option<String>, Query, description = "Filter by responsible party")
     ),
     responses(
         (status = 200, description = "Performance metrics for deadline compliance"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Analytics"
+    tag = "Deadline Analytics",
 )]
 pub fn get_performance_metrics(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let party = params.get("party").map(String::from);
@@ -598,7 +617,10 @@ pub fn get_performance_metrics(req: Request, params: Params) -> ApiResult<impl I
         (status = 200, description = "List of missed jurisdictional deadlines", body = [Deadline]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Compliance"
+    tag = "Deadline Compliance",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_missed_jurisdictional(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::deadline_repo(&req);
@@ -618,7 +640,10 @@ pub fn get_missed_jurisdictional(req: Request, _params: Params) -> ApiResult<imp
         (status = 200, description = "List of pending deadline reminders"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Reminder Management"
+    tag = "Reminder Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_pending_reminders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::deadline_repo(&req);
@@ -638,7 +663,10 @@ pub fn get_pending_reminders(req: Request, _params: Params) -> ApiResult<impl In
         (status = 200, description = "Reminders sent successfully"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Reminder Management"
+    tag = "Reminder Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn send_reminders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::deadline_repo(&req);
@@ -665,6 +693,7 @@ pub fn send_reminders(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/cases/{case_id}/deadlines/type/{type}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID"),
         ("type" = String, Path, description = "Deadline type")
     ),
@@ -672,7 +701,7 @@ pub fn send_reminders(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 200, description = "List of deadlines of the specified type", body = [Deadline]),
         (status = 400, description = "Invalid case ID or deadline type")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn get_deadlines_by_type(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -700,6 +729,7 @@ pub fn get_deadlines_by_type(req: Request, params: Params) -> ApiResult<impl Int
     patch,
     path = "/api/deadlines/{id}/status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Deadline ID")
     ),
     request_body(content = StatusUpdate, description = "New deadline status"),
@@ -708,7 +738,7 @@ pub fn get_deadlines_by_type(req: Request, params: Params) -> ApiResult<impl Int
         (status = 404, description = "Deadline not found"),
         (status = 400, description = "Invalid deadline ID or status")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn update_deadline_status(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -734,6 +764,7 @@ pub fn update_deadline_status(req: Request, params: Params) -> ApiResult<impl In
     delete,
     path = "/api/deadlines/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Deadline ID")
     ),
     responses(
@@ -741,7 +772,7 @@ pub fn update_deadline_status(req: Request, params: Params) -> ApiResult<impl In
         (status = 404, description = "Deadline not found"),
         (status = 400, description = "Invalid deadline ID")
     ),
-    tag = "Deadline Management"
+    tag = "Deadline Management",
 )]
 pub fn delete_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -763,13 +794,14 @@ pub fn delete_deadline(req: Request, params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/deadlines/{deadline_id}/reminders",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("deadline_id" = Uuid, Path, description = "Deadline ID")
     ),
     responses(
         (status = 200, description = "List of reminders for the deadline"),
         (status = 400, description = "Invalid deadline ID")
     ),
-    tag = "Reminder Management"
+    tag = "Reminder Management",
 )]
 pub fn get_reminders_by_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let deadline_id = params
@@ -791,13 +823,14 @@ pub fn get_reminders_by_deadline(req: Request, params: Params) -> ApiResult<impl
     get,
     path = "/api/deadlines/reminders/recipient/{recipient}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("recipient" = String, Path, description = "Recipient name or email")
     ),
     responses(
         (status = 200, description = "List of reminders for the recipient"),
         (status = 400, description = "Recipient required")
     ),
-    tag = "Reminder Management"
+    tag = "Reminder Management",
 )]
 pub fn get_reminders_by_recipient(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let recipient = params
@@ -818,6 +851,7 @@ pub fn get_reminders_by_recipient(req: Request, params: Params) -> ApiResult<imp
     patch,
     path = "/api/deadlines/reminders/{reminder_id}/acknowledge",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("reminder_id" = Uuid, Path, description = "Reminder ID")
     ),
     responses(
@@ -825,7 +859,7 @@ pub fn get_reminders_by_recipient(req: Request, params: Params) -> ApiResult<imp
         (status = 404, description = "Reminder not found"),
         (status = 400, description = "Invalid reminder ID")
     ),
-    tag = "Reminder Management"
+    tag = "Reminder Management",
 )]
 pub fn acknowledge_reminder(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let reminder_id = params
@@ -847,6 +881,7 @@ pub fn acknowledge_reminder(req: Request, params: Params) -> ApiResult<impl Into
     get,
     path = "/api/extensions/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Extension request ID")
     ),
     responses(
@@ -854,7 +889,7 @@ pub fn acknowledge_reminder(req: Request, params: Params) -> ApiResult<impl Into
         (status = 404, description = "Extension request not found"),
         (status = 400, description = "Invalid extension ID")
     ),
-    tag = "Extension Management"
+    tag = "Extension Management",
 )]
 pub fn get_extension_by_id(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -878,13 +913,14 @@ pub fn get_extension_by_id(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/deadlines/{deadline_id}/extensions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("deadline_id" = Uuid, Path, description = "Deadline ID")
     ),
     responses(
         (status = 200, description = "List of extension requests for the deadline", body = [ExtensionRequest]),
         (status = 400, description = "Invalid deadline ID")
     ),
-    tag = "Extension Management"
+    tag = "Extension Management",
 )]
 pub fn get_extensions_by_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let deadline_id = params
@@ -909,7 +945,10 @@ pub fn get_extensions_by_deadline(req: Request, params: Params) -> ApiResult<imp
         (status = 200, description = "List of pending extension requests"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Extension Management"
+    tag = "Extension Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_pending_extensions(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::deadline_repo(&req);
@@ -935,7 +974,10 @@ pub fn get_pending_extensions(req: Request, _params: Params) -> ApiResult<impl I
         (status = 200, description = "List of federal rules for deadline calculation", body = [FederalRule]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Deadline Calculation"
+    tag = "Deadline Calculation",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_federal_rules(_req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
 

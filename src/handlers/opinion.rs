@@ -126,7 +126,10 @@ pub struct OpinionListResponse {
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_opinion(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -159,6 +162,7 @@ pub fn create_opinion(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/opinions/{opinion_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -166,7 +170,7 @@ pub fn create_opinion(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn get_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -187,6 +191,7 @@ pub fn get_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse>
     patch,
     path = "/api/opinions/{opinion_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = UpdateOpinionRequest,
@@ -195,7 +200,7 @@ pub fn get_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse>
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn update_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -241,6 +246,7 @@ pub fn update_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespon
     delete,
     path = "/api/opinions/{opinion_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -248,7 +254,7 @@ pub fn update_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespon
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn delete_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -265,6 +271,7 @@ pub fn delete_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespon
     get,
     path = "/api/opinions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Option<String>, Query, description = "Filter by case ID"),
         ("author_judge_id" = Option<String>, Query, description = "Filter by author judge"),
         ("is_published" = Option<bool>, Query, description = "Filter by publication status"),
@@ -277,7 +284,7 @@ pub fn delete_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespon
         (status = 200, description = "List of opinions", body = OpinionListResponse),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn list_opinions(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -327,6 +334,7 @@ pub fn list_opinions(req: Request, _params: Params) -> ApiResult<impl IntoRespon
     post,
     path = "/api/opinions/{opinion_id}/file",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -334,7 +342,7 @@ pub fn list_opinions(req: Request, _params: Params) -> ApiResult<impl IntoRespon
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn file_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -358,6 +366,7 @@ pub fn file_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse
     post,
     path = "/api/opinions/{opinion_id}/publish",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = PublishOpinionRequest,
@@ -367,7 +376,7 @@ pub fn file_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 400, description = "Opinion not filed"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn publish_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -399,6 +408,7 @@ pub fn publish_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespo
     post,
     path = "/api/opinions/{opinion_id}/votes",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = AddVoteRequest,
@@ -407,7 +417,7 @@ pub fn publish_opinion(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn add_judge_vote(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -442,6 +452,7 @@ pub fn add_judge_vote(req: Request, params: Params) -> ApiResult<impl IntoRespon
     post,
     path = "/api/opinions/{opinion_id}/citations",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = AddCitationRequest,
@@ -450,7 +461,7 @@ pub fn add_judge_vote(req: Request, params: Params) -> ApiResult<impl IntoRespon
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn add_citation(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -489,6 +500,7 @@ pub fn add_citation(req: Request, params: Params) -> ApiResult<impl IntoResponse
     post,
     path = "/api/opinions/{opinion_id}/headnotes",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = AddHeadnoteRequest,
@@ -497,7 +509,7 @@ pub fn add_citation(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn add_headnote(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -533,13 +545,14 @@ pub fn add_headnote(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/cases/{case_id}/opinions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of opinions for the case", body = Vec<JudicialOpinion>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn get_opinions_by_case(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params.get("case_id")
@@ -559,13 +572,14 @@ pub fn get_opinions_by_case(req: Request, params: Params) -> ApiResult<impl Into
     get,
     path = "/api/judges/{judge_id}/opinions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = String, Path, description = "Judge ID")
     ),
     responses(
         (status = 200, description = "List of opinions by the judge", body = Vec<JudicialOpinion>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn get_opinions_by_author(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params.get("judge_id")
@@ -585,6 +599,7 @@ pub fn get_opinions_by_author(req: Request, params: Params) -> ApiResult<impl In
     get,
     path = "/api/opinions/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("q" = String, Query, description = "Search query")
     ),
     responses(
@@ -592,7 +607,7 @@ pub fn get_opinions_by_author(req: Request, params: Params) -> ApiResult<impl In
         (status = 400, description = "Search query required"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn search_opinions(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -624,7 +639,10 @@ pub fn search_opinions(req: Request, _params: Params) -> ApiResult<impl IntoResp
         (status = 200, description = "List of precedential opinions", body = Vec<JudicialOpinion>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_precedential_opinions(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = get_tenant_repo!(&req);
@@ -641,6 +659,7 @@ pub fn get_precedential_opinions(req: Request, _params: Params) -> ApiResult<imp
     post,
     path = "/api/opinions/{opinion_id}/drafts",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     request_body = CreateDraftRequest,
@@ -649,7 +668,7 @@ pub fn get_precedential_opinions(req: Request, _params: Params) -> ApiResult<imp
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinion Drafts"
+    tag = "Opinion Drafts",
 )]
 pub fn create_draft(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -685,13 +704,14 @@ pub fn create_draft(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/opinions/{opinion_id}/drafts",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     responses(
         (status = 200, description = "List of drafts", body = Vec<OpinionDraft>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinion Drafts"
+    tag = "Opinion Drafts",
 )]
 pub fn get_drafts(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id")
@@ -711,13 +731,14 @@ pub fn get_drafts(req: Request, params: Params) -> ApiResult<impl IntoResponse> 
     get,
     path = "/api/opinions/statistics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Option<String>, Query, description = "Filter by judge ID")
     ),
     responses(
         (status = 200, description = "Opinion statistics", body = OpinionStatistics),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn get_opinion_statistics(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -745,6 +766,7 @@ pub fn get_opinion_statistics(req: Request, _params: Params) -> ApiResult<impl I
     get,
     path = "/api/opinions/citations/statistics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("start_date" = Option<String>, Query, description = "Start date (ISO 8601)"),
         ("end_date" = Option<String>, Query, description = "End date (ISO 8601)")
     ),
@@ -752,7 +774,7 @@ pub fn get_opinion_statistics(req: Request, _params: Params) -> ApiResult<impl I
         (status = 200, description = "Citation statistics", body = CitationStatistics),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Judicial Opinions"
+    tag = "Judicial Opinions",
 )]
 pub fn get_citation_statistics(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::utils::query_parser::parse_query_string;
@@ -788,13 +810,14 @@ pub fn get_citation_statistics(req: Request, _params: Params) -> ApiResult<impl 
     get,
     path = "/api/opinions/{opinion_id}/drafts/current",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID")
     ),
     responses(
         (status = 200, description = "Current draft", body = OpinionDraft),
         (status = 404, description = "No current draft found")
     ),
-    tag = "Opinion Drafts"
+    tag = "Opinion Drafts",
 )]
 pub fn get_current_draft(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id").unwrap_or("").to_string();
@@ -814,6 +837,7 @@ pub fn get_current_draft(req: Request, params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/opinions/{id}/is-majority",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -821,7 +845,7 @@ pub fn get_current_draft(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinions"
+    tag = "Opinions",
 )]
 pub fn is_majority_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params.get("id").unwrap_or("").to_string();
@@ -843,6 +867,7 @@ pub fn is_majority_opinion(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/opinions/{id}/is-binding",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -850,7 +875,7 @@ pub fn is_majority_opinion(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinions"
+    tag = "Opinions",
 )]
 pub fn is_binding_opinion(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params.get("id").unwrap_or("").to_string();
@@ -872,6 +897,7 @@ pub fn is_binding_opinion(req: Request, params: Params) -> ApiResult<impl IntoRe
     get,
     path = "/api/opinions/{id}/calculate-statistics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Opinion ID")
     ),
     responses(
@@ -879,7 +905,7 @@ pub fn is_binding_opinion(req: Request, params: Params) -> ApiResult<impl IntoRe
         (status = 404, description = "Opinion not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinions"
+    tag = "Opinions",
 )]
 pub fn calculate_opinion_statistics(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params.get("id").unwrap_or("").to_string();
@@ -901,6 +927,7 @@ pub fn calculate_opinion_statistics(req: Request, params: Params) -> ApiResult<i
     post,
     path = "/api/opinions/{opinion_id}/drafts/{draft_id}/comments",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID"),
         ("draft_id" = String, Path, description = "Draft ID")
     ),
@@ -910,7 +937,7 @@ pub fn calculate_opinion_statistics(req: Request, params: Params) -> ApiResult<i
         (status = 404, description = "Draft not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinion Drafts"
+    tag = "Opinion Drafts",
 )]
 pub fn add_draft_comment(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id").unwrap_or("").to_string();
@@ -959,6 +986,7 @@ pub fn add_draft_comment(req: Request, params: Params) -> ApiResult<impl IntoRes
     patch,
     path = "/api/opinions/{opinion_id}/drafts/{draft_id}/comments/{comment_id}/resolve",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("opinion_id" = String, Path, description = "Opinion ID"),
         ("draft_id" = String, Path, description = "Draft ID"),
         ("comment_id" = String, Path, description = "Comment ID")
@@ -968,7 +996,7 @@ pub fn add_draft_comment(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 404, description = "Draft or comment not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Opinion Drafts"
+    tag = "Opinion Drafts",
 )]
 pub fn resolve_draft_comment(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let opinion_id = params.get("opinion_id").unwrap_or("").to_string();

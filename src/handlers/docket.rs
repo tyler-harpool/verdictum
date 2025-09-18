@@ -141,7 +141,10 @@ impl FilingStatsResponse {
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_docket_entry(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -173,6 +176,7 @@ pub fn create_docket_entry(req: Request, _params: Params) -> ApiResult<impl Into
     get,
     path = "/api/cases/{case_id}/docket",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -180,7 +184,7 @@ pub fn create_docket_entry(req: Request, _params: Params) -> ApiResult<impl Into
         (status = 400, description = "Invalid case ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn get_case_docket(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -202,6 +206,7 @@ pub fn get_case_docket(req: Request, params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/docket/entries/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Docket entry ID")
     ),
     responses(
@@ -209,7 +214,7 @@ pub fn get_case_docket(req: Request, params: Params) -> ApiResult<impl IntoRespo
         (status = 404, description = "Docket entry not found"),
         (status = 400, description = "Invalid entry ID")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn get_docket_entry(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -233,6 +238,7 @@ pub fn get_docket_entry(req: Request, params: Params) -> ApiResult<impl IntoResp
     post,
     path = "/api/docket/entries/{entry_id}/attachments",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("entry_id" = Uuid, Path, description = "Docket entry ID")
     ),
     request_body = AddAttachmentRequest,
@@ -241,7 +247,7 @@ pub fn get_docket_entry(req: Request, params: Params) -> ApiResult<impl IntoResp
         (status = 404, description = "Docket entry not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn add_attachment(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let entry_id = params
@@ -279,6 +285,7 @@ pub fn add_attachment(req: Request, params: Params) -> ApiResult<impl IntoRespon
     get,
     path = "/api/docket/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Option<Uuid>, Query, description = "Filter by case ID"),
         ("entry_type" = Option<String>, Query, description = "Filter by entry type"),
         ("filed_by" = Option<String>, Query, description = "Filter by who filed the entry"),
@@ -293,7 +300,7 @@ pub fn add_attachment(req: Request, params: Params) -> ApiResult<impl IntoRespon
         (status = 200, description = "Search results with entries and total count"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn search_docket(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let query_string = req.query();
@@ -328,6 +335,7 @@ pub fn search_docket(req: Request, _params: Params) -> ApiResult<impl IntoRespon
     get,
     path = "/api/cases/{case_id}/docket-sheet",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -335,7 +343,7 @@ pub fn search_docket(req: Request, _params: Params) -> ApiResult<impl IntoRespon
         (status = 400, description = "Invalid case ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn generate_docket_sheet(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -362,7 +370,10 @@ pub fn generate_docket_sheet(req: Request, params: Params) -> ApiResult<impl Int
         (status = 400, description = "Invalid request data or schedule conflict"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn schedule_event(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let body = req.body();
@@ -414,6 +425,7 @@ pub fn schedule_event(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     get,
     path = "/api/cases/{case_id}/calendar",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -421,7 +433,7 @@ pub fn schedule_event(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 400, description = "Invalid case ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn get_case_calendar(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -443,6 +455,7 @@ pub fn get_case_calendar(req: Request, params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/judges/{judge_id}/schedule",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID"),
         ("date" = Option<String>, Query, description = "Date to get schedule for (RFC3339 format, defaults to today)")
     ),
@@ -451,7 +464,7 @@ pub fn get_case_calendar(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 400, description = "Invalid judge ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn get_judge_schedule(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -479,6 +492,7 @@ pub fn get_judge_schedule(req: Request, params: Params) -> ApiResult<impl IntoRe
     patch,
     path = "/api/calendar/events/{event_id}/status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("event_id" = Uuid, Path, description = "Calendar event ID")
     ),
     request_body = UpdateEventStatusRequest,
@@ -487,7 +501,7 @@ pub fn get_judge_schedule(req: Request, params: Params) -> ApiResult<impl IntoRe
         (status = 404, description = "Event not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn update_event_status(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let event_id = params
@@ -540,6 +554,7 @@ pub fn update_event_status(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/judges/{judge_id}/available-slot",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Uuid, Path, description = "Judge ID"),
         ("duration" = Option<u32>, Query, description = "Duration in minutes (default: 60)"),
         ("earliest" = Option<String>, Query, description = "Earliest acceptable date (RFC3339 format, defaults to now)")
@@ -549,7 +564,7 @@ pub fn update_event_status(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 400, description = "Invalid judge ID"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn find_available_slot(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let judge_id = params
@@ -589,6 +604,7 @@ pub fn find_available_slot(req: Request, params: Params) -> ApiResult<impl IntoR
     post,
     path = "/api/cases/{case_id}/speedy-trial",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     request_body(content = InitSpeedyTrialRequest, description = "Speedy trial initialization data"),
@@ -597,7 +613,7 @@ pub fn find_available_slot(req: Request, params: Params) -> ApiResult<impl IntoR
         (status = 400, description = "Invalid request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
 )]
 pub fn init_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -642,6 +658,7 @@ pub fn init_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoRes
     get,
     path = "/api/cases/{case_id}/speedy-trial",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -649,7 +666,7 @@ pub fn init_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoRes
         (status = 404, description = "Speedy Trial clock not found"),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
 )]
 pub fn get_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -676,6 +693,7 @@ pub fn get_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoResp
     post,
     path = "/api/cases/{case_id}/speedy-trial/delays",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     request_body = AddExcludableDelayRequest,
@@ -684,7 +702,7 @@ pub fn get_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoResp
         (status = 404, description = "Speedy Trial clock not found"),
         (status = 400, description = "Invalid request data")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
 )]
 pub fn add_excludable_delay(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -732,7 +750,10 @@ pub fn add_excludable_delay(req: Request, params: Params) -> ApiResult<impl Into
         (status = 200, description = "List of cases with approaching Speedy Trial deadlines", body = [SpeedyTrialClock]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_approaching_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::docket_repo(&req);
@@ -749,6 +770,7 @@ pub fn get_approaching_deadlines(req: Request, _params: Params) -> ApiResult<imp
     get,
     path = "/api/courtrooms/utilization",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("start" = Option<String>, Query, description = "Start date (RFC3339 format, defaults to 30 days ago)"),
         ("end" = Option<String>, Query, description = "End date (RFC3339 format, defaults to now)")
     ),
@@ -756,7 +778,7 @@ pub fn get_approaching_deadlines(req: Request, _params: Params) -> ApiResult<imp
         (status = 200, description = "Courtroom utilization statistics"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Analytics"
+    tag = "Analytics",
 )]
 pub fn get_courtroom_utilization(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let start_date = params
@@ -785,6 +807,7 @@ pub fn get_courtroom_utilization(req: Request, params: Params) -> ApiResult<impl
     get,
     path = "/api/cases/{case_id}/docket/type/{type}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID"),
         ("type" = String, Path, description = "Docket entry type")
     ),
@@ -792,7 +815,7 @@ pub fn get_courtroom_utilization(req: Request, params: Params) -> ApiResult<impl
         (status = 200, description = "List of docket entries of the specified type", body = [DocketEntry]),
         (status = 400, description = "Invalid case ID or entry type")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn get_entries_by_type(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -820,13 +843,14 @@ pub fn get_entries_by_type(req: Request, params: Params) -> ApiResult<impl IntoR
     get,
     path = "/api/cases/{case_id}/docket/sealed",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of sealed docket entries for the case", body = [DocketEntry]),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn get_sealed_entries(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -848,6 +872,7 @@ pub fn get_sealed_entries(req: Request, params: Params) -> ApiResult<impl IntoRe
     get,
     path = "/api/cases/{case_id}/docket/search/{text}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID"),
         ("text" = String, Path, description = "Text to search for in docket entries")
     ),
@@ -855,7 +880,7 @@ pub fn get_sealed_entries(req: Request, params: Params) -> ApiResult<impl IntoRe
         (status = 200, description = "List of docket entries matching the search text", body = [DocketEntry]),
         (status = 400, description = "Invalid case ID or search text required")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn search_entries(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -881,6 +906,7 @@ pub fn search_entries(req: Request, params: Params) -> ApiResult<impl IntoRespon
     delete,
     path = "/api/docket/entries/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Docket entry ID")
     ),
     responses(
@@ -888,7 +914,7 @@ pub fn search_entries(req: Request, params: Params) -> ApiResult<impl IntoRespon
         (status = 404, description = "Docket entry not found"),
         (status = 400, description = "Invalid entry ID")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn delete_entry(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -910,6 +936,7 @@ pub fn delete_entry(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/courtrooms/{courtroom}/events",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("courtroom" = String, Path, description = "Courtroom identifier"),
         ("start" = Option<String>, Query, description = "Start date (RFC3339 format, defaults to now)"),
         ("end" = Option<String>, Query, description = "End date (RFC3339 format, defaults to 30 days from now)")
@@ -918,7 +945,7 @@ pub fn delete_entry(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 200, description = "List of events in the specified courtroom", body = [CalendarEntry]),
         (status = 400, description = "Courtroom required")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn get_events_by_courtroom(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let courtroom = params
@@ -947,6 +974,7 @@ pub fn get_events_by_courtroom(req: Request, params: Params) -> ApiResult<impl I
     delete,
     path = "/api/calendar/events/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = Uuid, Path, description = "Calendar event ID")
     ),
     responses(
@@ -954,7 +982,7 @@ pub fn get_events_by_courtroom(req: Request, params: Params) -> ApiResult<impl I
         (status = 404, description = "Calendar event not found"),
         (status = 400, description = "Invalid event ID")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn delete_event(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let id = params
@@ -976,13 +1004,14 @@ pub fn delete_event(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/cases/{case_id}/filing-stats",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "Filing statistics for the case", body = FilingStatsResponse),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Analytics"
+    tag = "Analytics",
 )]
 pub fn get_filing_statistics(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -1008,7 +1037,10 @@ pub fn get_filing_statistics(req: Request, params: Params) -> ApiResult<impl Int
         (status = 200, description = "List of cases with Speedy Trial Act violations", body = [SpeedyTrialClock]),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_violations(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     let repo = RepositoryFactory::docket_repo(&req);
@@ -1025,6 +1057,7 @@ pub fn get_violations(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     put,
     path = "/api/cases/{case_id}/speedy-trial",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     request_body = SpeedyTrialClock,
@@ -1033,7 +1066,7 @@ pub fn get_violations(req: Request, _params: Params) -> ApiResult<impl IntoRespo
         (status = 400, description = "Invalid case ID or request data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
 )]
 pub fn update_clock(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params
@@ -1058,6 +1091,7 @@ pub fn update_clock(req: Request, params: Params) -> ApiResult<impl IntoResponse
     get,
     path = "/api/calendar/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("judge_id" = Option<Uuid>, Query, description = "Filter by judge ID"),
         ("courtroom" = Option<String>, Query, description = "Filter by courtroom"),
         ("event_type" = Option<String>, Query, description = "Filter by event type"),
@@ -1071,7 +1105,7 @@ pub fn update_clock(req: Request, params: Params) -> ApiResult<impl IntoResponse
         (status = 200, description = "Search results with calendar events and total count"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "Calendar Management"
+    tag = "Calendar Management",
 )]
 pub fn search_calendar(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
     use crate::ports::docket_repository::CalendarQuery;
@@ -1107,13 +1141,14 @@ pub fn search_calendar(req: Request, _params: Params) -> ApiResult<impl IntoResp
     get,
     path = "/api/docket/service-check/{entry_type}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("entry_type" = String, Path, description = "Docket entry type to check")
     ),
     responses(
         (status = 200, description = "Service requirement check result"),
         (status = 400, description = "Entry type required")
     ),
-    tag = "Docket Management"
+    tag = "Docket Management",
 )]
 pub fn check_immediate_service(_req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let entry_type_str = params
@@ -1138,6 +1173,7 @@ pub fn check_immediate_service(_req: Request, params: Params) -> ApiResult<impl 
     get,
     path = "/api/cases/{case_id}/speedy-trial/deadline-check",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = Uuid, Path, description = "Case ID")
     ),
     responses(
@@ -1145,7 +1181,7 @@ pub fn check_immediate_service(_req: Request, params: Params) -> ApiResult<impl 
         (status = 404, description = "Speedy Trial clock not found"),
         (status = 400, description = "Invalid case ID")
     ),
-    tag = "Speedy Trial Management"
+    tag = "Speedy Trial Management",
 )]
 pub fn check_deadline_approaching(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let case_id = params

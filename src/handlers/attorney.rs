@@ -29,7 +29,10 @@ use spin_sdk::http::{Params, Request, Response};
         (status = 400, description = "Invalid attorney data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_attorney(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -65,6 +68,7 @@ pub fn create_attorney(req: Request, _params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -72,7 +76,7 @@ pub fn create_attorney(req: Request, _params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorney(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -91,6 +95,7 @@ pub fn get_attorney(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/bar-number/{bar_number}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("bar_number" = String, Path, description = "Attorney Bar Number")
     ),
     responses(
@@ -98,7 +103,7 @@ pub fn get_attorney(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorney_by_bar_number(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -117,6 +122,7 @@ pub fn get_attorney_by_bar_number(req: Request, params: Params) -> Response {
     put,
     path = "/api/attorneys/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = Attorney,
@@ -125,7 +131,7 @@ pub fn get_attorney_by_bar_number(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn update_attorney(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -148,6 +154,7 @@ pub fn update_attorney(req: Request, params: Params) -> Response {
     delete,
     path = "/api/attorneys/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -155,7 +162,7 @@ pub fn update_attorney(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn delete_attorney(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -176,7 +183,10 @@ pub fn delete_attorney(req: Request, params: Params) -> Response {
         (status = 200, description = "List of attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn list_attorneys(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -192,13 +202,14 @@ pub fn list_attorneys(req: Request, _params: Params) -> Response {
     get,
     path = "/api/attorneys/search",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("q" = String, Query, description = "Search query")
     ),
     responses(
         (status = 200, description = "Search results", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn search_attorneys(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -218,13 +229,14 @@ pub fn search_attorneys(req: Request, _params: Params) -> Response {
     get,
     path = "/api/attorneys/status/{status}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("status" = String, Path, description = "Attorney status")
     ),
     responses(
         (status = 200, description = "List of attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorneys_by_status(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -246,13 +258,14 @@ pub fn get_attorneys_by_status(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/firm/{firm_name}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("firm_name" = String, Path, description = "Law firm name")
     ),
     responses(
         (status = 200, description = "List of attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorneys_by_firm(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -272,6 +285,7 @@ pub fn get_attorneys_by_firm(req: Request, params: Params) -> Response {
     post,
     path = "/api/attorneys/{id}/bar-admissions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = BarAdmission,
@@ -280,7 +294,7 @@ pub fn get_attorneys_by_firm(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "bar-admissions"
+    tag = "bar-admissions",
 )]
 pub fn add_bar_admission(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -302,6 +316,7 @@ pub fn add_bar_admission(req: Request, params: Params) -> Response {
     delete,
     path = "/api/attorneys/{id}/bar-admissions/{state}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("state" = String, Path, description = "State abbreviation")
     ),
@@ -310,7 +325,7 @@ pub fn add_bar_admission(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney or admission not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "bar-admissions"
+    tag = "bar-admissions",
 )]
 pub fn remove_bar_admission(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -329,13 +344,14 @@ pub fn remove_bar_admission(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/bar-state/{state}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("state" = String, Path, description = "State abbreviation")
     ),
     responses(
         (status = 200, description = "List of attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorneys_by_bar_state(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -355,6 +371,7 @@ pub fn get_attorneys_by_bar_state(req: Request, params: Params) -> Response {
     post,
     path = "/api/attorneys/{id}/federal-admissions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = FederalAdmission,
@@ -363,7 +380,7 @@ pub fn get_attorneys_by_bar_state(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "federal-admissions"
+    tag = "federal-admissions",
 )]
 pub fn add_federal_admission(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -385,6 +402,7 @@ pub fn add_federal_admission(req: Request, params: Params) -> Response {
     delete,
     path = "/api/attorneys/{id}/federal-admissions/{court}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("court" = String, Path, description = "Federal court abbreviation")
     ),
@@ -393,7 +411,7 @@ pub fn add_federal_admission(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney or admission not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "federal-admissions"
+    tag = "federal-admissions",
 )]
 pub fn remove_federal_admission(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -412,13 +430,14 @@ pub fn remove_federal_admission(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/federal-court/{court}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("court" = String, Path, description = "Federal court abbreviation")
     ),
     responses(
         (status = 200, description = "List of attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn get_attorneys_admitted_to_court(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -438,6 +457,7 @@ pub fn get_attorneys_admitted_to_court(req: Request, params: Params) -> Response
     post,
     path = "/api/attorneys/{id}/pro-hac-vice",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = ProHacViceAdmission,
@@ -446,7 +466,7 @@ pub fn get_attorneys_admitted_to_court(req: Request, params: Params) -> Response
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "pro-hac-vice"
+    tag = "pro-hac-vice",
 )]
 pub fn add_pro_hac_vice(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -468,6 +488,7 @@ pub fn add_pro_hac_vice(req: Request, params: Params) -> Response {
     patch,
     path = "/api/attorneys/{id}/pro-hac-vice/{case_id}/status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("case_id" = String, Path, description = "Case ID"),
         ("status" = String, Query, description = "New status")
@@ -477,7 +498,7 @@ pub fn add_pro_hac_vice(req: Request, params: Params) -> Response {
         (status = 404, description = "Not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "pro-hac-vice"
+    tag = "pro-hac-vice",
 )]
 pub fn update_pro_hac_vice_status(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -503,7 +524,10 @@ pub fn update_pro_hac_vice_status(req: Request, params: Params) -> Response {
         (status = 200, description = "List of active admissions", body = Vec<ProHacViceAdmission>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "pro-hac-vice"
+    tag = "pro-hac-vice",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_active_pro_hac_vice(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -519,13 +543,14 @@ pub fn get_active_pro_hac_vice(req: Request, _params: Params) -> Response {
     get,
     path = "/api/attorneys/pro-hac-vice/case/{case_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of admissions", body = Vec<ProHacViceAdmission>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "pro-hac-vice"
+    tag = "pro-hac-vice",
 )]
 pub fn get_pro_hac_vice_by_case(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -545,6 +570,7 @@ pub fn get_pro_hac_vice_by_case(req: Request, params: Params) -> Response {
     post,
     path = "/api/attorneys/{id}/cja-panel/{district}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("district" = String, Path, description = "District code")
     ),
@@ -553,7 +579,7 @@ pub fn get_pro_hac_vice_by_case(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
 )]
 pub fn add_to_cja_panel(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -572,6 +598,7 @@ pub fn add_to_cja_panel(req: Request, params: Params) -> Response {
     delete,
     path = "/api/attorneys/{id}/cja-panel/{district}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("district" = String, Path, description = "District code")
     ),
@@ -580,7 +607,7 @@ pub fn add_to_cja_panel(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
 )]
 pub fn remove_from_cja_panel(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -599,13 +626,14 @@ pub fn remove_from_cja_panel(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/cja-panel/{district}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("district" = String, Path, description = "District code")
     ),
     responses(
         (status = 200, description = "List of CJA panel attorneys", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
 )]
 pub fn get_cja_panel_attorneys(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -623,6 +651,7 @@ pub fn get_cja_panel_attorneys(req: Request, params: Params) -> Response {
     post,
     path = "/api/attorneys/{id}/cja-appointments",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = CJAAppointment,
@@ -631,7 +660,7 @@ pub fn get_cja_panel_attorneys(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
 )]
 pub fn add_cja_appointment(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -653,13 +682,14 @@ pub fn add_cja_appointment(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/cja-appointments",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
         (status = 200, description = "List of CJA appointments", body = Vec<CJAAppointment>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
 )]
 pub fn get_cja_appointments(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -680,7 +710,10 @@ pub fn get_cja_appointments(req: Request, params: Params) -> Response {
         (status = 200, description = "List of pending vouchers", body = Vec<CJAAppointment>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "cja"
+    tag = "cja",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_pending_cja_vouchers(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -698,6 +731,7 @@ pub fn get_pending_cja_vouchers(req: Request, _params: Params) -> Response {
     put,
     path = "/api/attorneys/{id}/ecf-registration",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = ECFRegistration,
@@ -706,7 +740,7 @@ pub fn get_pending_cja_vouchers(req: Request, _params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "ecf"
+    tag = "ecf",
 )]
 pub fn update_ecf_registration(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -728,6 +762,7 @@ pub fn update_ecf_registration(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/good-standing",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -735,7 +770,7 @@ pub fn update_ecf_registration(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn check_good_standing(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -754,6 +789,7 @@ pub fn check_good_standing(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/can-practice/{court}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("court" = String, Path, description = "Federal court abbreviation")
     ),
@@ -762,7 +798,7 @@ pub fn check_good_standing(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn check_federal_practice(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -782,6 +818,7 @@ pub fn check_federal_practice(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/has-ecf-privileges",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -789,7 +826,7 @@ pub fn check_federal_practice(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "ecf"
+    tag = "ecf",
 )]
 pub fn check_ecf_privileges(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -811,7 +848,10 @@ pub fn check_ecf_privileges(req: Request, params: Params) -> Response {
         (status = 200, description = "List of attorneys with ECF access", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "ecf"
+    tag = "ecf",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_attorneys_with_ecf(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -827,6 +867,7 @@ pub fn get_attorneys_with_ecf(req: Request, _params: Params) -> Response {
     delete,
     path = "/api/attorneys/{id}/ecf-access",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -834,7 +875,7 @@ pub fn get_attorneys_with_ecf(req: Request, _params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "ecf"
+    tag = "ecf",
 )]
 pub fn revoke_ecf_access(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -854,6 +895,7 @@ pub fn revoke_ecf_access(req: Request, params: Params) -> Response {
     post,
     path = "/api/attorneys/{id}/disciplinary-actions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = DisciplinaryAction,
@@ -862,7 +904,7 @@ pub fn revoke_ecf_access(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "discipline"
+    tag = "discipline",
 )]
 pub fn add_disciplinary_action(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -884,13 +926,14 @@ pub fn add_disciplinary_action(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/disciplinary-actions",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
         (status = 200, description = "List of disciplinary actions", body = Vec<DisciplinaryAction>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "discipline"
+    tag = "discipline",
 )]
 pub fn get_disciplinary_history(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -911,7 +954,10 @@ pub fn get_disciplinary_history(req: Request, params: Params) -> Response {
         (status = 200, description = "List of attorneys with disciplinary actions", body = Vec<Attorney>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "discipline"
+    tag = "discipline",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_attorneys_with_discipline(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -934,7 +980,10 @@ pub fn get_attorneys_with_discipline(req: Request, _params: Params) -> Response 
         (status = 400, description = "Invalid party data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_party(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -978,6 +1027,7 @@ pub fn create_party(req: Request, _params: Params) -> Response {
     get,
     path = "/api/parties/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     responses(
@@ -985,7 +1035,7 @@ pub fn create_party(req: Request, _params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn get_party(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1004,6 +1054,7 @@ pub fn get_party(req: Request, params: Params) -> Response {
     put,
     path = "/api/parties/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     request_body = Party,
@@ -1012,7 +1063,7 @@ pub fn get_party(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn update_party(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1035,6 +1086,7 @@ pub fn update_party(req: Request, params: Params) -> Response {
     delete,
     path = "/api/parties/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     responses(
@@ -1042,7 +1094,7 @@ pub fn update_party(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn delete_party(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1060,13 +1112,14 @@ pub fn delete_party(req: Request, params: Params) -> Response {
     get,
     path = "/api/parties/case/{case_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of parties", body = Vec<Party>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn list_parties_by_case(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1084,13 +1137,14 @@ pub fn list_parties_by_case(req: Request, params: Params) -> Response {
     get,
     path = "/api/parties/attorney/{attorney_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("attorney_id" = String, Path, description = "Attorney ID")
     ),
     responses(
         (status = 200, description = "List of parties", body = Vec<Party>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn list_parties_by_attorney(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1108,6 +1162,7 @@ pub fn list_parties_by_attorney(req: Request, params: Params) -> Response {
     patch,
     path = "/api/parties/{id}/status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID"),
         ("status" = String, Query, description = "New party status")
     ),
@@ -1116,7 +1171,7 @@ pub fn list_parties_by_attorney(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn update_party_status(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1143,6 +1198,7 @@ pub fn update_party_status(req: Request, params: Params) -> Response {
     get,
     path = "/api/parties/{id}/needs-service",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     responses(
@@ -1150,7 +1206,7 @@ pub fn update_party_status(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn check_party_needs_service(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1169,6 +1225,7 @@ pub fn check_party_needs_service(req: Request, params: Params) -> Response {
     get,
     path = "/api/parties/{id}/lead-counsel",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     responses(
@@ -1176,7 +1233,7 @@ pub fn check_party_needs_service(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn get_party_lead_counsel(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1195,6 +1252,7 @@ pub fn get_party_lead_counsel(req: Request, params: Params) -> Response {
     get,
     path = "/api/parties/{id}/is-represented",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Party ID")
     ),
     responses(
@@ -1202,7 +1260,7 @@ pub fn get_party_lead_counsel(req: Request, params: Params) -> Response {
         (status = 404, description = "Party not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
 )]
 pub fn check_party_represented(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1224,7 +1282,10 @@ pub fn check_party_represented(req: Request, params: Params) -> Response {
         (status = 200, description = "List of unrepresented parties", body = Vec<Party>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "parties"
+    tag = "parties",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn get_unrepresented_parties(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1247,7 +1308,10 @@ pub fn get_unrepresented_parties(req: Request, _params: Params) -> Response {
         (status = 400, description = "Invalid representation data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn add_representation(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1268,6 +1332,7 @@ pub fn add_representation(req: Request, _params: Params) -> Response {
     post,
     path = "/api/representations/{id}/end",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Representation ID"),
         ("reason" = String, Query, description = "Withdrawal reason", nullable = true)
     ),
@@ -1276,7 +1341,7 @@ pub fn add_representation(req: Request, _params: Params) -> Response {
         (status = 404, description = "Representation not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn end_representation(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1298,6 +1363,7 @@ pub fn end_representation(req: Request, params: Params) -> Response {
     get,
     path = "/api/representations/{id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Representation ID")
     ),
     responses(
@@ -1305,7 +1371,7 @@ pub fn end_representation(req: Request, params: Params) -> Response {
         (status = 404, description = "Representation not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn get_representation(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1324,13 +1390,14 @@ pub fn get_representation(req: Request, params: Params) -> Response {
     get,
     path = "/api/representations/attorney/{attorney_id}/active",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("attorney_id" = String, Path, description = "Attorney ID")
     ),
     responses(
         (status = 200, description = "List of active representations", body = Vec<AttorneyRepresentation>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn get_active_representations(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1348,13 +1415,14 @@ pub fn get_active_representations(req: Request, params: Params) -> Response {
     get,
     path = "/api/representations/case/{case_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("case_id" = String, Path, description = "Case ID")
     ),
     responses(
         (status = 200, description = "List of representations", body = Vec<AttorneyRepresentation>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn get_case_representations(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1372,6 +1440,7 @@ pub fn get_case_representations(req: Request, params: Params) -> Response {
     post,
     path = "/api/representations/substitute",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("old_attorney_id" = String, Query, description = "Current attorney ID"),
         ("new_attorney_id" = String, Query, description = "New attorney ID"),
         ("case_id" = String, Query, description = "Case ID")
@@ -1381,7 +1450,7 @@ pub fn get_case_representations(req: Request, params: Params) -> Response {
         (status = 404, description = "Not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn substitute_attorney(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1410,7 +1479,10 @@ pub fn substitute_attorney(req: Request, _params: Params) -> Response {
         (status = 400, description = "Invalid service record data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "process-service"
+    tag = "process-service",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_service_record(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1431,13 +1503,14 @@ pub fn create_service_record(req: Request, _params: Params) -> Response {
     get,
     path = "/api/service-records/document/{document_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("document_id" = String, Path, description = "Document ID")
     ),
     responses(
         (status = 200, description = "List of service records", body = Vec<ServiceRecord>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "process-service"
+    tag = "process-service",
 )]
 pub fn get_service_by_document(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1455,13 +1528,14 @@ pub fn get_service_by_document(req: Request, params: Params) -> Response {
     get,
     path = "/api/service-records/party/{party_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("party_id" = String, Path, description = "Party ID")
     ),
     responses(
         (status = 200, description = "List of service records", body = Vec<ServiceRecord>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "process-service"
+    tag = "process-service",
 )]
 pub fn get_service_by_party(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1479,6 +1553,7 @@ pub fn get_service_by_party(req: Request, params: Params) -> Response {
     post,
     path = "/api/service-records/{id}/complete",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Service record ID")
     ),
     responses(
@@ -1486,7 +1561,7 @@ pub fn get_service_by_party(req: Request, params: Params) -> Response {
         (status = 404, description = "Service record not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "process-service"
+    tag = "process-service",
 )]
 pub fn mark_service_completed(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1511,7 +1586,10 @@ pub fn mark_service_completed(req: Request, params: Params) -> Response {
         (status = 400, description = "Invalid conflict check data"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "conflicts"
+    tag = "conflicts",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+    ),
 )]
 pub fn create_conflict_check(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1532,13 +1610,14 @@ pub fn create_conflict_check(req: Request, _params: Params) -> Response {
     get,
     path = "/api/conflict-checks/attorney/{attorney_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("attorney_id" = String, Path, description = "Attorney ID")
     ),
     responses(
         (status = 200, description = "List of conflict checks", body = Vec<ConflictCheck>),
         (status = 500, description = "Internal server error")
     ),
-    tag = "conflicts"
+    tag = "conflicts",
 )]
 pub fn get_attorney_conflicts(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1556,6 +1635,7 @@ pub fn get_attorney_conflicts(req: Request, params: Params) -> Response {
     post,
     path = "/api/conflict-checks/check",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("attorney_id" = String, Query, description = "Attorney ID")
     ),
     request_body = Vec<String>,
@@ -1564,7 +1644,7 @@ pub fn get_attorney_conflicts(req: Request, params: Params) -> Response {
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "conflicts"
+    tag = "conflicts",
 )]
 pub fn check_party_conflicts(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1589,6 +1669,7 @@ pub fn check_party_conflicts(req: Request, _params: Params) -> Response {
     post,
     path = "/api/conflict-checks/{id}/clear",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Conflict check ID"),
         ("waiver" = bool, Query, description = "Whether waiver was obtained")
     ),
@@ -1597,7 +1678,7 @@ pub fn check_party_conflicts(req: Request, _params: Params) -> Response {
         (status = 404, description = "Conflict check not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "conflicts"
+    tag = "conflicts",
 )]
 pub fn clear_conflict(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1623,6 +1704,7 @@ pub fn clear_conflict(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/metrics",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID"),
         ("start" = String, Query, description = "Start date (YYYY-MM-DD)"),
         ("end" = String, Query, description = "End date (YYYY-MM-DD)")
@@ -1632,7 +1714,7 @@ pub fn clear_conflict(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "metrics"
+    tag = "metrics",
 )]
 pub fn get_attorney_metrics(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1655,6 +1737,7 @@ pub fn get_attorney_metrics(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/win-rate",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -1662,7 +1745,7 @@ pub fn get_attorney_metrics(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "metrics"
+    tag = "metrics",
 )]
 pub fn get_attorney_win_rate(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1680,6 +1763,7 @@ pub fn get_attorney_win_rate(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/{id}/case-count",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     responses(
@@ -1687,7 +1771,7 @@ pub fn get_attorney_win_rate(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "metrics"
+    tag = "metrics",
 )]
 pub fn get_attorney_case_count(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1705,13 +1789,14 @@ pub fn get_attorney_case_count(req: Request, params: Params) -> Response {
     get,
     path = "/api/attorneys/top-performers",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("limit" = usize, Query, description = "Number of attorneys to return (default: 10)")
     ),
     responses(
         (status = 200, description = "Top performing attorneys with metrics"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "metrics"
+    tag = "metrics",
 )]
 pub fn get_top_attorneys(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1735,6 +1820,7 @@ pub fn get_top_attorneys(req: Request, _params: Params) -> Response {
     post,
     path = "/api/attorneys/bulk/update-status",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("status" = String, Query, description = "New status for all attorneys")
     ),
     request_body = Vec<String>,
@@ -1743,7 +1829,7 @@ pub fn get_top_attorneys(req: Request, _params: Params) -> Response {
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn bulk_update_status(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1773,6 +1859,7 @@ pub fn bulk_update_status(req: Request, _params: Params) -> Response {
     post,
     path = "/api/service-records/bulk/{document_id}",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("document_id" = String, Path, description = "Document ID")
     ),
     request_body = Vec<String>,
@@ -1781,7 +1868,7 @@ pub fn bulk_update_status(req: Request, _params: Params) -> Response {
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "process-service"
+    tag = "process-service",
 )]
 pub fn bulk_add_to_service(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1804,6 +1891,7 @@ pub fn bulk_add_to_service(req: Request, params: Params) -> Response {
     post,
     path = "/api/representations/migrate",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("from" = String, Query, description = "Current attorney ID"),
         ("to" = String, Query, description = "New attorney ID")
     ),
@@ -1812,7 +1900,7 @@ pub fn bulk_add_to_service(req: Request, params: Params) -> Response {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "representation"
+    tag = "representation",
 )]
 pub fn migrate_representations(req: Request, _params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
@@ -1841,6 +1929,7 @@ pub struct WinRateRequest {
     post,
     path = "/api/attorneys/{id}/calculate-win-rate",
     params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
     request_body = WinRateRequest,
@@ -1849,7 +1938,7 @@ pub struct WinRateRequest {
         (status = 404, description = "Attorney not found"),
         (status = 500, description = "Internal server error")
     ),
-    tag = "attorneys"
+    tag = "attorneys",
 )]
 pub fn calculate_attorney_win_rate(req: Request, params: Params) -> Response {
     let repo = RepositoryFactory::attorney_repo(&req);
