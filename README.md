@@ -140,21 +140,29 @@ A comprehensive federal court case management system built with [Spin](https://g
 - 📊 **Per-District Analytics** - Usage statistics and resource monitoring per district
 - 🎯 **District-Specific Configuration** - Custom settings and features per federal district
 
-### 13. PDF Document Generation System (15 Endpoints)
-**Federal Court Forms and Document Generation**
+### 13. PDF Document Generation System (18 Endpoints)
+**Federal Court Forms and Document Generation with Supreme Court Formatting**
 - 📄 **Rule 16(b) Orders** - Auto-generate scheduling orders for criminal cases
-- ✍️ **Electronic Signatures** - Apply judge signatures with secure authentication
+- ✍️ **Electronic Signatures** - Apply judge signatures with secure authentication and bordered signature boxes
 - 📋 **Federal Forms Library** - Complete implementation of official federal court forms:
   - **Form AO 455** - Waiver of Indictment
   - **Form AO 199A** - Order Setting Conditions of Release
   - **Form AO 245B** - Judgment in a Criminal Case
 - 🏛️ **Court Orders** - Generate custom court orders with electronic signing
 - 📝 **Minute Entries** - Professional minute entry generation with clerk signatures
-- 🔐 **Signature Management** - Secure storage and application of judicial signatures
+- 🔐 **Signature Management** - Secure storage and application of judicial signatures with SHA256 hashing
 - 📊 **Document Templates** - Reusable templates with variable substitution
 - 🎯 **Auto-Generation** - Test endpoints with pre-populated data for all forms
 - 📁 **Batch Generation** - Generate multiple documents in a single API call with `/api/pdf/batch`
-- 📦 **Base64 Response** - Batch endpoint returns PDFs as base64-encoded strings in JSON
+- 📦 **Dual Response Formats** - Support for both application/pdf and application/json (base64) based on Accept header
+- ⚖️ **Supreme Court Rule 33 Formatting** - Professional legal document formatting:
+  - 8.5x11" page size (Letter)
+  - Times-Roman font
+  - 1-inch margins
+  - Double-spacing
+  - Proper text wrapping
+  - Centered headers and content
+- 🏗️ **Hexagonal Architecture** - Clean separation between PDF generation ports and adapters
 
 ### 14. Legacy ToDo System (5 Endpoints)
 **Simple Task Management (Demo/Testing)**
@@ -1508,6 +1516,148 @@ This release represents a complete transformation from a simple ToDo API to a co
 - Soft delete functionality
 - UUID-based identification
 - OpenAPI documentation
+
+## PDF Document Generation API
+
+### Overview
+The PDF generation system demonstrates hexagonal architecture with clean separation between business logic and infrastructure. It supports Supreme Court Rule 33 formatting standards for professional legal documents.
+
+### Architecture
+```
+┌─────────────────────────────────────────────┐
+│          HTTP Handlers                      │  ← Inbound Adapters
+│      (handlers/pdf_hexagonal.rs)            │
+├─────────────────────────────────────────────┤
+│          PDF Service                        │  ← Application Layer
+│      (services/pdf_service.rs)              │
+├─────────────────────────────────────────────┤
+│       Document Generator Port               │  ← Port (Interface)
+│    (ports/document_generator.rs)            │
+├─────────────────────────────────────────────┤
+│          Domain Models                      │  ← Core Business Logic
+│        (domain/document.rs)                 │
+├─────────────────────────────────────────────┤
+│       PDF Writer Adapter                    │  ← Outbound Adapter
+│   (adapters/pdf_writer_adapter.rs)          │
+└─────────────────────────────────────────────┘
+```
+
+### Response Format Selection
+
+**NEW in v5.1.0:** All PDF endpoints now use explicit URL-based format selection for clarity:
+- **`/api/pdf/{endpoint}/json`** → Returns JSON with base64-encoded PDF
+- **`/api/pdf/{endpoint}/pdf`** → Returns raw PDF binary for direct download
+- **`/api/pdf/{endpoint}`** → Defaults to JSON format for backward compatibility
+
+This approach is more explicit and works better with API documentation tools like Swagger UI.
+
+### Key Endpoints
+
+#### Generate Rule 16(b) Order
+```bash
+# Generate with JSON response (base64 PDF)
+curl -X POST "http://localhost:3000/api/pdf/rule16b/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Court-District: SDNY" \
+  -d '{
+    "case_number": "2024-CR-00123",
+    "defendant_names": "John Doe",
+    "judge_name": "Hon. Patricia Johnson",
+    "trial_date": "2024-06-15",
+    "discovery_deadline": "2024-04-01",
+    "motion_deadline": "2024-05-01",
+    "pretrial_conference_date": "2024-05-15"
+  }'
+
+# Generate with PDF response (direct download)
+curl -X POST "http://localhost:3000/api/pdf/rule16b/pdf" \
+  -H "Content-Type: application/json" \
+  -H "X-Court-District: SDNY" \
+  -d '{
+    "case_number": "2024-CR-00123",
+    "defendant_names": "John Doe",
+    "judge_name": "Hon. Patricia Johnson"
+  }' --output rule16b-order.pdf
+```
+
+#### Generate Signed Documents
+```bash
+# Generate signed Rule 16(b) with stored signature - JSON format
+curl -X POST "http://localhost:3000/api/pdf/signed/rule16b/json" \
+  -H "Content-Type: application/json" \
+  -H "X-Court-District: SDNY" \
+  -d '{
+    "case_number": "2024-CR-00123",
+    "defendant_names": "John Doe",
+    "judge_name": "Hon. Patricia Johnson",
+    "judge_id": "550e8400-e29b-41d4-a716-446655440000"
+  }'
+
+# Generate signed Rule 16(b) - PDF format
+curl -X POST "http://localhost:3000/api/pdf/signed/rule16b/pdf" \
+  -H "Content-Type: application/json" \
+  -H "X-Court-District: SDNY" \
+  -d '{
+    "case_number": "2024-CR-00123",
+    "defendant_names": "John Doe",
+    "judge_name": "Hon. Patricia Johnson",
+    "judge_id": "550e8400-e29b-41d4-a716-446655440000"
+  }' --output signed-order.pdf
+```
+
+#### Batch Document Generation
+```bash
+# Generate multiple documents at once
+curl -X POST "http://localhost:3000/api/pdf/batch" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "documents": [
+      {
+        "type": "rule16b_order",
+        "case_number": "2024-CR-00123",
+        "defendant_name": "John Doe",
+        "judge_name": "Hon. Patricia Johnson",
+        "trial_date": "2024-06-15"
+      },
+      {
+        "type": "minute_entry",
+        "case_number": "2024-CR-00456",
+        "hearing_type": "Arraignment",
+        "date": "2024-01-20"
+      }
+    ]
+  }'
+```
+
+#### Signature Management
+```bash
+# Store a judge's signature
+curl -X POST "http://localhost:3000/api/signatures" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "judge_id": "550e8400-e29b-41d4-a716-446655440000",
+    "signature_base64": "iVBORw0KGgoAAAANS..."
+  }'
+
+# Retrieve a judge's signature
+curl "http://localhost:3000/api/signatures/550e8400-e29b-41d4-a716-446655440000"
+```
+
+### Document Formatting Features
+- **Supreme Court Rule 33 Compliance**: Professional legal document formatting
+- **8.5x11" Letter Size**: Standard U.S. court document size
+- **Times-Roman Font**: Traditional legal document typography
+- **1-inch Margins**: Standard court filing margins
+- **Double-Spacing**: Enhanced readability for legal documents
+- **Text Wrapping**: Automatic text wrapping to prevent margin overflow
+- **Centered Headers**: Professional document layout
+- **Signature Boxes**: Bordered electronic signature areas
+
+### Response Format Selection
+The API automatically selects the response format based on the `Accept` header:
+- `Accept: application/pdf` → Returns raw PDF binary
+- `Accept: application/json` → Returns JSON with base64-encoded PDF
+- Default (no Accept header) → Returns JSON with base64-encoded PDF
 
 ## Acknowledgments
 

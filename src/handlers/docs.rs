@@ -149,7 +149,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     (name = "conflicts", description = "Conflict of interest checking"),
     (name = "process-service", description = "Legal process service and proof of delivery"),
     (name = "Sentencing", description = "Federal sentencing guidelines and calculations"),
-    (name = "pdf-generation", description = "PDF document generation for court orders and filings")
+    (name = "pdf-generation", description = "PDF document generation for court orders and filings. Supports dual response formats based on Accept header."),
+    (name = "signature-management", description = "Electronic signature storage and retrieval for judge signatures")
   ),
   paths(
     // ToDo API
@@ -356,6 +357,8 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
     crate::handlers::pdf_hexagonal::generate_conditions_release,
     crate::handlers::pdf_hexagonal::generate_criminal_judgment,
     crate::handlers::pdf_hexagonal::generate_batch_pdfs,
+    crate::handlers::pdf_hexagonal::store_signature,
+    crate::handlers::pdf_hexagonal::get_signature,
     // Attorney Management API
     crate::handlers::attorney::create_attorney,
     crate::handlers::attorney::get_attorney,
@@ -651,6 +654,7 @@ pub fn render_openapi_docs_ui(req: Request, _p: Params) -> anyhow::Result<impl I
       crate::handlers::pdf_hexagonal::BatchPdfRequest,
       crate::handlers::pdf_hexagonal::BatchPdfResponse,
       crate::handlers::pdf_hexagonal::DocumentRequestDto,
+      crate::handlers::pdf_hexagonal::StoreSignatureRequest,
       // Health & Error Models
       crate::handlers::health::HealthStatus,
       crate::error::ErrorResponse,

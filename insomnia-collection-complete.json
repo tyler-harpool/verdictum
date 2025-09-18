@@ -1,0 +1,509 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-01-18T05:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.0",
+  "resources": [
+    {
+      "_id": "wrk_1",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "Spin Federal Court API",
+      "description": "Federal Judicial Case Management System with PDF Generation"
+    },
+    {
+      "_id": "env_1",
+      "_type": "environment",
+      "parentId": "wrk_1",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "court_district": "sdny"
+      }
+    },
+    {
+      "_id": "req_health",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "Health Check",
+      "url": "{{ _.base_url }}/api/health",
+      "method": "GET",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_swagger",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "Swagger Documentation",
+      "url": "{{ _.base_url }}/swagger-ui",
+      "method": "GET",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "folder_cases",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "Criminal Cases"
+    },
+    {
+      "_id": "req_cases_list",
+      "_type": "request",
+      "parentId": "folder_cases",
+      "name": "List Cases",
+      "url": "{{ _.base_url }}/api/cases",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_cases_create",
+      "_type": "request",
+      "parentId": "folder_cases",
+      "name": "Create Case",
+      "url": "{{ _.base_url }}/api/cases",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_name\": \"John Doe\",\n  \"charges\": [\"18 U.S.C. § 1343 - Wire Fraud\", \"18 U.S.C. § 1956 - Money Laundering\"],\n  \"filing_date\": \"2025-01-18\",\n  \"judge_assigned\": \"Hon. John Smith\",\n  \"prosecutor\": \"Jane Johnson\",\n  \"defense_attorney\": \"Robert Williams\",\n  \"status\": \"pretrial\"\n}"
+      }
+    },
+    {
+      "_id": "req_cases_get",
+      "_type": "request",
+      "parentId": "folder_cases",
+      "name": "Get Case by ID",
+      "url": "{{ _.base_url }}/api/cases/CR-2025-001",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "folder_pdf",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "PDF Generation"
+    },
+    {
+      "_id": "req_pdf_rule16b",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Rule 16(b) Order",
+      "url": "{{ _.base_url }}/api/pdf/rule-16b",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json",
+          "description": "Use application/pdf for direct PDF download"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. John Smith\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_rule16b_signed",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Signed Rule 16(b)",
+      "url": "{{ _.base_url }}/api/pdf/rule-16b-signed",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/pdf"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. John Smith\",\n  \"signature_base64\": null\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_court_order",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Court Order",
+      "url": "{{ _.base_url }}/api/pdf/court-order",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. John Smith\",\n  \"order_title\": \"Order on Motion to Suppress\",\n  \"order_content\": \"The Court, having considered the defendant's motion to suppress evidence, hereby ORDERS that the motion is DENIED.\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_minute_entry",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Minute Entry",
+      "url": "{{ _.base_url }}/api/pdf/minute-entry",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/pdf"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_names\": \"John Doe\",\n  \"judge_name\": \"Hon. John Smith\",\n  \"date\": \"2025-01-18\",\n  \"minute_text\": \"Initial appearance and arraignment. Defendant pleaded not guilty to all charges. Next hearing scheduled for February 15, 2025 at 10:00 AM in Courtroom 5B. The Court advised the defendant of his rights under the Federal Rules of Criminal Procedure. Bail was set at $50,000 with standard conditions of release including regular reporting to Pretrial Services.\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_waiver",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Waiver of Indictment",
+      "url": "{{ _.base_url }}/api/pdf/waiver-indictment/CR-2025-001",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_name\": \"John Doe\",\n  \"charges\": \"18 U.S.C. § 1343 (Wire Fraud)\\n18 U.S.C. § 1956 (Money Laundering)\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_conditions",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Conditions of Release",
+      "url": "{{ _.base_url }}/api/pdf/conditions-release/CR-2025-001",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/pdf"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_name\": \"John Doe\",\n  \"conditions\": [\"Report to Pretrial Services weekly\", \"Surrender passport\", \"No contact with co-defendants\", \"Maintain employment\"],\n  \"bail_amount\": \"$50,000\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_judgment",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Generate Criminal Judgment",
+      "url": "{{ _.base_url }}/api/pdf/criminal-judgment/CR-2025-001",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"case_number\": \"CR-2025-001\",\n  \"defendant_name\": \"John Doe\",\n  \"verdict\": \"Guilty\",\n  \"sentence\": \"60 months imprisonment, 3 years supervised release\",\n  \"judge_name\": \"Hon. John Smith\"\n}"
+      }
+    },
+    {
+      "_id": "req_pdf_batch",
+      "_type": "request",
+      "parentId": "folder_pdf",
+      "name": "Batch PDF Generation",
+      "url": "{{ _.base_url }}/api/pdf/batch",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        },
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"documents\": [\n    {\n      \"type\": \"rule16b\",\n      \"case_number\": \"CR-2025-001\",\n      \"defendant_names\": \"John Doe\",\n      \"judge_name\": \"Hon. Judge Smith\"\n    },\n    {\n      \"type\": \"court_order\",\n      \"case_number\": \"CR-2025-002\",\n      \"defendant_names\": \"Jane Smith\",\n      \"order_title\": \"Motion Hearing Order\",\n      \"order_content\": \"The court orders a hearing on the motion for discovery.\",\n      \"judge_name\": \"Hon. Judge Johnson\"\n    },\n    {\n      \"type\": \"minute_entry\",\n      \"case_number\": \"CR-2025-003\",\n      \"defendant_names\": \"Bob Wilson\",\n      \"judge_name\": \"Hon. Judge Williams\",\n      \"date\": \"2025-01-18\",\n      \"minute_text\": \"Defendant appeared for status conference.\"\n    }\n  ]\n}"
+      }
+    },
+    {
+      "_id": "folder_signatures",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "Digital Signatures"
+    },
+    {
+      "_id": "req_sig_store",
+      "_type": "request",
+      "parentId": "folder_signatures",
+      "name": "Store Judge Signature",
+      "url": "{{ _.base_url }}/api/signatures",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"judge_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"signature_base64\": \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}"
+      }
+    },
+    {
+      "_id": "req_sig_get",
+      "_type": "request",
+      "parentId": "folder_signatures",
+      "name": "Get Judge Signature",
+      "url": "{{ _.base_url }}/api/signatures/123e4567-e89b-12d3-a456-426614174000",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "folder_judges",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "Judges"
+    },
+    {
+      "_id": "req_judges_list",
+      "_type": "request",
+      "parentId": "folder_judges",
+      "name": "List Judges",
+      "url": "{{ _.base_url }}/api/judges",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_judges_create",
+      "_type": "request",
+      "parentId": "folder_judges",
+      "name": "Create Judge",
+      "url": "{{ _.base_url }}/api/judges",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Hon. John Smith\",\n  \"court_room\": \"5B\",\n  \"appointment_date\": \"2020-01-15\",\n  \"status\": \"active\"\n}"
+      }
+    },
+    {
+      "_id": "folder_orders",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "Court Orders"
+    },
+    {
+      "_id": "req_orders_list",
+      "_type": "request",
+      "parentId": "folder_orders",
+      "name": "List Court Orders",
+      "url": "{{ _.base_url }}/api/orders",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_orders_by_case",
+      "_type": "request",
+      "parentId": "folder_orders",
+      "name": "Get Orders by Case",
+      "url": "{{ _.base_url }}/api/cases/CR-2025-001/orders",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_orders_pending",
+      "_type": "request",
+      "parentId": "folder_orders",
+      "name": "Get Pending Signatures",
+      "url": "{{ _.base_url }}/api/judges/123e4567-e89b-12d3-a456-426614174000/orders/pending-signatures",
+      "method": "GET",
+      "headers": [
+        {
+          "name": "X-Court-District",
+          "value": "{{ _.court_district }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "folder_todos",
+      "_type": "request_group",
+      "parentId": "wrk_1",
+      "name": "Todo Items (Demo)"
+    },
+    {
+      "_id": "req_todos_list",
+      "_type": "request",
+      "parentId": "folder_todos",
+      "name": "List Todos",
+      "url": "{{ _.base_url }}/api/todos",
+      "method": "GET",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_todos_create",
+      "_type": "request",
+      "parentId": "folder_todos",
+      "name": "Create Todo",
+      "url": "{{ _.base_url }}/api/todos",
+      "method": "POST",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"title\": \"Review case files\",\n  \"completed\": false\n}"
+      }
+    },
+    {
+      "_id": "env_prod",
+      "_type": "environment",
+      "parentId": "env_1",
+      "name": "Production",
+      "data": {
+        "base_url": "https://api.federal-courts.gov",
+        "court_district": "sdny"
+      }
+    },
+    {
+      "_id": "env_dev",
+      "_type": "environment",
+      "parentId": "env_1",
+      "name": "Development",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "court_district": "edny"
+      }
+    }
+  ]
+}

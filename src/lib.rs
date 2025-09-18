@@ -38,7 +38,7 @@ pub use error::{ApiError, ApiResult};
 /// This function sets up the router with all API endpoints and documentation routes.
 /// It's the entry point for all HTTP requests to the application.
 #[http_component]
-fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
+async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     let mut router = Router::default();
 
     // Health check endpoint
@@ -394,21 +394,26 @@ fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     router.post("/api/representations/migrate", handlers::attorney::migrate_representations);
 
     // PDF Generation endpoints - Court Orders (Hexagonal Architecture)
-    router.post("/api/pdf/rule-16b", handlers::pdf_hexagonal::generate_rule16b);
-
-    // PDF Generation endpoints - Court Orders
-    router.post("/api/pdf/rule-16b-order", handlers::pdf_hexagonal::generate_rule16b);
-    router.post("/api/pdf/rule-16b-signed", handlers::pdf_hexagonal::generate_signed_rule16b);
-    router.post("/api/pdf/court-order", handlers::pdf_hexagonal::generate_court_order);
-    router.post("/api/pdf/minute-entry", handlers::pdf_hexagonal::generate_minute_entry);
+    // Format parameter: 'pdf' for raw PDF, 'json' for base64-encoded JSON
+    router.post("/api/pdf/rule16b/:format", handlers::pdf_hexagonal::generate_rule16b);
+    router.post("/api/pdf/rule16b", handlers::pdf_hexagonal::generate_rule16b); // Default to JSON
+    router.post("/api/pdf/signed/rule16b/:format", handlers::pdf_hexagonal::generate_signed_rule16b);
+    router.post("/api/pdf/signed/rule16b", handlers::pdf_hexagonal::generate_signed_rule16b); // Default to JSON
+    router.post("/api/pdf/court-order/:format", handlers::pdf_hexagonal::generate_court_order);
+    router.post("/api/pdf/court-order", handlers::pdf_hexagonal::generate_court_order); // Default to JSON
+    router.post("/api/pdf/minute-entry/:format", handlers::pdf_hexagonal::generate_minute_entry);
+    router.post("/api/pdf/minute-entry", handlers::pdf_hexagonal::generate_minute_entry); // Default to JSON
     // Auto-generation endpoints (TODO: implement in hexagonal)
     // router.get("/api/pdf/auto/rule-16b/:case_id", auto_generate_rule_16b);
     // router.post("/api/pdf/judge-signature", upload_judge_signature);
 
     // PDF Generation endpoints - Federal Forms
-    router.post("/api/pdf/waiver-indictment/:case_id", handlers::pdf_hexagonal::generate_waiver_indictment);
-    router.post("/api/pdf/conditions-release/:case_id", handlers::pdf_hexagonal::generate_conditions_release);
-    router.post("/api/pdf/criminal-judgment/:case_id", handlers::pdf_hexagonal::generate_criminal_judgment);
+    router.post("/api/pdf/waiver-indictment/:format", handlers::pdf_hexagonal::generate_waiver_indictment);
+    router.post("/api/pdf/waiver-indictment", handlers::pdf_hexagonal::generate_waiver_indictment); // Default to JSON
+    router.post("/api/pdf/conditions-release/:format", handlers::pdf_hexagonal::generate_conditions_release);
+    router.post("/api/pdf/conditions-release", handlers::pdf_hexagonal::generate_conditions_release); // Default to JSON
+    router.post("/api/pdf/criminal-judgment/:format", handlers::pdf_hexagonal::generate_criminal_judgment);
+    router.post("/api/pdf/criminal-judgment", handlers::pdf_hexagonal::generate_criminal_judgment); // Default to JSON
     // Auto-generation endpoints (TODO: migrate to hexagonal)
     // router.get("/api/pdf/auto/waiver-indictment/:case_id", auto_generate_waiver);
     // router.get("/api/pdf/auto/conditions-release/:case_id", auto_generate_conditions);

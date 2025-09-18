@@ -11,17 +11,22 @@ use crate::ports::document_generator::DocumentRequest;
 use crate::services::pdf_service::create_pdf_service;
 use crate::utils::tenant;
 
-/// Helper function to determine response format from Accept header
-fn wants_pdf(req: &Request) -> bool {
+/// Helper function to determine response format from URL parameter or Accept header
+fn wants_pdf(req: &Request, params: &Params) -> bool {
+    // First check URL parameter
+    if let Some(format) = params.get("format") {
+        return format == "pdf";
+    }
+    // Fall back to Accept header for backward compatibility
     req.header("accept")
         .and_then(|v| v.as_str())
         .map(|accept| accept.contains("application/pdf"))
         .unwrap_or(false)
 }
 
-/// Helper function to build response based on Accept header
-fn build_response(req: &Request, generated: crate::domain::document::GeneratedDocument, doc_type: &str, case_number: String) -> Response {
-    if wants_pdf(req) {
+/// Helper function to build response based on format parameter or Accept header
+fn build_response(req: &Request, params: &Params, generated: crate::domain::document::GeneratedDocument, doc_type: &str, case_number: String) -> Response {
+    if wants_pdf(req, params) {
         // Return raw PDF
         Response::builder()
             .status(200)
@@ -53,7 +58,18 @@ pub struct Rule16bRequest {
     pub case_number: String,
     pub defendant_names: String,
     pub judge_name: String,
+    #[serde(default)]
+    pub trial_date: Option<String>,
+    #[serde(default)]
+    pub discovery_deadline: Option<String>,
+    #[serde(default)]
+    pub motion_deadline: Option<String>,
+    #[serde(default)]
+    pub pretrial_conference_date: Option<String>,
+    #[serde(default)]
     pub signature_base64: Option<String>,
+    #[serde(default)]
+    pub judge_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -63,7 +79,12 @@ pub struct CourtOrderRequest {
     pub judge_name: String,
     pub order_title: String,
     pub order_content: String,
+    #[serde(default)]
+    pub date: Option<String>,
+    #[serde(default)]
     pub signature_base64: Option<String>,
+    #[serde(default)]
+    pub judge_id: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -72,6 +93,14 @@ pub struct MinuteEntryRequest {
     pub defendant_names: String,
     pub judge_name: String,
     pub minute_text: String,
+    #[serde(default)]
+    pub hearing_date: Option<String>,
+    #[serde(default)]
+    pub hearing_type: Option<String>,
+    #[serde(default)]
+    pub court_reporter: Option<String>,
+    #[serde(default)]
+    pub next_hearing: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -288,21 +317,27 @@ fn create_document_request(
 }
 
 /// Generate a signed Rule 16(b) order
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/rule-16b-signed",
+    path = "/api/pdf/signed/rule16b/{format}",
     request_body = Rule16bRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn generate_signed_rule16b(req: Request, _params: Params) -> Response {
+pub fn generate_signed_rule16b(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
     let district = match District::new(district_str.clone()) {
         Ok(d) => d,
@@ -383,25 +418,31 @@ pub fn generate_signed_rule16b(req: Request, _params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "rule16b-signed", request.case_number)
+    build_response(&req, &params, generated, "rule16b-signed", request.case_number)
 }
 
 /// Generate a court order
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/court-order",
+    path = "/api/pdf/court-order/{format}",
     request_body = CourtOrderRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn generate_court_order(req: Request, _params: Params) -> Response {
+pub fn generate_court_order(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
     let district = match District::new(district_str.clone()) {
         Ok(d) => d,
@@ -471,25 +512,31 @@ pub fn generate_court_order(req: Request, _params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "court_order", request.case_number)
+    build_response(&req, &params, generated, "court_order", request.case_number)
 }
 
 /// Generate a minute entry
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/minute-entry",
+    path = "/api/pdf/minute-entry/{format}",
     request_body = MinuteEntryRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn generate_minute_entry(req: Request, _params: Params) -> Response {
+pub fn generate_minute_entry(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
     let district = match District::new(district_str.clone()) {
         Ok(d) => d,
@@ -557,25 +604,31 @@ pub fn generate_minute_entry(req: Request, _params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "minute_entry", request.case_number)
+    build_response(&req, &params, generated, "minute_entry", request.case_number)
 }
 
 /// Generate a Rule 16(b) scheduling order
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/rule-16b",
+    path = "/api/pdf/rule16b/{format}",
     request_body = Rule16bRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn generate_rule16b(req: Request, _params: Params) -> Response {
+pub fn generate_rule16b(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
     let district = match District::new(district_str.clone()) {
         Ok(d) => d,
@@ -643,21 +696,27 @@ pub fn generate_rule16b(req: Request, _params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "rule16b", request.case_number)
+    build_response(&req, &params, generated, "rule16b", request.case_number)
 }
 
 /// Generate waiver of indictment
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/waiver-indictment",
+    path = "/api/pdf/waiver-indictment/{format}",
     request_body = WaiverIndictmentRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
@@ -730,21 +789,27 @@ pub fn generate_waiver_indictment(req: Request, params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "waiver_indictment", request.case_number)
+    build_response(&req, &params, generated, "waiver_indictment", request.case_number)
 }
 
 /// Generate conditions of release
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/conditions-release",
+    path = "/api/pdf/conditions-release/{format}",
     request_body = ConditionsReleaseRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
@@ -823,21 +888,27 @@ pub fn generate_conditions_release(req: Request, params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "conditions_release", request.case_number)
+    build_response(&req, &params, generated, "conditions_release", request.case_number)
 }
 
 /// Generate criminal judgment
+///
+/// Returns either raw PDF or JSON with base64 PDF based on Accept header:
+/// - Accept: application/pdf → Raw PDF binary
+/// - Accept: application/json → JSON with base64-encoded PDF
 #[utoipa::path(
     post,
-    path = "/api/pdf/criminal-judgment",
+    path = "/api/pdf/criminal-judgment/{format}",
     request_body = CriminalJudgmentRequest,
     responses(
-        (status = 200, description = "PDF generated successfully", body = PdfResponse),
+        (status = 200, description = "PDF generated successfully (JSON format)", body = PdfResponse, content_type = "application/json"),
+        (status = 200, description = "PDF generated successfully (PDF format)", content_type = "application/pdf"),
         (status = 400, description = "Invalid request"),
         (status = 500, description = "Internal server error")
     ),
     tag = "pdf-generation",
     params(
+        ("format" = String, Path, description = "Response format: 'pdf' for raw PDF, 'json' for base64-encoded JSON", example = "pdf"),
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
@@ -916,10 +987,12 @@ pub fn generate_criminal_judgment(req: Request, params: Params) -> Response {
         }
     };
 
-    build_response(&req, generated, "criminal_judgment", request.case_number)
+    build_response(&req, &params, generated, "criminal_judgment", request.case_number)
 }
 
 /// Generate multiple PDFs in a single request
+///
+/// Always returns JSON with base64-encoded PDFs (batch operations don't support raw PDF response)
 #[utoipa::path(
     post,
     path = "/api/pdf/batch",
@@ -934,7 +1007,7 @@ pub fn generate_criminal_judgment(req: Request, params: Params) -> Response {
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn generate_batch_pdfs(req: Request, _params: Params) -> Response {
+pub fn generate_batch_pdfs(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
     let district = match District::new(district_str.clone()) {
         Ok(d) => d,
@@ -1054,7 +1127,7 @@ pub fn generate_batch_pdfs(req: Request, _params: Params) -> Response {
         ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY")
     ),
 )]
-pub fn store_signature(req: Request, _params: Params) -> Response {
+pub fn store_signature(req: Request, params: Params) -> Response {
     let district_str = tenant::get_tenant_id(&req);
 
     let body = req.body().to_vec();

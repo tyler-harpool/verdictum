@@ -9,11 +9,30 @@ use crate::adapters::pdf_writer_adapter::PdfWriterAdapter;
 use crate::adapters::spin_kv_document_repository::SpinKvDocumentRepository;
 use crate::adapters::spin_kv_signature_repository::SpinKvSignatureRepository;
 
-/// PDF service that coordinates between ports and adapters
+/// PDF service that coordinates between ports and adapters following hexagonal architecture
+///
+/// This service implements the application layer in our hexagonal architecture,
+/// orchestrating the generation, storage, and retrieval of court documents and signatures.
+///
+/// # Architecture
+/// - Uses dependency injection to work with abstract ports (traits)
+/// - Supports both synchronous and asynchronous operations
+/// - Multi-tenant by design (tenant_id determines which KV store to use)
+///
+/// # Example
+/// ```
+/// let service = PdfService::new("sdny")?;
+/// let doc = service.generate_document_sync(request)?;
+/// ```
 pub struct PdfService {
+    /// Generates PDF documents from court data
     generator: Arc<dyn DocumentGenerator>,
+    /// Stores and retrieves generated documents
     repository: Arc<dyn DocumentRepository>,
+    /// Manages judge electronic signatures
     signature_repo: Arc<dyn SignatureRepository>,
+    /// Tenant ID for multi-tenant data isolation
+    tenant_id: String,
 }
 
 impl PdfService {
@@ -34,6 +53,7 @@ impl PdfService {
             generator,
             repository,
             signature_repo,
+            tenant_id: tenant_id.to_string(),
         })
     }
 
@@ -42,11 +62,13 @@ impl PdfService {
         generator: Arc<dyn DocumentGenerator>,
         repository: Arc<dyn DocumentRepository>,
         signature_repo: Arc<dyn SignatureRepository>,
+        tenant_id: String,
     ) -> Self {
         Self {
             generator,
             repository,
             signature_repo,
+            tenant_id,
         }
     }
 
@@ -101,8 +123,9 @@ impl PdfService {
         use spin_sdk::key_value::Store;
         use chrono::Utc;
 
-        let store = Store::open_default()
-            .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open store: {:?}", e)))?;
+        // CRITICAL: Use tenant-specific store, not default!
+        let store = Store::open(&self.tenant_id)
+            .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open tenant store '{}': {:?}", self.tenant_id, e)))?;
 
         use sha2::{Sha256, Digest};
         let mut hasher = Sha256::new();
@@ -130,8 +153,9 @@ impl PdfService {
     pub fn get_signature_sync(&self, judge_id: uuid::Uuid) -> Result<Option<crate::ports::signature_repository::JudgeSignature>, DocumentError> {
         use spin_sdk::key_value::Store;
 
-        let store = Store::open_default()
-            .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open store: {:?}", e)))?;
+        // CRITICAL: Use tenant-specific store, not default!
+        let store = Store::open(&self.tenant_id)
+            .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open tenant store '{}': {:?}", self.tenant_id, e)))?;
 
         let key = format!("signature_{}", judge_id);
 
