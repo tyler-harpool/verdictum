@@ -11,7 +11,8 @@ pub struct SpinKvSignatureRepository {
 
 impl SpinKvSignatureRepository {
     pub fn new(tenant_id: &str) -> Result<Self, KvError> {
-        let store_name = format!("{}_signatures", tenant_id);
+        // Use the tenant's existing store with a prefix for signatures
+        let store_name = tenant_id.to_lowercase();
         let store = Store::open(&store_name)?;
         Ok(Self { store })
     }

@@ -26,12 +26,8 @@ pub(crate) mod judge;
 pub(crate) mod opinion;
 /// Judicial order management handlers
 pub(crate) mod order;
-/// PDF generation handlers for court documents
-pub(crate) mod pdf_working;
-/// Federal forms generation handlers
-pub(crate) mod federal_forms;
-/// Batch PDF generation handlers
-pub(crate) mod pdf_batch;
+/// PDF generation handlers using hexagonal architecture
+pub(crate) mod pdf_hexagonal;
 /// Federal sentencing management handlers
 pub(crate) mod sentencing;
 /// ToDo item CRUD operation handlers

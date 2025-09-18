@@ -7,6 +7,7 @@ pub mod attorney;
 pub mod criminal_case;
 pub mod deadline;
 pub mod docket;
+pub mod document;
 pub mod features;
 pub mod judge;
 pub mod opinion;

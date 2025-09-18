@@ -28,6 +28,7 @@ mod error;
 mod handlers;
 mod macros;
 mod ports;
+mod services;
 mod utils;
 
 pub use error::{ApiError, ApiResult};
@@ -392,25 +393,34 @@ fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse> {
     router.post("/api/service-records/bulk/:document_id", handlers::attorney::bulk_add_to_service);
     router.post("/api/representations/migrate", handlers::attorney::migrate_representations);
 
+    // PDF Generation endpoints - Court Orders (Hexagonal Architecture)
+    router.post("/api/pdf/rule-16b", handlers::pdf_hexagonal::generate_rule16b);
+
     // PDF Generation endpoints - Court Orders
-    router.post("/api/pdf/rule-16b-order", handlers::pdf_working::generate_rule_16b_order);
-    router.post("/api/pdf/rule-16b-signed", handlers::pdf_working::generate_signed_rule_16b_order);
-    router.post("/api/pdf/court-order", handlers::pdf_working::generate_court_order);
-    router.post("/api/pdf/minute-entry", handlers::pdf_working::generate_minute_entry);
-    router.get("/api/pdf/auto/rule-16b/:case_id", handlers::pdf_working::auto_generate_rule_16b);
-    router.post("/api/pdf/judge-signature", handlers::pdf_working::upload_judge_signature);
+    router.post("/api/pdf/rule-16b-order", handlers::pdf_hexagonal::generate_rule16b);
+    router.post("/api/pdf/rule-16b-signed", handlers::pdf_hexagonal::generate_signed_rule16b);
+    router.post("/api/pdf/court-order", handlers::pdf_hexagonal::generate_court_order);
+    router.post("/api/pdf/minute-entry", handlers::pdf_hexagonal::generate_minute_entry);
+    // Auto-generation endpoints (TODO: implement in hexagonal)
+    // router.get("/api/pdf/auto/rule-16b/:case_id", auto_generate_rule_16b);
+    // router.post("/api/pdf/judge-signature", upload_judge_signature);
 
     // PDF Generation endpoints - Federal Forms
-    router.post("/api/pdf/waiver-indictment/:case_id", handlers::federal_forms::generate_waiver_of_indictment);
-    router.post("/api/pdf/conditions-release/:case_id", handlers::federal_forms::generate_conditions_of_release);
-    router.post("/api/pdf/criminal-judgment/:case_id", handlers::federal_forms::generate_criminal_judgment);
-    router.get("/api/pdf/auto/waiver-indictment/:case_id", handlers::federal_forms::auto_generate_waiver);
-    router.get("/api/pdf/auto/conditions-release/:case_id", handlers::federal_forms::auto_generate_conditions);
-    router.get("/api/pdf/auto/criminal-judgment/:case_id", handlers::federal_forms::auto_generate_judgment);
+    router.post("/api/pdf/waiver-indictment/:case_id", handlers::pdf_hexagonal::generate_waiver_indictment);
+    router.post("/api/pdf/conditions-release/:case_id", handlers::pdf_hexagonal::generate_conditions_release);
+    router.post("/api/pdf/criminal-judgment/:case_id", handlers::pdf_hexagonal::generate_criminal_judgment);
+    // Auto-generation endpoints (TODO: migrate to hexagonal)
+    // router.get("/api/pdf/auto/waiver-indictment/:case_id", auto_generate_waiver);
+    // router.get("/api/pdf/auto/conditions-release/:case_id", auto_generate_conditions);
+    // router.get("/api/pdf/auto/criminal-judgment/:case_id", auto_generate_judgment);
 
-    // Batch PDF Generation
-    router.post("/api/pdf/batch", handlers::pdf_batch::generate_batch_pdfs);
-    router.post("/api/pdf/batch/zip", handlers::pdf_batch::generate_batch_pdfs_zip);
+    // Batch PDF Generation (Hexagonal Architecture)
+    router.post("/api/pdf/batch", handlers::pdf_hexagonal::generate_batch_pdfs);
+    // router.post("/api/pdf/batch/zip", handlers::pdf_batch::generate_batch_pdfs_zip); // TODO: implement ZIP in hexagonal
+
+    // Signature Management endpoints
+    router.post("/api/signatures", handlers::pdf_hexagonal::store_signature);
+    router.get("/api/signatures/:judge_id", handlers::pdf_hexagonal::get_signature);
 
     // Documentation endpoints
     router.get(

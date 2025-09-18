@@ -3,6 +3,7 @@
 //! This module contains concrete implementations of the ports,
 //! handling the actual integration with external systems.
 
+pub mod pdf_writer_adapter;
 pub mod spin_kv_attorney_repository;
 pub mod spin_kv_case_repository;
 pub mod spin_kv_deadline_repository;

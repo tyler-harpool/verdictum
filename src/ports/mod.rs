@@ -8,6 +8,7 @@ pub mod attorney_repository;
 pub mod case_repository;
 pub mod deadline_repository;
 pub mod docket_repository;
+pub mod document_generator;
 pub mod document_repository;
 pub mod judge_repository;
 pub mod sentencing_repository;

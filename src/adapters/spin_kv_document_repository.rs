@@ -19,6 +19,15 @@ pub struct SpinKvDocumentRepository {
 }
 
 impl SpinKvDocumentRepository {
+    /// Create repository with tenant ID
+    pub fn new(tenant_id: &str) -> Result<Self, String> {
+        // Use the tenant's existing store
+        let store_name = tenant_id.to_lowercase();
+        Store::open(&store_name)
+            .map(|store| Self { store })
+            .map_err(|e| format!("Failed to open store: {}", e))
+    }
+
     /// Create repository with specific store name for multi-tenancy
     pub fn with_store(store_name: String) -> Self {
         let store = Store::open(&store_name)
