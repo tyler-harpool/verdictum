@@ -4,3 +4,4 @@ pub mod json_response;
 pub mod query_parser;
 pub mod repository_factory;
 pub mod tenant;
+pub mod url_tenant;

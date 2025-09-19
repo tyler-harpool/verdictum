@@ -65,7 +65,7 @@ use crate::adapters::{
 };
 use crate::ports::feature_repository::FeatureRepository;
 use std::sync::Arc;
-use crate::utils::tenant;
+use crate::utils::{tenant, url_tenant};
 use spin_sdk::http::Request;
 
 /// Factory for creating tenant-specific repositories.
@@ -98,6 +98,16 @@ impl RepositoryFactory {
         SpinKvAttorneyRepository::with_store(store_name)
     }
 
+    /// Creates attorney repository with URL-based tenant extraction
+    ///
+    /// Extracts tenant from URL path (e.g., /api/courts/sdny/attorneys)
+    /// Falls back to header-based extraction for backward compatibility
+    pub fn attorney_repo_from_url(req: &Request) -> Result<SpinKvAttorneyRepository, String> {
+        let tenant_id = url_tenant::get_tenant_from_request(req)?;
+        let store_name = tenant::get_store_name(&tenant_id);
+        Ok(SpinKvAttorneyRepository::with_store(store_name))
+    }
+
     /// Creates a tenant-specific criminal case repository.
     ///
     /// # Arguments
@@ -111,6 +121,13 @@ impl RepositoryFactory {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
         SpinKvCaseRepository::with_store(store_name)
+    }
+
+    /// Creates case repository with URL-based tenant extraction
+    pub fn case_repo_from_url(req: &Request) -> Result<SpinKvCaseRepository, String> {
+        let tenant_id = url_tenant::get_tenant_from_request(req)?;
+        let store_name = tenant::get_store_name(&tenant_id);
+        Ok(SpinKvCaseRepository::with_store(store_name))
     }
 
     /// Get tenant-specific deadline repository
@@ -174,6 +191,17 @@ impl RepositoryFactory {
         SpinKvConfigRepository::with_district(store_name, tenant_id.clone(), court_type)
     }
 
+    /// Creates config repository with URL-based tenant extraction
+    pub fn config_repo_from_url(req: &Request) -> Result<SpinKvConfigRepository, String> {
+        let tenant_id = url_tenant::get_tenant_from_request(req)?;
+        let store_name = tenant::get_store_name(&tenant_id);
+
+        // Determine court type from URL or headers
+        let court_type = Self::determine_court_type(req, &tenant_id);
+
+        Ok(SpinKvConfigRepository::with_district(store_name, tenant_id.clone(), court_type))
+    }
+
     /// Creates a tenant-specific feature repository.
     ///
     /// This returns a unified repository that bridges features to the config system.
@@ -198,6 +226,11 @@ impl RepositoryFactory {
 
     /// Determine the court type from the request or tenant ID
     fn determine_court_type(req: &Request, tenant_id: &str) -> String {
+        // First check URL path for court type
+        if let Some(court_type) = url_tenant::extract_court_type_from_path(&req.path()) {
+            return court_type;
+        }
+
         // Check for explicit court type header
         for (name, value) in req.headers() {
             if name == "x-court-type" {

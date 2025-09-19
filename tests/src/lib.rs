@@ -3,6 +3,9 @@ use spin_test_sdk::{
     spin_test,
 };
 
+// Include migration tests module
+mod migration_tests;
+
 /// Test that health check endpoint works
 #[spin_test]
 fn test_health_check() {

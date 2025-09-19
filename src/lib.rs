@@ -44,7 +44,7 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     // Health check endpoint
     router.get("/api/health", handlers::health::health_check);
 
-    // Configuration Management endpoints
+    // Configuration Management endpoints (Header-based - DEPRECATED)
     router.get("/api/config", handlers::config::get_config);
     router.get("/api/config/overrides/district", handlers::config::get_district_overrides);
     router.get("/api/config/overrides/judge", handlers::config::get_judge_overrides);
@@ -53,6 +53,16 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.delete("/api/config/overrides/district", handlers::config::clear_district_overrides);
     router.delete("/api/config/overrides/judge", handlers::config::clear_judge_overrides);
     router.post("/api/config/preview", handlers::config::preview_config);
+
+    // Configuration Management endpoints (URL-based - NEW)
+    router.get("/api/courts/:district/config", handlers::config_url::get_config);
+    router.get("/api/courts/:district/config/overrides/district", handlers::config_url::get_district_overrides);
+    router.get("/api/courts/:district/config/overrides/judge/:judge_id", handlers::config_url::get_judge_overrides);
+    router.put("/api/courts/:district/config/overrides/district", handlers::config_url::update_district_config);
+    router.put("/api/courts/:district/config/overrides/judge/:judge_id", handlers::config_url::update_judge_config);
+    router.delete("/api/courts/:district/config/overrides/district", handlers::config_url::clear_district_overrides);
+    router.delete("/api/courts/:district/config/overrides/judge/:judge_id", handlers::config_url::clear_judge_overrides);
+    router.post("/api/courts/:district/config/preview", handlers::config_url::preview_config);
 
     // ToDo API endpoints
     router.get("/api/todos", handlers::todo::get_all);

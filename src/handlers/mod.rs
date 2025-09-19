@@ -10,6 +10,8 @@ pub(crate) mod admin;
 pub(crate) mod attorney;
 /// Configuration management handlers
 pub(crate) mod config;
+/// URL-based configuration handlers (for migration)
+pub(crate) mod config_url;
 /// Criminal case management handlers (demonstrating hexagonal architecture)
 pub(crate) mod criminal_case;
 /// Deadline tracking and compliance handlers
