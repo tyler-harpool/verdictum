@@ -124,6 +124,9 @@ impl PdfService {
         use chrono::Utc;
 
         // CRITICAL: Use tenant-specific store, not default!
+        if self.tenant_id.is_empty() {
+            return Err(DocumentError::GenerationFailed("TENANT_NOT_SPECIFIED: tenant ID is required".to_string()));
+        }
         let store = Store::open(&self.tenant_id)
             .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open tenant store '{}': {:?}", self.tenant_id, e)))?;
 
@@ -154,6 +157,9 @@ impl PdfService {
         use spin_sdk::key_value::Store;
 
         // CRITICAL: Use tenant-specific store, not default!
+        if self.tenant_id.is_empty() {
+            return Err(DocumentError::GenerationFailed("TENANT_NOT_SPECIFIED: tenant ID is required".to_string()));
+        }
         let store = Store::open(&self.tenant_id)
             .map_err(|e| DocumentError::GenerationFailed(format!("Failed to open tenant store '{}': {:?}", self.tenant_id, e)))?;
 

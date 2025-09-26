@@ -3,6 +3,7 @@
 //! This adapter implements the DocketRepository traits using Spin's
 //! built-in key-value store for persistence.
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::domain::docket::{
     DocketEntry, CalendarEntry, SpeedyTrialClock, DocketEntryType,
     EventStatus, CalendarService, SpeedyTrialService
@@ -31,7 +32,7 @@ pub struct SpinKvDocketRepository {
 impl SpinKvDocketRepository {
     /// Create repository with specific store name for multi-tenancy
     pub fn with_store(store_name: String) -> Self {
-        let store = Store::open(&store_name)
+        let store = open_validated_store(&store_name)
             .expect(&format!("Failed to open store: {}", store_name));
         Self { store }
     }

@@ -1,0 +1,6 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+error: failed to read app component
+
+Caused by:
+   0: failed to read component binary at 'target/wasm32-wasip1/release/spin_utopia.wasm'
+   1: No such file or directory (os error 2)

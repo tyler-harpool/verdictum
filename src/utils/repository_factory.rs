@@ -67,6 +67,7 @@ use crate::ports::feature_repository::FeatureRepository;
 use std::sync::Arc;
 use crate::utils::{tenant, url_tenant};
 use spin_sdk::http::Request;
+use crate::error::ApiError;
 
 /// Factory for creating tenant-specific repositories.
 ///
@@ -76,6 +77,21 @@ use spin_sdk::http::Request;
 pub struct RepositoryFactory;
 
 impl RepositoryFactory {
+    /// Validate that tenant is properly specified
+    fn validate_tenant(store_name: &str) -> Result<(), ApiError> {
+        if store_name == "tenant_not_specified" {
+            return Err(ApiError::BadRequest(
+                "Missing required header: X-Court-District or X-Tenant-ID".to_string()
+            ));
+        }
+        if store_name.starts_with("UNKNOWN_TENANT_") {
+            return Err(ApiError::BadRequest(
+                format!("Invalid district specified")
+            ));
+        }
+        Ok(())
+    }
+
     /// Creates a tenant-specific attorney repository.
     ///
     /// # Arguments
@@ -89,13 +105,14 @@ impl RepositoryFactory {
     /// # Example
     ///
     /// ```
-    /// let repo = RepositoryFactory::attorney_repo(&req);
+    /// let repo = RepositoryFactory::attorney_repo(&req)?;
     /// let attorney = repo.find_attorney_by_id("123")?;
     /// ```
-    pub fn attorney_repo(req: &Request) -> SpinKvAttorneyRepository {
+    pub fn attorney_repo(req: &Request) -> Result<SpinKvAttorneyRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvAttorneyRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvAttorneyRepository::with_store(store_name))
     }
 
     /// Creates attorney repository with URL-based tenant extraction
@@ -117,10 +134,19 @@ impl RepositoryFactory {
     /// # Returns
     ///
     /// A `SpinKvCaseRepository` instance scoped to the identified tenant
-    pub fn case_repo(req: &Request) -> SpinKvCaseRepository {
+    pub fn case_repo(req: &Request) -> Result<SpinKvCaseRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvCaseRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvCaseRepository::with_store(store_name))
+    }
+
+    /// Creates a case repository with validation
+    pub fn case_repo_validated(req: &Request) -> Result<SpinKvCaseRepository, ApiError> {
+        let tenant_id = tenant::validate_tenant_id(req)
+            .map_err(|e| ApiError::BadRequest(e))?;
+        let store_name = tenant::get_store_name(&tenant_id);
+        Ok(SpinKvCaseRepository::with_store(store_name))
     }
 
     /// Creates case repository with URL-based tenant extraction
@@ -131,38 +157,51 @@ impl RepositoryFactory {
     }
 
     /// Get tenant-specific deadline repository
-    pub fn deadline_repo(req: &Request) -> SpinKvDeadlineRepository {
+    pub fn deadline_repo(req: &Request) -> Result<SpinKvDeadlineRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvDeadlineRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvDeadlineRepository::with_store(store_name))
     }
 
     /// Get tenant-specific docket repository
-    pub fn docket_repo(req: &Request) -> SpinKvDocketRepository {
+    pub fn docket_repo(req: &Request) -> Result<SpinKvDocketRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvDocketRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvDocketRepository::with_store(store_name))
     }
 
     /// Get tenant-specific document repository
-    pub fn document_repo(req: &Request) -> SpinKvDocumentRepository {
+    pub fn document_repo(req: &Request) -> Result<SpinKvDocumentRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvDocumentRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvDocumentRepository::with_store(store_name))
     }
 
     /// Get tenant-specific judge repository
-    pub fn judge_repo(req: &Request) -> SpinKvJudgeRepository {
+    pub fn judge_repo(req: &Request) -> Result<SpinKvJudgeRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvJudgeRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvJudgeRepository::with_store(store_name))
+    }
+
+    /// Creates a judge repository with validation
+    pub fn judge_repo_validated(req: &Request) -> Result<SpinKvJudgeRepository, ApiError> {
+        let tenant_id = tenant::validate_tenant_id(req)
+            .map_err(|e| ApiError::BadRequest(e))?;
+        let store_name = tenant::get_store_name(&tenant_id);
+        Ok(SpinKvJudgeRepository::with_store(store_name))
     }
 
     /// Get tenant-specific sentencing repository
-    pub fn sentencing_repo(req: &Request) -> SpinKvSentencingRepository {
+    pub fn sentencing_repo(req: &Request) -> Result<SpinKvSentencingRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
-        SpinKvSentencingRepository::with_store(store_name)
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvSentencingRepository::with_store(store_name))
     }
 
     /// Creates a tenant-specific configuration repository.
@@ -181,14 +220,15 @@ impl RepositoryFactory {
     /// let repo = RepositoryFactory::config_repo(&req);
     /// let config = repo.get_merged_config("SDNY", Some("judge-123")).await?;
     /// ```
-    pub fn config_repo(req: &Request) -> SpinKvConfigRepository {
+    pub fn config_repo(req: &Request) -> Result<SpinKvConfigRepository, ApiError> {
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
+        Self::validate_tenant(&store_name)?;
 
         // Determine court type from tenant ID or headers
         let court_type = Self::determine_court_type(req, &tenant_id);
 
-        SpinKvConfigRepository::with_district(store_name, tenant_id.clone(), court_type)
+        Ok(SpinKvConfigRepository::with_district(store_name, tenant_id.clone(), court_type))
     }
 
     /// Creates config repository with URL-based tenant extraction
@@ -213,15 +253,15 @@ impl RepositoryFactory {
     /// # Returns
     ///
     /// A boxed `FeatureRepository` trait object
-    pub fn feature_repo(req: &Request) -> Box<dyn FeatureRepository> {
-        let config_repo = Arc::new(Self::config_repo(req));
+    pub fn feature_repo(req: &Request) -> Result<Box<dyn FeatureRepository>, ApiError> {
+        let config_repo = Arc::new(Self::config_repo(req)?);
         let tenant_id = tenant::get_tenant_id(req);
         let store_name = tenant::get_store_name(&tenant_id);
 
-        Box::new(UnifiedConfigFeatureRepository::new(
+        Ok(Box::new(UnifiedConfigFeatureRepository::new(
             config_repo,
             store_name,
-        ))
+        )))
     }
 
     /// Determine the court type from the request or tenant ID

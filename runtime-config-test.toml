@@ -1,0 +1,80 @@
+# Test runtime configuration for Spin application
+# This configuration is used when running tests
+
+# Single store for all test data
+# Tests use mocked stores through spin_test_virt, but this ensures
+# the default store exists for any integration tests
+[key_value_store.default]
+type = "spin"
+path = ".spin/test/default.db"
+
+# Additional test stores if needed for multi-tenant testing
+[key_value_store.test]
+type = "spin"
+path = ".spin/test/test.db"
+
+# These can be created but will all point to test database
+# This allows tests to use district names without failing
+[key_value_store.sdny]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.edny]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.ndca]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.cdca]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.nybk]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.edtx]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.fisa]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.tax]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.generic]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.ndny]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.wdny]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.sdtx]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.ndil]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.ddc]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.district9]
+type = "spin"
+path = ".spin/test/test.db"
+
+[key_value_store.district12]
+type = "spin"
+path = ".spin/test/test.db"

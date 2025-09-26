@@ -162,7 +162,7 @@ pub fn create_docket_entry(req: Request, _params: Params) -> ApiResult<impl Into
     entry.page_count = request.page_count;
     entry.service_list = request.service_list;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     repo.save_entry(&entry)?;
 
     Ok(ResponseBuilder::new(201)
@@ -192,7 +192,7 @@ pub fn get_case_docket(req: Request, params: Params) -> ApiResult<impl IntoRespo
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let entries = repo.find_entries_by_case(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -222,7 +222,7 @@ pub fn get_docket_entry(req: Request, params: Params) -> ApiResult<impl IntoResp
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid entry ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let entry = repo
         .find_entry_by_id(id)?
         .ok_or_else(|| ApiError::NotFound("Docket entry not found".to_string()))?;
@@ -258,7 +258,7 @@ pub fn add_attachment(req: Request, params: Params) -> ApiResult<impl IntoRespon
     let body = req.body();
     let request: AddAttachmentRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let mut entry = repo
         .find_entry_by_id(entry_id)?
         .ok_or_else(|| ApiError::NotFound("Docket entry not found".to_string()))?;
@@ -318,7 +318,7 @@ pub fn search_docket(req: Request, _params: Params) -> ApiResult<impl IntoRespon
         limit: query_parser::get_usize(&params, "limit").unwrap_or(50),
     };
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let (entries, total) = repo.search_docket(query)?;
 
 
@@ -351,7 +351,7 @@ pub fn generate_docket_sheet(req: Request, params: Params) -> ApiResult<impl Int
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let docket_sheet = repo.generate_docket_sheet(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -392,7 +392,7 @@ pub fn schedule_event(req: Request, _params: Params) -> ApiResult<impl IntoRespo
     event.participants = request.participants;
     event.is_public = request.is_public;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
 
     // Check for conflicts
     let conflicts = repo.find_conflicts(
@@ -441,7 +441,7 @@ pub fn get_case_calendar(req: Request, params: Params) -> ApiResult<impl IntoRes
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let events = repo.find_events_by_case(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -478,7 +478,7 @@ pub fn get_judge_schedule(req: Request, params: Params) -> ApiResult<impl IntoRe
         .map(|d| d.with_timezone(&Utc))
         .unwrap_or_else(Utc::now);
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let events = repo.get_judge_schedule(judge_id, date)?;
 
     Ok(ResponseBuilder::new(200)
@@ -512,7 +512,7 @@ pub fn update_event_status(req: Request, params: Params) -> ApiResult<impl IntoR
     let body = req.body();
     let request: UpdateEventStatusRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
 
     // First update just the status using the dedicated method
     repo.update_event_status(event_id, request.status)?;
@@ -583,7 +583,7 @@ pub fn find_available_slot(req: Request, params: Params) -> ApiResult<impl IntoR
         .map(|d| d.with_timezone(&Utc))
         .unwrap_or_else(Utc::now);
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let next_slot = repo.find_available_slot(judge_id, duration, earliest)?;
 
 
@@ -644,7 +644,7 @@ pub fn init_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoRes
         waived: false,
     };
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     repo.save_clock(&clock)?;
 
     Ok(ResponseBuilder::new(201)
@@ -674,7 +674,7 @@ pub fn get_speedy_trial(req: Request, params: Params) -> ApiResult<impl IntoResp
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let mut clock = repo
         .find_clock_by_case(case_id)?
         .ok_or_else(|| ApiError::NotFound("Speedy Trial clock not found".to_string()))?;
@@ -713,7 +713,7 @@ pub fn add_excludable_delay(req: Request, params: Params) -> ApiResult<impl Into
     let body = req.body();
     let request: AddExcludableDelayRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let mut clock = repo
         .find_clock_by_case(case_id)?
         .ok_or_else(|| ApiError::NotFound("Speedy Trial clock not found".to_string()))?;
@@ -756,7 +756,7 @@ pub fn add_excludable_delay(req: Request, params: Params) -> ApiResult<impl Into
     ),
 )]
 pub fn get_approaching_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let approaching = repo.find_approaching_deadlines(14)?; // 14 days threshold
 
     Ok(ResponseBuilder::new(200)
@@ -793,7 +793,7 @@ pub fn get_courtroom_utilization(req: Request, params: Params) -> ApiResult<impl
         .map(|d| d.with_timezone(&Utc))
         .unwrap_or_else(Utc::now);
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let utilization = repo.get_courtroom_utilization(start_date, end_date)?;
 
     Ok(ResponseBuilder::new(200)
@@ -829,7 +829,7 @@ pub fn get_entries_by_type(req: Request, params: Params) -> ApiResult<impl IntoR
 
     let entry_type: DocketEntryType = serde_json::from_str(&format!("\"{}\"", entry_type_str))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let entries = repo.find_entries_by_type(case_id, entry_type)?;
 
     Ok(ResponseBuilder::new(200)
@@ -858,7 +858,7 @@ pub fn get_sealed_entries(req: Request, params: Params) -> ApiResult<impl IntoRe
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let entries = repo.find_sealed_entries(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -892,7 +892,7 @@ pub fn search_entries(req: Request, params: Params) -> ApiResult<impl IntoRespon
         .get("text")
         .ok_or_else(|| ApiError::BadRequest("Search text required".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let entries = repo.search_entries(case_id, search_text)?;
 
     Ok(ResponseBuilder::new(200)
@@ -922,7 +922,7 @@ pub fn delete_entry(req: Request, params: Params) -> ApiResult<impl IntoResponse
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid entry ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let deleted = repo.delete_entry(id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -960,7 +960,7 @@ pub fn get_events_by_courtroom(req: Request, params: Params) -> ApiResult<impl I
     let end_date = query_parser::get_datetime(&query_params, "end")
         .unwrap_or_else(|| Utc::now() + chrono::Duration::days(30));
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let events = repo.find_events_by_courtroom(courtroom, start_date, end_date)?;
 
     Ok(ResponseBuilder::new(200)
@@ -990,7 +990,7 @@ pub fn delete_event(req: Request, params: Params) -> ApiResult<impl IntoResponse
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid event ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let deleted = repo.delete_event(id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -1019,7 +1019,7 @@ pub fn get_filing_statistics(req: Request, params: Params) -> ApiResult<impl Int
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let stats = repo.get_filing_statistics(case_id)?;
     let response = FilingStatsResponse::from_statistics(stats);
 
@@ -1043,7 +1043,7 @@ pub fn get_filing_statistics(req: Request, params: Params) -> ApiResult<impl Int
     ),
 )]
 pub fn get_violations(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let violations = repo.find_violations()?;
 
     Ok(ResponseBuilder::new(200)
@@ -1077,7 +1077,7 @@ pub fn update_clock(req: Request, params: Params) -> ApiResult<impl IntoResponse
     let body = req.body();
     let clock: SpeedyTrialClock = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     repo.update_clock(case_id, &clock)?;
 
     Ok(ResponseBuilder::new(200)
@@ -1124,7 +1124,7 @@ pub fn search_calendar(req: Request, _params: Params) -> ApiResult<impl IntoResp
         limit: query_parser::get_usize(&params, "limit").unwrap_or(50),
     };
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let (events, total) = repo.search_calendar(query)?;
 
 
@@ -1189,7 +1189,7 @@ pub fn check_deadline_approaching(req: Request, params: Params) -> ApiResult<imp
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::docket_repo(&req);
+    let repo = RepositoryFactory::docket_repo(&req)?;
     let clock = repo.find_clock_by_case(case_id)?
         .ok_or_else(|| ApiError::NotFound("Speedy Trial clock not found".to_string()))?;
 

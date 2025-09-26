@@ -44,3 +44,17 @@ path = ".spin/prod/stores/wdny.db"
 [key_value_store.default]
 type = "spin"
 path = ".spin/prod/stores/default.db"
+
+# Test store
+[key_value_store.test]
+type = "spin"
+path = ".spin/prod/stores/test.db"
+
+# Test districts from movies for multi-tenancy testing
+[key_value_store.district9]
+type = "spin"
+path = ".spin/prod/stores/district9.db"
+
+[key_value_store.district12]
+type = "spin"
+path = ".spin/prod/stores/district12.db"

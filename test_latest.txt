@@ -1,0 +1,343 @@
+   Compiling config-tests v0.1.0 (/Users/THarpool/Code/personel/spin-todo-api/tests)
+    Finished `release` profile [optimized] target(s) in 1.61s
+
+running 152 tests
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:209:5:
+assertion `left == right` failed: Should return 200 for existing deadline
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:538:5:
+Store should be accessed for delete
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:467:5:
+assertion `left == right` failed: Should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:371:5:
+Extension request should return 201 or 200, got 400: {"error":"Bad Request","status":400,"details":"Invalid deadline ID"}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-get-deadline-by-id                      ... [0m[31mFAILED[0m
+test test-create-case-requires-district-header    ... [0m[32mok[0m
+test test-delete-docket-entry                     ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:264:5:
+assertion `left == right` failed: Should return 200
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:241:5:
+assertion `left == right` failed: Search should return 200
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+thread '<unnamed>' panicked at crates/spin-test-virt/src/wasi/http.rs:370:9:
+not yet implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:262:5:
+Should return orders for the case
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-request-extension                       ... [0m[31mFAILED[0m
+test test-get-judge-sentencing-stats              ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:631:5:
+Error should mention invalid extension
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-create-deadline-invalid-date            ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:388:5:
+assertion failed: status == 201 || status == 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-health-check-no-header-required         ... [0m[32mok[0m
+test test-get-deadlines-by-case                   ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/header_routing_tests.rs:379:5:
+assertion failed: status == 201 || status == 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-search-docket-entries                   ... [0m[31mFAILED[0m
+test test-header-vs-url-routing-consistency       ... [0m[31mFAILED[0m
+test test-get-orders-by-case                      ... [0m[31mFAILED[0m
+test test-get-case-statistics                     ... [0m[32mok[0m
+test test-request-extension-invalid-days          ... [0m[31mFAILED[0m
+test test-create-judge-with-store                 ... [0m[32mok[0m
+test test-attorney-multi-tenant-isolation         ... [0m[31mFAILED[0m
+test test-district-isolation-with-headers         ... [0m[31mFAILED[0m
+test test-schedule-event-missing-judge            ... [0m[32mok[0m
+test test-create-docket-entry-success             ... [0m[32mok[0m
+test test-get-federal-rules                       ... [0m[32mok[0m
+test test-delete-order                            ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:431:5:
+assertion `left == right` failed: Should return 200 for speedy trial status
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:692:5:
+Error should mention invalid time
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:464:5:
+Should return templates
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/opinion_tests_v2.rs:209:5:
+assertion `left == right` failed: Should return 200 for existing opinion
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:586:5:
+assertion `left == right` failed: Should return 200 for statistics
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-create-judge-missing-courtroom          ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/criminal_case_tests_v2.rs:236:5:
+assertion `left == right` failed
+  left: Null
+ right: "CR-2024-001"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-create-docket-entry-missing-case-id     ... [0m[32mok[0m
+test test-get-speedy-trial-status                 ... [0m[31mFAILED[0m
+test test-schedule-event-time-conflict            ... [0m[31mFAILED[0m
+test test-health-check                            ... [0m[32mok[0m
+test test-get-order-templates                     ... [0m[31mFAILED[0m
+test test-get-opinion-by-id                       ... [0m[31mFAILED[0m
+test test-get-filing-statistics                   ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/criminal_case_tests_v2.rs:400:5:
+Store should be accessed for delete
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:326:5:
+assertion `left == right` failed: Should return 200 for judge calendar
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-config-endpoint-returns-valid-response  ... [0m[32mok[0m
+thread '<unnamed>' panicked at crates/spin-test-virt/src/wasi/http.rs:370:9:
+not yet implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-get-case-by-id-found                    ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:607:5:
+assertion failed: status == 201 || status == 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-create-case-missing-description         ... [0m[32mok[0m
+test test-create-judge-invalid-title-enum         ... [0m[32mok[0m
+test test-delete-case                             ... [0m[31mFAILED[0m
+test test-get-judge-calendar                      ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:310:5:
+assertion `left == right` failed: Should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:218:5:
+assertion `left == right` failed: Should return 200 for sealed entries
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/opinion_tests_v2.rs:392:5:
+assertion `left == right` failed: Create draft should return 201
+  left: 400
+ right: 201
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:244:5:
+assertion `left == right` failed: Should return 200
+  left: 500
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+thread '<unnamed>' panicked at crates/spin-test-virt/src/wasi/http.rs:370:9:
+not yet implemented
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:343:5:
+assertion `left == right` failed: Complete should return 200
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-header-routing-matches-url-routing      ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:626:5:
+assertion failed: status == 201 || status == 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-order-multi-tenant-isolation            ... [0m[31mFAILED[0m
+test test-get-cja-panel                           ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:262:5:
+assertion `left == right` failed: Update should return 200
+  left: 405
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-get-sealed-entries                      ... [0m[31mFAILED[0m
+test test-create-draft-version                    ... [0m[31mFAILED[0m
+test test-get-sentencing-by-case                  ... [0m[31mFAILED[0m
+test test-valid-district-header-district12        ... [0m[32mok[0m
+test test-url-based-routing                       ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:170:5:
+May return 400 (invalid) or 409 (duplicate) attorney should return 409 Conflict
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:286:5:
+Add to CJA panel should return 200 or 201
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:458:5:
+assertion `left == right` failed: Update clock should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-complete-deadline                       ... [0m[31mFAILED[0m
+test test-docket-multi-tenant-isolation           ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/opinion_tests_v2.rs:421:5:
+Should return draft versions
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-update-attorney                         ... [0m[31mFAILED[0m
+test test-create-attorney-duplicate               ... [0m[31mFAILED[0m
+test test-add-to-cja-panel                        ... [0m[31mFAILED[0m
+test test-update-speedy-trial-clock               ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:348:5:
+assertion `left == right` failed: Sign should return 200
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:520:5:
+assertion `left == right` failed: Add service record should return 200
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:155:5:
+Error should mention missing case_id field
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/opinion_tests_v2.rs:482:5:
+assertion failed: status == 201 || status == 409
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:408:5:
+assertion `left == right` failed: Update should return 200
+  left: 405
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:648:5:
+assertion `left == right` failed: Invalid criminal history should return 400
+  left: 405
+ right: 400
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:408:5:
+Initialize should return 200 or 201, got 405: Method Not Allowed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-header-sanitization                     ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/criminal_case_tests_v2.rs:369:5:
+Add defendant should return 200 or 201
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-get-draft-versions                      ... [0m[31mFAILED[0m
+test test-sign-order                              ... [0m[31mFAILED[0m
+test test-add-service-record                      ... [0m[31mFAILED[0m
+test test-create-order-missing-case-id            ... [0m[31mFAILED[0m
+test test-opinion-multi-tenant-isolation          ... [0m[31mFAILED[0m
+test test-update-sentencing                       ... [0m[31mFAILED[0m
+test test-calculate-guidelines-invalid-history    ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:376:5:
+assertion `left == right` failed: Should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/judge_tests_proper.rs:182:5:
+assertion `left == right` failed
+  left: []
+ right: [Call::Get("judges:nonexistent-judge")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:501:5:
+assertion `left == right` failed: Record appeal should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-initialize-speedy-trial                 ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/deadline_tests_v2.rs:153:5:
+Error should mention missing case_id field
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-add-defendant                           ... [0m[31mFAILED[0m
+test test-tenant-id-header-takes-priority         ... [0m[32mok[0m
+test test-get-departures                          ... [0m[31mFAILED[0m
+test test-get-judge-by-id-cache-miss              ... [0m[31mFAILED[0m
+test test-record-appeal                           ... [0m[31mFAILED[0m
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:210:5:
+assertion `left == right` failed: Should return 200 for existing order
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/header_routing_tests.rs:148:5:
+Should indicate missing district
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:508:5:
+assertion `left == right` failed: Should return 200 for deadline check
+  left: 400
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:187:5:
+Error should mention missing judge_id field
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/criminal_case_tests_v2.rs:154:5:
+May return 400 (invalid) or 409 (duplicate) case should return 409 Conflict
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/attorney_tests_v2.rs:474:5:
+assertion `left == right` failed: Update with invalid ID attorney should return 404
+  left: 405
+ right: 400
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-create-deadline-missing-case-id         ... [0m[31mFAILED[0m
+test test-delete-opinion                          ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/docket_tests_v2.rs:264:5:
+Schedule should return 201 (created) or 409 (conflict), got 400: {"error":"Invalid data format","status":400,"details":"missing field `is_public` at line 1 column 573"}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test test-get-order-by-id                         ... [0m[31mFAILED[0m
+test test-config-requires-district-header         ... [0m[31mFAILED[0m
+test test-check-deadline-approaching              ... [0m[31mFAILED[0m
+test test-create-order-missing-judge              ... [0m[31mFAILED[0m
+test test-create-case-duplicate                   ... [0m[31mFAILED[0m
+test test-delete-sentencing                       ... [0m[32mok[0m
+
+thread '<unnamed>' panicked at src/order_tests_v2.rs:375:5:
+assertion `left == right` failed: Issue should return 200
+  left: 404
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread '<unnamed>' panicked at src/sentencing_tests_v2.rs:267:5:
+assertion `left == right` failed: Should return 200
+  left: 500
+ right: 200
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

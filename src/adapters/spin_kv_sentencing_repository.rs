@@ -1,5 +1,6 @@
 //! Spin KV implementation of sentencing repository
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::domain::sentencing::*;
 use crate::ports::sentencing_repository::SentencingRepository;
 use crate::{ApiError, ApiResult};
@@ -13,7 +14,7 @@ pub struct SpinKvSentencingRepository {
 impl SpinKvSentencingRepository {
     /// Create repository with specific store name for multi-tenancy
     pub fn with_store(store_name: String) -> Self {
-        let store = Store::open(&store_name)
+        let store = open_validated_store(&store_name)
             .expect(&format!("Failed to open store: {}", store_name));
         Self { store }
     }

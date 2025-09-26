@@ -10,7 +10,7 @@ use crate::domain::attorney::{
     ProHacViceAdmission, CJAAppointment, ECFRegistration, DisciplinaryAction,
     Address, RepresentationType, WithdrawalReason, ServiceMethod,
     ConflictType, ConflictSeverity, ConflictResult,
-    CreateAttorneyRequest, CreatePartyRequest, PartyType, PartyRole, EntityType
+    CreateAttorneyRequest, UpdateAttorneyRequest, CreatePartyRequest, PartyType, PartyRole, EntityType
 };
 use crate::error::ApiError;
 use crate::ports::attorney_repository::AttorneyRepository;
@@ -27,6 +27,7 @@ use spin_sdk::http::{Params, Request, Response};
     responses(
         (status = 200, description = "Attorney created successfully", body = Attorney),
         (status = 400, description = "Invalid attorney data"),
+        (status = 409, description = "Attorney with bar number already exists"),
         (status = 500, description = "Internal server error")
     ),
     tag = "attorneys",
@@ -35,12 +36,33 @@ use spin_sdk::http::{Params, Request, Response};
     ),
 )]
 pub fn create_attorney(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
 
     let request: CreateAttorneyRequest = match json::parse_body(req.body()) {
         Ok(a) => a,
         Err(e) => return json::error_response(&e),
     };
+
+    // Validate email format
+    if !is_valid_email(&request.email) {
+        return json::error_response(&ApiError::BadRequest(
+            "Invalid email format".to_string()
+        ));
+    }
+
+    // Check for duplicate bar number
+    match repo.find_attorney_by_bar_number(&request.bar_number) {
+        Ok(Some(_)) => {
+            return json::error_response(&ApiError::Conflict(
+                format!("Attorney with bar number {} already exists", request.bar_number)
+            ));
+        }
+        Ok(None) => {}, // No duplicate, continue
+        Err(e) => return json::error_response(&ApiError::StorageError(e.to_string())),
+    }
 
     // Use the constructor to properly initialize the attorney
     let mut attorney = Attorney::new(
@@ -63,6 +85,18 @@ pub fn create_attorney(req: Request, _params: Params) -> Response {
     }
 }
 
+/// Simple email validation
+fn is_valid_email(email: &str) -> bool {
+    // Basic validation: must contain @ and at least one . after @
+    if let Some(at_pos) = email.find('@') {
+        if at_pos > 0 && at_pos < email.len() - 1 {
+            let domain = &email[at_pos + 1..];
+            return domain.contains('.') && !domain.starts_with('.') && !domain.ends_with('.');
+        }
+    }
+    false
+}
+
 /// Get attorney by ID
 #[utoipa::path(
     get,
@@ -79,7 +113,13 @@ pub fn create_attorney(req: Request, _params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorney(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -106,7 +146,13 @@ pub fn get_attorney(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorney_by_bar_number(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let bar_number = params.get("bar_number").unwrap_or_default();
 
@@ -125,25 +171,154 @@ pub fn get_attorney_by_bar_number(req: Request, params: Params) -> Response {
         ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
         ("id" = String, Path, description = "Attorney ID")
     ),
-    request_body = Attorney,
+    request_body = UpdateAttorneyRequest,
     responses(
         (status = 200, description = "Attorney updated successfully", body = Attorney),
+        (status = 400, description = "Invalid update data"),
         (status = 404, description = "Attorney not found"),
+        (status = 409, description = "Conflict with existing attorney"),
         (status = 500, description = "Internal server error")
     ),
     tag = "attorneys",
 )]
 pub fn update_attorney(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
-
-    let mut attorney: Attorney = match json::parse_body(req.body()) {
-        Ok(a) => a,
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
         Err(e) => return json::error_response(&e),
     };
 
-    attorney.id = params.get("id").unwrap_or_default().to_string();
+    let attorney_id = params.get("id").unwrap_or_default().to_string();
 
-    match repo.update_attorney(attorney) {
+    // Parse the update request
+    let update_request: UpdateAttorneyRequest = match json::parse_body(req.body()) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    // Get the existing attorney
+    let mut existing = match repo.find_attorney_by_id(&attorney_id) {
+        Ok(Some(attorney)) => attorney,
+        Ok(None) => {
+            return json::error_response(&ApiError::NotFound(
+                format!("Attorney {} not found", attorney_id)
+            ));
+        }
+        Err(e) => return json::error_response(&ApiError::StorageError(e.to_string())),
+    };
+
+    // Apply updates only for fields that are provided (Some values)
+    if let Some(bar_number) = update_request.bar_number {
+        // Check for duplicate if bar number is changing
+        if existing.bar_number != bar_number {
+            match repo.find_attorney_by_bar_number(&bar_number) {
+                Ok(Some(_)) => {
+                    return json::error_response(&ApiError::Conflict(
+                        format!("Attorney with bar number {} already exists", bar_number)
+                    ));
+                }
+                Ok(None) => existing.bar_number = bar_number,
+                Err(e) => return json::error_response(&ApiError::StorageError(e.to_string())),
+            }
+        }
+    }
+
+    if let Some(first_name) = update_request.first_name {
+        existing.first_name = first_name;
+    }
+
+    if let Some(last_name) = update_request.last_name {
+        existing.last_name = last_name;
+    }
+
+    if let Some(middle_name) = update_request.middle_name {
+        existing.middle_name = Some(middle_name);
+    }
+
+    if let Some(firm_name) = update_request.firm_name {
+        existing.firm_name = Some(firm_name);
+    }
+
+    if let Some(email) = update_request.email {
+        // Validate email format
+        if !is_valid_email(&email) {
+            return json::error_response(&ApiError::BadRequest(
+                "Invalid email format".to_string()
+            ));
+        }
+        existing.email = email;
+    }
+
+    if let Some(phone) = update_request.phone {
+        existing.phone = phone;
+    }
+
+    if let Some(fax) = update_request.fax {
+        existing.fax = Some(fax);
+    }
+
+    if let Some(address) = update_request.address {
+        existing.address = address;
+    }
+
+    if let Some(bar_admissions) = update_request.bar_admissions {
+        existing.bar_admissions = bar_admissions;
+    }
+
+    if let Some(federal_admissions) = update_request.federal_admissions {
+        existing.federal_admissions = federal_admissions;
+    }
+
+    if let Some(pro_hac_vice_admissions) = update_request.pro_hac_vice_admissions {
+        existing.pro_hac_vice_admissions = pro_hac_vice_admissions;
+    }
+
+    if let Some(status) = update_request.status {
+        existing.status = status;
+    }
+
+    // Handle new optional fields from UpdateAttorneyRequest
+    if let Some(ecf_registration) = update_request.ecf_registration {
+        existing.ecf_registration = Some(ecf_registration);
+    }
+
+    if let Some(cja_panel_member) = update_request.cja_panel_member {
+        existing.cja_panel_member = cja_panel_member;
+    }
+
+    if let Some(cja_panel_districts) = update_request.cja_panel_districts {
+        existing.cja_panel_districts = cja_panel_districts;
+    }
+
+    if let Some(cja_appointments) = update_request.cja_appointments {
+        existing.cja_appointments = cja_appointments;
+    }
+
+    if let Some(practice_areas) = update_request.practice_areas {
+        existing.practice_areas = practice_areas;
+    }
+
+    if let Some(languages_spoken) = update_request.languages_spoken {
+        existing.languages_spoken = languages_spoken;
+    }
+
+    if let Some(discipline_history) = update_request.discipline_history {
+        existing.discipline_history = discipline_history;
+    }
+
+    if let Some(cases_handled) = update_request.cases_handled {
+        existing.cases_handled = cases_handled;
+    }
+
+    if let Some(win_rate_percentage) = update_request.win_rate_percentage {
+        existing.win_rate_percentage = Some(win_rate_percentage);
+    }
+
+    if let Some(avg_case_duration_days) = update_request.avg_case_duration_days {
+        existing.avg_case_duration_days = Some(avg_case_duration_days);
+    }
+
+    // Update the attorney
+    match repo.update_attorney(existing) {
         Ok(updated) => json::success_response(&updated),
         Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
     }
@@ -165,12 +340,28 @@ pub fn update_attorney(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn delete_attorney(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
 
     let id = params.get("id").unwrap_or_default();
 
-    match repo.delete_attorney(id) {
-        Ok(_) => Response::builder().status(204).build(),
+    // First check if attorney exists
+    match repo.find_attorney_by_id(id) {
+        Ok(Some(_)) => {
+            // Attorney exists, proceed with deletion
+            match repo.delete_attorney(id) {
+                Ok(_) => Response::builder().status(204).build(),
+                Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
+            }
+        }
+        Ok(None) => {
+            // Attorney doesn't exist
+            json::error_response(&ApiError::NotFound(
+                format!("Attorney {} not found", id)
+            ))
+        }
         Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
     }
 }
@@ -189,7 +380,13 @@ pub fn delete_attorney(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn list_attorneys(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_all_attorneys() {
         Ok(attorneys) => json::success_response(&attorneys),
@@ -212,7 +409,13 @@ pub fn list_attorneys(req: Request, _params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn search_attorneys(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -239,7 +442,13 @@ pub fn search_attorneys(req: Request, _params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorneys_by_status(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let status_str = params.get("status").unwrap_or_default();
     let status: AttorneyStatus = match serde_json::from_str(&format!("\"{}\"", status_str)) {
@@ -268,7 +477,13 @@ pub fn get_attorneys_by_status(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorneys_by_firm(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let firm_name = params.get("firm_name").unwrap_or_default();
 
@@ -297,7 +512,13 @@ pub fn get_attorneys_by_firm(req: Request, params: Params) -> Response {
     tag = "bar-admissions",
 )]
 pub fn add_bar_admission(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let admission: BarAdmission = match json::parse_body(req.body()) {
@@ -328,7 +549,13 @@ pub fn add_bar_admission(req: Request, params: Params) -> Response {
     tag = "bar-admissions",
 )]
 pub fn remove_bar_admission(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let state = params.get("state").unwrap_or_default();
@@ -354,7 +581,13 @@ pub fn remove_bar_admission(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorneys_by_bar_state(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let state = params.get("state").unwrap_or_default();
 
@@ -383,7 +616,13 @@ pub fn get_attorneys_by_bar_state(req: Request, params: Params) -> Response {
     tag = "federal-admissions",
 )]
 pub fn add_federal_admission(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let admission: FederalAdmission = match json::parse_body(req.body()) {
@@ -414,7 +653,13 @@ pub fn add_federal_admission(req: Request, params: Params) -> Response {
     tag = "federal-admissions",
 )]
 pub fn remove_federal_admission(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let court = params.get("court").unwrap_or_default();
@@ -440,7 +685,13 @@ pub fn remove_federal_admission(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn get_attorneys_admitted_to_court(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let court = params.get("court").unwrap_or_default();
 
@@ -469,7 +720,13 @@ pub fn get_attorneys_admitted_to_court(req: Request, params: Params) -> Response
     tag = "pro-hac-vice",
 )]
 pub fn add_pro_hac_vice(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let admission: ProHacViceAdmission = match json::parse_body(req.body()) {
@@ -501,7 +758,13 @@ pub fn add_pro_hac_vice(req: Request, params: Params) -> Response {
     tag = "pro-hac-vice",
 )]
 pub fn update_pro_hac_vice_status(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let case_id = params.get("case_id").unwrap_or_default();
@@ -530,7 +793,13 @@ pub fn update_pro_hac_vice_status(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_active_pro_hac_vice(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_active_pro_hac_vice() {
         Ok(admissions) => json::success_response(&admissions),
@@ -553,7 +822,13 @@ pub fn get_active_pro_hac_vice(req: Request, _params: Params) -> Response {
     tag = "pro-hac-vice",
 )]
 pub fn get_pro_hac_vice_by_case(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let case_id = params.get("case_id").unwrap_or_default();
 
@@ -582,7 +857,13 @@ pub fn get_pro_hac_vice_by_case(req: Request, params: Params) -> Response {
     tag = "cja",
 )]
 pub fn add_to_cja_panel(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let district = params.get("district").unwrap_or_default();
@@ -610,7 +891,13 @@ pub fn add_to_cja_panel(req: Request, params: Params) -> Response {
     tag = "cja",
 )]
 pub fn remove_from_cja_panel(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let district = params.get("district").unwrap_or_default();
@@ -636,7 +923,13 @@ pub fn remove_from_cja_panel(req: Request, params: Params) -> Response {
     tag = "cja",
 )]
 pub fn get_cja_panel_attorneys(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let district = params.get("district").unwrap_or_default();
 
@@ -663,7 +956,13 @@ pub fn get_cja_panel_attorneys(req: Request, params: Params) -> Response {
     tag = "cja",
 )]
 pub fn add_cja_appointment(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let appointment: CJAAppointment = match json::parse_body(req.body()) {
@@ -692,7 +991,13 @@ pub fn add_cja_appointment(req: Request, params: Params) -> Response {
     tag = "cja",
 )]
 pub fn get_cja_appointments(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -716,7 +1021,13 @@ pub fn get_cja_appointments(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_pending_cja_vouchers(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_pending_cja_vouchers() {
         Ok(vouchers) => json::success_response(&vouchers),
@@ -743,7 +1054,13 @@ pub fn get_pending_cja_vouchers(req: Request, _params: Params) -> Response {
     tag = "ecf",
 )]
 pub fn update_ecf_registration(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let registration: ECFRegistration = match json::parse_body(req.body()) {
@@ -773,7 +1090,13 @@ pub fn update_ecf_registration(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn check_good_standing(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -801,7 +1124,13 @@ pub fn check_good_standing(req: Request, params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn check_federal_practice(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let court = params.get("court").unwrap_or_default();
@@ -829,7 +1158,13 @@ pub fn check_federal_practice(req: Request, params: Params) -> Response {
     tag = "ecf",
 )]
 pub fn check_ecf_privileges(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -854,7 +1189,13 @@ pub fn check_ecf_privileges(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_attorneys_with_ecf(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_attorneys_with_ecf_access() {
         Ok(attorneys) => json::success_response(&attorneys),
@@ -878,7 +1219,13 @@ pub fn get_attorneys_with_ecf(req: Request, _params: Params) -> Response {
     tag = "ecf",
 )]
 pub fn revoke_ecf_access(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -907,7 +1254,13 @@ pub fn revoke_ecf_access(req: Request, params: Params) -> Response {
     tag = "discipline",
 )]
 pub fn add_disciplinary_action(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let action: DisciplinaryAction = match json::parse_body(req.body()) {
@@ -936,7 +1289,13 @@ pub fn add_disciplinary_action(req: Request, params: Params) -> Response {
     tag = "discipline",
 )]
 pub fn get_disciplinary_history(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -960,7 +1319,13 @@ pub fn get_disciplinary_history(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_attorneys_with_discipline(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_attorneys_with_discipline() {
         Ok(attorneys) => json::success_response(&attorneys),
@@ -986,7 +1351,13 @@ pub fn get_attorneys_with_discipline(req: Request, _params: Params) -> Response 
     ),
 )]
 pub fn create_party(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let request: CreatePartyRequest = match json::parse_body(req.body()) {
         Ok(p) => p,
@@ -1038,7 +1409,13 @@ pub fn create_party(req: Request, _params: Params) -> Response {
     tag = "parties",
 )]
 pub fn get_party(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1066,7 +1443,13 @@ pub fn get_party(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn update_party(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let mut party: Party = match json::parse_body(req.body()) {
         Ok(p) => p,
@@ -1097,7 +1480,13 @@ pub fn update_party(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn delete_party(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1122,7 +1511,13 @@ pub fn delete_party(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn list_parties_by_case(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let case_id = params.get("case_id").unwrap_or_default();
 
@@ -1147,7 +1542,13 @@ pub fn list_parties_by_case(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn list_parties_by_attorney(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let attorney_id = params.get("attorney_id").unwrap_or_default();
 
@@ -1174,7 +1575,13 @@ pub fn list_parties_by_attorney(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn update_party_status(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1209,7 +1616,13 @@ pub fn update_party_status(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn check_party_needs_service(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1236,7 +1649,13 @@ pub fn check_party_needs_service(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn get_party_lead_counsel(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1263,7 +1682,13 @@ pub fn get_party_lead_counsel(req: Request, params: Params) -> Response {
     tag = "parties",
 )]
 pub fn check_party_represented(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1288,7 +1713,13 @@ pub fn check_party_represented(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_unrepresented_parties(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_unrepresented_parties() {
         Ok(parties) => json::success_response(&parties),
@@ -1314,7 +1745,13 @@ pub fn get_unrepresented_parties(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn add_representation(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let representation: AttorneyRepresentation = match json::parse_body(req.body()) {
         Ok(r) => r,
@@ -1344,7 +1781,13 @@ pub fn add_representation(req: Request, _params: Params) -> Response {
     tag = "representation",
 )]
 pub fn end_representation(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1374,7 +1817,13 @@ pub fn end_representation(req: Request, params: Params) -> Response {
     tag = "representation",
 )]
 pub fn get_representation(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1400,7 +1849,13 @@ pub fn get_representation(req: Request, params: Params) -> Response {
     tag = "representation",
 )]
 pub fn get_active_representations(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let attorney_id = params.get("attorney_id").unwrap_or_default();
 
@@ -1425,7 +1880,13 @@ pub fn get_active_representations(req: Request, params: Params) -> Response {
     tag = "representation",
 )]
 pub fn get_case_representations(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let case_id = params.get("case_id").unwrap_or_default();
 
@@ -1453,7 +1914,13 @@ pub fn get_case_representations(req: Request, params: Params) -> Response {
     tag = "representation",
 )]
 pub fn substitute_attorney(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -1485,7 +1952,13 @@ pub fn substitute_attorney(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn create_service_record(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let record: ServiceRecord = match json::parse_body(req.body()) {
         Ok(r) => r,
@@ -1513,7 +1986,13 @@ pub fn create_service_record(req: Request, _params: Params) -> Response {
     tag = "process-service",
 )]
 pub fn get_service_by_document(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let document_id = params.get("document_id").unwrap_or_default();
 
@@ -1538,7 +2017,13 @@ pub fn get_service_by_document(req: Request, params: Params) -> Response {
     tag = "process-service",
 )]
 pub fn get_service_by_party(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let party_id = params.get("party_id").unwrap_or_default();
 
@@ -1564,7 +2049,13 @@ pub fn get_service_by_party(req: Request, params: Params) -> Response {
     tag = "process-service",
 )]
 pub fn mark_service_completed(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1592,7 +2083,13 @@ pub fn mark_service_completed(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn create_conflict_check(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let check: ConflictCheck = match json::parse_body(req.body()) {
         Ok(c) => c,
@@ -1620,7 +2117,13 @@ pub fn create_conflict_check(req: Request, _params: Params) -> Response {
     tag = "conflicts",
 )]
 pub fn get_attorney_conflicts(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let attorney_id = params.get("attorney_id").unwrap_or_default();
 
@@ -1647,7 +2150,13 @@ pub fn get_attorney_conflicts(req: Request, params: Params) -> Response {
     tag = "conflicts",
 )]
 pub fn check_party_conflicts(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -1681,7 +2190,13 @@ pub fn check_party_conflicts(req: Request, _params: Params) -> Response {
     tag = "conflicts",
 )]
 pub fn clear_conflict(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1717,7 +2232,13 @@ pub fn clear_conflict(req: Request, params: Params) -> Response {
     tag = "metrics",
 )]
 pub fn get_attorney_metrics(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1748,7 +2269,13 @@ pub fn get_attorney_metrics(req: Request, params: Params) -> Response {
     tag = "metrics",
 )]
 pub fn get_attorney_win_rate(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1774,7 +2301,13 @@ pub fn get_attorney_win_rate(req: Request, params: Params) -> Response {
     tag = "metrics",
 )]
 pub fn get_attorney_case_count(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
 
@@ -1799,7 +2332,13 @@ pub fn get_attorney_case_count(req: Request, params: Params) -> Response {
     tag = "metrics",
 )]
 pub fn get_top_attorneys(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -1832,7 +2371,13 @@ pub fn get_top_attorneys(req: Request, _params: Params) -> Response {
     tag = "attorneys",
 )]
 pub fn bulk_update_status(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -1871,7 +2416,13 @@ pub fn bulk_update_status(req: Request, _params: Params) -> Response {
     tag = "process-service",
 )]
 pub fn bulk_add_to_service(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let document_id = params.get("document_id").unwrap_or_default();
 
@@ -1903,7 +2454,13 @@ pub fn bulk_add_to_service(req: Request, params: Params) -> Response {
     tag = "representation",
 )]
 pub fn migrate_representations(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
@@ -1941,7 +2498,13 @@ pub struct WinRateRequest {
     tag = "attorneys",
 )]
 pub fn calculate_attorney_win_rate(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::attorney_repo(&req);
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or_default();
     let request: WinRateRequest = match json::parse_body(req.body()) {

@@ -2,6 +2,7 @@
 //!
 //! This module provides a Spin KV Store implementation of the DocumentRepository trait.
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::domain::order::{JudicialOrder, OrderTemplate, OrderType, OrderStatus};
 use crate::domain::opinion::{JudicialOpinion, OpinionDraft};
 use crate::error::{ApiError, ApiResult};
@@ -21,16 +22,19 @@ pub struct SpinKvDocumentRepository {
 impl SpinKvDocumentRepository {
     /// Create repository with tenant ID
     pub fn new(tenant_id: &str) -> Result<Self, String> {
-        // Use the tenant's existing store
+        // Require valid tenant ID - no silent fallbacks
+        if tenant_id.is_empty() {
+            return Err("TENANT_NOT_SPECIFIED: tenant ID is required".to_string());
+        }
         let store_name = tenant_id.to_lowercase();
-        Store::open(&store_name)
+        open_validated_store(&store_name)
             .map(|store| Self { store })
             .map_err(|e| format!("Failed to open store: {}", e))
     }
 
     /// Create repository with specific store name for multi-tenancy
     pub fn with_store(store_name: String) -> Self {
-        let store = Store::open(&store_name)
+        let store = open_validated_store(&store_name)
             .expect(&format!("Failed to open store: {}", store_name));
         Self { store }
     }

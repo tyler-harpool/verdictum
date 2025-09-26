@@ -43,3 +43,37 @@ path = ".spin/dev/stores/tax.db"
 [key_value_store.generic]
 type = "spin"
 path = ".spin/dev/stores/generic.db"
+
+# Additional district stores
+[key_value_store.test]
+type = "spin"
+path = ".spin/dev/stores/test.db"
+
+[key_value_store.ndny]
+type = "spin"
+path = ".spin/dev/stores/ndny.db"
+
+[key_value_store.wdny]
+type = "spin"
+path = ".spin/dev/stores/wdny.db"
+
+[key_value_store.sdtx]
+type = "spin"
+path = ".spin/dev/stores/sdtx.db"
+
+[key_value_store.ndil]
+type = "spin"
+path = ".spin/dev/stores/ndil.db"
+
+[key_value_store.ddc]
+type = "spin"
+path = ".spin/dev/stores/ddc.db"
+
+# Test districts from movies
+[key_value_store.district9]
+type = "spin"
+path = ".spin/dev/stores/district9.db"
+
+[key_value_store.district12]
+type = "spin"
+path = ".spin/dev/stores/district12.db"

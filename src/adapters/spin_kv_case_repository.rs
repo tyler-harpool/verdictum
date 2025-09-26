@@ -3,6 +3,7 @@
 //! This adapter implements the CaseRepository trait using Spin's
 //! built-in key-value store for persistence.
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::domain::criminal_case::{CaseStatus, CasePriority, CriminalCase};
 use crate::ports::case_repository::{CaseRepository, CaseQuery, CaseQueryRepository, CaseStatistics};
 use anyhow::Result;
@@ -20,7 +21,7 @@ pub struct SpinKvCaseRepository {
 impl SpinKvCaseRepository {
     /// Create repository with specific store name for multi-tenancy
     pub fn with_store(store_name: String) -> Self {
-        let store = Store::open(&store_name)
+        let store = open_validated_store(&store_name)
             .expect(&format!("Failed to open store: {}", store_name));
         Self { store }
     }

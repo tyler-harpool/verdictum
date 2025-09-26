@@ -3,6 +3,7 @@
 //! This adapter implements the ConfigRepository trait using Spin's Key-Value store,
 //! providing persistent storage for district and judge configuration overrides.
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::adapters::toml_config_loader::TomlConfigLoader;
 use crate::domain::config::{Configuration, ConfigOverride};
 use crate::error::ApiError;
@@ -46,9 +47,9 @@ impl SpinKvConfigRepository {
 
     /// Get the KV store instance
     fn get_store(&self) -> Result<Store, ApiError> {
-        Store::open(&self.store_name).map_err(|e| match e {
-            KvError::NoSuchStore => ApiError::NotFound(format!("Store '{}' not found. Ensure the tenant is configured.", self.store_name)),
-            KvError::AccessDenied => ApiError::Forbidden(format!("Access denied to store '{}'", self.store_name)),
+        open_validated_store(&self.store_name).map_err(|e| match e.downcast_ref::<KvError>() {
+            Some(KvError::NoSuchStore) => ApiError::NotFound(format!("Store '{}' not found. Ensure the tenant is configured.", self.store_name)),
+            Some(KvError::AccessDenied) => ApiError::Forbidden(format!("Access denied to store '{}'", self.store_name)),
             _ => ApiError::InternalServerError(format!("Failed to open store '{}': {}", self.store_name, e)),
         })
     }

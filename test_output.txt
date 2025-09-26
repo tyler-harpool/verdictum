@@ -1,0 +1,1850 @@
+
+running 263 tests
+test test-publish-opinion-url-based                               ... [0m[32mok[0m
+test test-add-judge-vote-url-based                                ... [0m[32mok[0m
+test test-update-ecf-registration                                 ... [0m[32mok[0m
+test test-get-all-judges-url-based                                ... [0m[31mFAILED[0m
+test test-get-template-url-based                                  ... [0m[32mok[0m
+test test-search-attorneys-endpoint                               ... [0m[32mok[0m
+test test-get-representation                                      ... [0m[32mok[0m
+test test-get-attorney-case-count                                 ... [0m[32mok[0m
+test test-get-case-by-id-url-based                                ... [0m[31mFAILED[0m
+test test-update-attorney-endpoint                                ... [0m[32mok[0m
+test test-calculate-attorney-win-rate                             ... [0m[32mok[0m
+test test-find-upcoming-url-based                                 ... [0m[32mok[0m
+test test-update-case-status-url-based                            ... [0m[31mFAILED[0m
+test test-request-extension-url-based                             ... [0m[32mok[0m
+test test-bulk-add-to-service                                     ... [0m[32mok[0m
+test test-get-citation-statistics-url-based                       ... [0m[32mok[0m
+test test-delete-deadline-url-based                               ... [0m[32mok[0m
+test test-create-docket-entry-url-based                           ... [0m[32mok[0m
+test test-order-missing-district-returns-error                    ... [0m[31mFAILED[0m
+test test-calculate-opinion-statistics-url-based                  ... [0m[32mok[0m
+test test-calculate-frcp-deadlines-url-based                      ... [0m[32mok[0m
+test test-search-docket-url-based                                 ... [0m[32mok[0m
+test test-get-pending-extensions-url-based                        ... [0m[32mok[0m
+test test-get-attorney-by-bar-number-endpoint                     ... [0m[32mok[0m
+test test-get-sentencing-url-based                                ... [0m[32mok[0m
+test test-invalid-sentencing-id-returns-not-found                 ... [0m[32mok[0m
+test test-check-party-conflicts                                   ... [0m[32mok[0m
+test test-get-courtroom-utilization-url-based                     ... [0m[32mok[0m
+test test-get-attorney-win-rate                                   ... [0m[32mok[0m
+test test-invalid-url-returns-not-found                           ... [0m[32mok[0m
+test test-update-non-existent-opinion-returns-not-found           ... [0m[32mok[0m
+test test-get-case-statistics-header-based                        ... [0m[31mFAILED[0m
+test test-update-supervised-release-url-based                     ... [0m[32mok[0m
+test test-create-opinion-with-invalid-data-returns-bad-request    ... [0m[31mFAILED[0m
+test test-get-service-by-party                                    ... [0m[32mok[0m
+test test-get-attorneys-by-firm-endpoint                          ... [0m[32mok[0m
+test test-create-deadline-with-invalid-data-returns-bad-request   ... [0m[31mFAILED[0m
+test test-acknowledge-reminder-url-based                          ... [0m[32mok[0m
+test test-list-orders-url-based                                   ... [0m[32mok[0m
+test test-get-urgent-deadlines-url-based                          ... [0m[32mok[0m
+test test-get-attorney-conflicts                                  ... [0m[32mok[0m
+test test-create-opinion-returns-created                          ... [0m[31mFAILED[0m
+test test-create-conflict-check                                   ... [0m[32mok[0m
+test test-search-opinions-url-based                               ... [0m[32mok[0m
+test test-get-party-lead-counsel                                  ... [0m[32mok[0m
+test test-config-migration-with-judge                             ... [0m[32mok[0m
+test test-search-judges-url-based                                 ... [0m[31mFAILED[0m
+test test-is-majority-opinion-url-based                           ... [0m[32mok[0m
+test test-get-extensions-by-deadline-url-based                    ... [0m[32mok[0m
+test test-get-attorneys-by-status-endpoint                        ... [0m[32mok[0m
+test test-config-accepts-district-header                          ... [0m[32mok[0m
+test test-get-district-stats-url-based                            ... [0m[32mok[0m
+test test-add-federal-admission-endpoint                          ... [0m[32mok[0m
+test test-create-deadline-url-based                               ... [0m[32mok[0m
+test test-send-reminders-url-based                                ... [0m[32mok[0m
+test test-get-attorney-metrics                                    ... [0m[32mok[0m
+test test-get-attorneys-by-bar-state-endpoint                     ... [0m[32mok[0m
+test test-remove-federal-admission-endpoint                       ... [0m[32mok[0m
+test test-update-event-status-url-based                           ... [0m[32mok[0m
+test test-substitute-attorney                                     ... [0m[32mok[0m
+test test-create-case-header-based                                ... [0m[31mFAILED[0m
+test test-add-attachment-url-based                                ... [0m[32mok[0m
+test test-get-precedential-opinions-url-based                     ... [0m[32mok[0m
+test test-get-deadline-url-based                                  ... [0m[32mok[0m
+test test-update-non-existent-sentencing-returns-not-found        ... [0m[32mok[0m
+test test-generate-compliance-report-url-based                    ... [0m[32mok[0m
+test test-safety-valve-eligible-url-based                         ... [0m[32mok[0m
+test test-add-departure-url-based                                 ... [0m[32mok[0m
+test test-add-citation-url-based                                  ... [0m[32mok[0m
+test test-find-available-slot-url-based                           ... [0m[32mok[0m
+test test-delete-order-url-based                                  ... [0m[32mok[0m
+test test-sentencing-endpoint-url-routing                         ... [0m[32mok[0m
+test test-get-pending-recusals-url-based                          ... [0m[31mFAILED[0m
+test test-calculate-guidelines-invalid-data-returns-bad-request   ... [0m[31mFAILED[0m
+test test-opinion-missing-district-returns-error                  ... [0m[31mFAILED[0m
+test test-get-violations-url-based                                ... [0m[32mok[0m
+test test-get-attorney-endpoint                                   ... [0m[32mok[0m
+test test-file-opinion-url-based                                  ... [0m[32mok[0m
+test test-list-parties-by-attorney                                ... [0m[32mok[0m
+test test-get-workload-stats-header-based                         ... [0m[32mok[0m
+test test-rule-on-extension-url-based                             ... [0m[32mok[0m
+test test-url-based-config-endpoint                               ... [0m[32mok[0m
+test test-get-cja-appointments                                    ... [0m[32mok[0m
+test test-update-existing-opinion-returns-success                 ... [0m[31mFAILED[0m
+test test-invalid-deadline-id-returns-not-found                   ... [0m[32mok[0m
+test test-get-case-docket-url-based                               ... [0m[32mok[0m
+test test-update-sentencing-url-based                             ... [0m[32mok[0m
+test test-opinion-header-and-url-consistency                      ... [0m[31mFAILED[0m
+test test-sign-order-url-based                                    ... [0m[32mok[0m
+test test-create-sentencing-with-invalid-data-returns-bad-request ... [0m[31mFAILED[0m
+test test-missing-district-returns-error                          ... [0m[32mok[0m
+test test-delete-attorney-endpoint                                ... [0m[32mok[0m
+test test-get-rdap-eligible-url-based                             ... [0m[32mok[0m
+test test-get-opinion-statistics-url-based                        ... [0m[32mok[0m
+test test-get-active-representations                              ... [0m[32mok[0m
+test test-delete-non-existent-sentencing-returns-not-found        ... [0m[32mok[0m
+test test-missing-district-header-returns-error                   ... [0m[32mok[0m
+test test-judge-missing-district-returns-error                    ... [0m[31mFAILED[0m
+test test-get-service-by-document                                 ... [0m[32mok[0m
+test test-update-template-url-based                               ... [0m[32mok[0m
+test test-config-migration-bankruptcy                             ... [0m[32mok[0m
+test test-find-appeal-deadlines-url-based                         ... [0m[32mok[0m
+test test-get-orders-by-judge-url-based                           ... [0m[32mok[0m
+test test-get-pending-signatures-url-based                        ... [0m[32mok[0m
+test test-create-template-url-based                               ... [0m[32mok[0m
+test test-get-expiring-orders-url-based                           ... [0m[32mok[0m
+test test-add-pro-hac-vice-endpoint                               ... [0m[32mok[0m
+test test-get-order-url-based                                     ... [0m[32mok[0m
+test test-get-performance-metrics-url-based                       ... [0m[32mok[0m
+test test-config-update-migration                                 ... [0m[32mok[0m
+test test-get-available-judges-url-based                          ... [0m[31mFAILED[0m
+test test-delete-docket-entry-url-based                           ... [0m[32mok[0m
+test test-docket-header-and-url-consistency                       ... [0m[31mFAILED[0m
+test test-judge-header-and-url-consistency                        ... [0m[31mFAILED[0m
+test test-list-opinions-returns-array                             ... [0m[31mFAILED[0m
+test test-sentencing-missing-district-returns-error               ... [0m[31mFAILED[0m
+test test-generate-template-content-url-based                     ... [0m[32mok[0m
+test test-get-extension-by-id-url-based                           ... [0m[32mok[0m
+test test-list-opinions-url-based                                 ... [0m[31mFAILED[0m
+test test-add-draft-comment-url-based                             ... [0m[32mok[0m
+test test-add-defendant-url-based                                 ... [0m[31mFAILED[0m
+test test-get-drafts-url-based                                    ... [0m[32mok[0m
+test test-sentencing-header-and-url-consistency                   ... [0m[31mFAILED[0m
+test test-check-requires-attention-url-based                      ... [0m[32mok[0m
+test test-missing-courts-segment-returns-not-found                ... [0m[32mok[0m
+test test-template-header-and-url-consistency                     ... [0m[31mFAILED[0m
+test test-get-pending-cja-vouchers                                ... [0m[32mok[0m
+test test-create-attorney-endpoint                                ... [0m[31mFAILED[0m
+test test-check-order-expired-url-based                           ... [0m[32mok[0m
+test test-update-deadline-status-url-based                        ... [0m[32mok[0m
+test test-get-opinions-by-author-url-based                        ... [0m[32mok[0m
+test test-both-routing-methods-accessible                         ... [0m[32mok[0m
+test test-get-orders-by-case-url-based                            ... [0m[32mok[0m
+test test-add-excludable-delay-url-based                          ... [0m[32mok[0m
+test test-config-endpoint-returns-valid-response                  ... [0m[32mok[0m
+test test-file-recusal-url-based                                  ... [0m[31mFAILED[0m
+test test-update-order-url-based                                  ... [0m[32mok[0m
+test test-get-case-assignment-url-based                           ... [0m[31mFAILED[0m
+test test-get-pending-reminders-url-based                         ... [0m[32mok[0m
+test test-check-party-needs-service                               ... [0m[32mok[0m
+test test-get-case-calendar-url-based                             ... [0m[32mok[0m
+test test-get-upcoming-deadlines-url-based                        ... [0m[32mok[0m
+test test-get-case-statistics-url-based                           ... [0m[31mFAILED[0m
+test test-list-parties-by-case                                    ... [0m[32mok[0m
+test test-get-compliance-stats-url-based                          ... [0m[32mok[0m
+test test-mark-service-completed                                  ... [0m[32mok[0m
+test test-create-service-record                                   ... [0m[32mok[0m
+test test-get-disciplinary-history                                ... [0m[32mok[0m
+test test-remove-bar-admission-endpoint                           ... [0m[32mok[0m
+test test-delete-sentencing-url-based                             ... [0m[32mok[0m
+test test-deadline-missing-district-returns-error                 ... [0m[31mFAILED[0m
+test test-migrate-representations                                 ... [0m[32mok[0m
+test test-check-conflicts-url-based                               ... [0m[31mFAILED[0m
+test test-add-bop-designation-url-based                           ... [0m[32mok[0m
+test test-get-attorneys-with-ecf                                  ... [0m[32mok[0m
+test test-criminal-cases-endpoint-url-routing                     ... [0m[32mok[0m
+test test-get-party                                               ... [0m[32mok[0m
+test test-get-top-attorneys                                       ... [0m[32mok[0m
+test test-calculate-guidelines-url-based                          ... [0m[32mok[0m
+test test-create-opinion-with-invalid-json-returns-bad-request    ... [0m[31mFAILED[0m
+test test-complete-deadline-url-based                             ... [0m[32mok[0m
+test test-remove-from-cja-panel                                   ... [0m[32mok[0m
+test test-kv-isolation-between-districts                          ... [0m[32mok[0m
+test test-create-case-url-based                                   ... [0m[31mFAILED[0m
+test test-search-deadlines-url-based                              ... [0m[32mok[0m
+test test-different-districts-in-url                              ... [0m[32mok[0m
+test test-schedule-event-url-based                                ... [0m[32mok[0m
+test test-health-check                                            ... [0m[32mok[0m
+test test-add-bar-admission-endpoint                              ... [0m[32mok[0m
+test test-update-party                                            ... [0m[32mok[0m
+test test-is-binding-opinion-url-based                            ... [0m[32mok[0m
+test test-delete-non-existent-deadline-returns-not-found          ... [0m[32mok[0m
+test test-create-from-template-url-based                          ... [0m[32mok[0m
+test test-check-good-standing                                     ... [0m[32mok[0m
+test test-verify-routing-consistency                              ... [0m[31mFAILED[0m
+test test-get-judge-stats-url-based                               ... [0m[32mok[0m
+test test-delete-non-existent-opinion-returns-not-found           ... [0m[32mok[0m
+test test-list-templates-url-based                                ... [0m[32mok[0m
+test test-header-routing-requires-district                        ... [0m[32mok[0m
+test test-search-cases-header-based                               ... [0m[32mok[0m
+test test-get-pro-hac-vice-by-case-endpoint                       ... [0m[32mok[0m
+test test-clear-conflict                                          ... [0m[32mok[0m
+test test-get-case-representations                                ... [0m[32mok[0m
+test test-revoke-ecf-access                                       ... [0m[32mok[0m
+test test-check-federal-practice                                  ... [0m[32mok[0m
+test test-add-special-condition-url-based                         ... [0m[32mok[0m
+test test-get-current-draft-url-based                             ... [0m[32mok[0m
+test test-criminal-history-points-url-based                       ... [0m[32mok[0m
+test test-find-pending-url-based                                  ... [0m[32mok[0m
+test test-url-routing-extracts-district                           ... [0m[32mok[0m
+test test-issue-order-url-based                                   ... [0m[32mok[0m
+test test-add-disciplinary-action                                 ... [0m[32mok[0m
+test test-get-departure-stats-url-based                           ... [0m[32mok[0m
+test test-find-active-templates-url-based                         ... [0m[32mok[0m
+test test-get-trial-penalty-url-based                             ... [0m[32mok[0m
+test test-init-speedy-trial-url-based                             ... [0m[32mok[0m
+test test-request-extension-without-deadline-returns-not-found    ... [0m[32mok[0m
+test test-create-party                                            ... [0m[31mFAILED[0m
+test test-add-variance-url-based                                  ... [0m[32mok[0m
+test test-assign-case-url-based                                   ... [0m[31mFAILED[0m
+test test-get-workload-stats-url-based                            ... [0m[31mFAILED[0m
+test test-crud-delete-non-existent-opinion-returns-not-found      ... [0m[32mok[0m
+test test-crud-update-non-existent-opinion-returns-not-found      ... [0m[32mok[0m
+test test-delete-existing-opinion-returns-no-content              ... [0m[31mFAILED[0m
+test test-missing-district-in-header-routing-returns-bad-request  ... [0m[31mFAILED[0m
+test test-update-pro-hac-vice-status-endpoint                     ... [0m[32mok[0m
+test test-create-sentencing-url-based                             ... [0m[32mok[0m
+test test-header-and-url-consistency                              ... [0m[31mFAILED[0m
+test test-delete-party                                            ... [0m[32mok[0m
+test test-create-order-url-based                                  ... [0m[32mok[0m
+test test-get-attorneys-admitted-to-court-endpoint                ... [0m[32mok[0m
+test test-missing-district-returns-error-cases                    ... [0m[31mFAILED[0m
+test test-get-opinions-by-case-url-based                          ... [0m[32mok[0m
+test test-config-migration-sdny                                   ... [0m[32mok[0m
+test test-find-by-case-url-based                                  ... [0m[32mok[0m
+test test-create-judge-url-based                                  ... [0m[31mFAILED[0m
+test test-check-ecf-privileges                                    ... [0m[32mok[0m
+test test-schedule-court-event-url-based                          ... [0m[31mFAILED[0m
+test test-deadline-header-and-url-consistency                     ... [0m[31mFAILED[0m
+test test-create-opinion-url-based                                ... [0m[31mFAILED[0m
+test test-create-draft-url-based                                  ... [0m[32mok[0m
+test test-get-speedy-trial-url-based                              ... [0m[32mok[0m
+test test-list-attorneys-endpoint                                 ... [0m[32mok[0m
+test test-get-existing-opinion-returns-success                    ... [0m[31mFAILED[0m
+test test-get-approaching-deadlines-url-based                     ... [0m[32mok[0m
+test test-header-routing-with-district-works                      ... [0m[32mok[0m
+test test-resolve-draft-comment-url-based                         ... [0m[32mok[0m
+test test-update-opinion-url-based                                ... [0m[32mok[0m
+
+=== MIGRATION STATUS ===
+config: ✅ MIGRATED
+cases: ❌ PENDING
+judges: ❌ PENDING
+attorneys: ❌ PENDING
+docket: ❌ PENDING
+orders: ❌ PENDING
+opinions: ❌ PENDING
+deadlines: ❌ PENDING
+sentencing: ❌ PENDING
+
+Progress: 1/9 domains (11.1%)
+test test-end-representation                                      ... [0m[32mok[0m
+test test-deadlines-endpoint-url-routing                          ... [0m[32mok[0m
+test test-check-party-represented                                 ... [0m[32mok[0m
+test test-get-unrepresented-parties                               ... [0m[32mok[0m
+test test-count-by-status-header-based                            ... [0m[31mFAILED[0m
+test test-update-party-status                                     ... [0m[32mok[0m
+test test-add-headnote-url-based                                  ... [0m[32mok[0m
+test test-judges-endpoint-url-routing                             ... [0m[31mFAILED[0m
+test test-add-to-cja-panel-endpoint                               ... [0m[32mok[0m
+test test-migration-status                                        ... [0m[32mok[0m
+test test-get-active-pro-hac-vice-endpoint                        ... [0m[32mok[0m
+test test-add-cja-appointment                                     ... [0m[32mok[0m
+test test-get-missed-jurisdictional-url-based                     ... [0m[32mok[0m
+test test-opinions-endpoint-url-routing                           ... [0m[32mok[0m
+test test-create-judge-header-based                               ... [0m[31mFAILED[0m
+test test-order-header-and-url-consistency                        ... [0m[31mFAILED[0m
+test test-delete-opinion-url-based                                ... [0m[32mok[0m
+test test-complete-non-existent-deadline-returns-not-found        ... [0m[32mok[0m
+test test-add-representation                                      ... [0m[31mFAILED[0m
+test test-get-federal-rules-url-based                             ... [0m[32mok[0m
+test test-delete-template-url-based                               ... [0m[32mok[0m
+test test-get-attorneys-with-discipline                           ... [0m[32mok[0m
+test test-speedy-trial-missing-district-returns-error             ... [0m[31mFAILED[0m
+test test-attorneys-endpoint-url-routing                          ... [0m[32mok[0m
+test test-get-opinion-by-id-url-based                             ... [0m[32mok[0m
+test test-get-case-deadlines-url-based                            ... [0m[32mok[0m
+test test-crud-get-non-existent-opinion-returns-not-found         ... [0m[32mok[0m
+test test-get-cja-panel-attorneys                                 ... [0m[32mok[0m
+test test-invalid-opinion-id-returns-not-found                    ... [0m[32mok[0m
+test test-count-by-status-url-based                               ... [0m[31mFAILED[0m
+test test-search-cases-url-based                                  ... [0m[31mFAILED[0m
+test test-bulk-update-status                                      ... [0m[32mok[0m
+test test-calendar-header-and-url-consistency                     ... [0m[31mFAILED[0m
+test test-get-judge-schedule-url-based                            ... [0m[32mok[0m
+test test-get-all-judges-header-based                             ... [0m[32mok[0m
+
+failures:
+
+---- test-get-all-judges-url-based ----
+test 'spin-test-test-get-all-judges-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb7483e - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_all_judges::h8646984b6cd7fc40
+   16: 0x473f52 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hd80b7f7a6ee65246
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1978ddb - config_tests.wasm!config_tests::judge_tests::test_get_all_judges_url_based::hd77861636efbbd24
+   29: 0x197d445 - config_tests.wasm!spin-test-test-get-all-judges-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-case-by-id-url-based ----
+test 'spin-test-test-get-case-by-id-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x771dc8 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::create_case::h5681b994d900d4c8
+   16: 0x45007c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h55502b79e36250c8
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1971edb - config_tests.wasm!config_tests::criminal_case_tests::test_get_case_by_id_url_based::h44273bd0e053be4c
+   29: 0x197faf9 - config_tests.wasm!spin-test-test-get-case-by-id-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-update-case-status-url-based ----
+test 'spin-test-test-update-case-status-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x771dc8 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::create_case::h5681b994d900d4c8
+   16: 0x45007c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h55502b79e36250c8
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1972f00 - config_tests.wasm!config_tests::criminal_case_tests::test_update_case_status_url_based::h0a026033290da564
+   29: 0x197ae98 - config_tests.wasm!spin-test-test-update-case-status-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-order-missing-district-returns-error ----
+test 'spin-test-test-order-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x8dc801 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_document_repository::SpinKvDocumentRepository::with_store::hd353b4796b322276
+   13: 0x6672da - spin_utopia.wasm!spin_utopia::handlers::order::list_orders::h79f76a0b40f6c50f
+   14: 0x475878 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hdb0e73f990f0a9b0
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x1988b27 - config_tests.wasm!config_tests::order_tests::make_request::h6efd8bd819fd2e10
+   26: 0x1981aba - config_tests.wasm!spin-test-test-order-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-case-statistics-header-based ----
+test 'spin-test-test-get-case-statistics-header-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b44 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x197269a - config_tests.wasm!config_tests::criminal_case_tests::test_get_case_statistics_header_based::h210f28eae1345960
+   12: 0x198218b - config_tests.wasm!spin-test-test-get-case-statistics-header-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-opinion-with-invalid-data-returns-bad-request ----
+test 'spin-test-test-create-opinion-with-invalid-data-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x197a4f2 - config_tests.wasm!spin-test-test-create-opinion-with-invalid-data-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-deadline-with-invalid-data-returns-bad-request ----
+test 'spin-test-test-create-deadline-with-invalid-data-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x197cb2e - config_tests.wasm!spin-test-test-create-deadline-with-invalid-data-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-opinion-returns-created ----
+test 'spin-test-test-create-opinion-returns-created' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x196d8a7 - config_tests.wasm!config_tests::opinion_crud_tests::test_create_opinion_returns_created::h68574deecdd7a3d4
+   14: 0x197efa0 - config_tests.wasm!spin-test-test-create-opinion-returns-created
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-search-judges-url-based ----
+test 'spin-test-test-search-judges-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb74e02 - spin_utopia.wasm!spin_utopia::handlers::judge_url::search_judges::h7c67f123923d6d01
+   16: 0x47c7d0 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hf7f5927b7741caab
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1979607 - config_tests.wasm!config_tests::judge_tests::test_search_judges_url_based::h38b7acb417f83a5a
+   29: 0x198a896 - config_tests.wasm!spin-test-test-search-judges-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-case-header-based ----
+test 'spin-test-test-create-case-header-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x1971915 - config_tests.wasm!config_tests::criminal_case_tests::test_create_case_header_based::h63a39c1e8a633085
+   12: 0x19885e6 - config_tests.wasm!spin-test-test-create-case-header-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-pending-recusals-url-based ----
+test 'spin-test-test-get-pending-recusals-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb75f4e - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_pending_recusals::h06b0f790926ced60
+   16: 0x474b0a - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hda0edcb183537a1e
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x197acfd - config_tests.wasm!spin-test-test-get-pending-recusals-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-calculate-guidelines-invalid-data-returns-bad-request ----
+test 'spin-test-test-calculate-guidelines-invalid-data-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x19815a0 - config_tests.wasm!spin-test-test-calculate-guidelines-invalid-data-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-opinion-missing-district-returns-error ----
+test 'spin-test-test-opinion-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x8dc801 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_document_repository::SpinKvDocumentRepository::with_store::hd353b4796b322276
+   13: 0x910186 - spin_utopia.wasm!spin_utopia::handlers::opinion::list_opinions::h577fa72391af38bb
+   14: 0x468ac3 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hae786aed34c990a1
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x19846d0 - config_tests.wasm!config_tests::opinion_tests::make_request::hc86da283f5176cbd
+   26: 0x19880b0 - config_tests.wasm!spin-test-test-opinion-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-update-existing-opinion-returns-success ----
+test 'spin-test-test-update-existing-opinion-returns-success' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x196e2a4 - config_tests.wasm!config_tests::opinion_crud_tests::test_update_existing_opinion_returns_success::h66e17d3fca5c17bc
+   14: 0x1987d27 - config_tests.wasm!spin-test-test-update-existing-opinion-returns-success
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-opinion-header-and-url-consistency ----
+test 'spin-test-test-opinion-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x198610c - config_tests.wasm!config_tests::opinion_tests::test_opinion_header_and_url_consistency::hcecf28c622819ed5
+   14: 0x197f657 - config_tests.wasm!spin-test-test-opinion-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-sentencing-with-invalid-data-returns-bad-request ----
+test 'spin-test-test-create-sentencing-with-invalid-data-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x197f1f9 - config_tests.wasm!spin-test-test-create-sentencing-with-invalid-data-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-judge-missing-district-returns-error ----
+test 'spin-test-test-judge-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x699d69 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_judge_repository::SpinKvJudgeRepository::with_store::hc21c782599f37ad7
+   13: 0xa5098a - spin_utopia.wasm!spin_utopia::handlers::judge::get_all_judges::hb285393c3fe950f4
+   14: 0x462500 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h9d3a718e0ddcd112
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   26: 0x1982097 - config_tests.wasm!spin-test-test-judge-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-available-judges-url-based ----
+test 'spin-test-test-get-available-judges-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb74a2a - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_available_judges::hb15bd2f6eabc8cb9
+   16: 0x479600 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::he714244e06236dc3
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1978fa2 - config_tests.wasm!config_tests::judge_tests::test_get_available_judges_url_based::h3bc958fdda2bd539
+   29: 0x19840d9 - config_tests.wasm!spin-test-test-get-available-judges-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-docket-header-and-url-consistency ----
+test 'spin-test-test-docket-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x1970e02 - config_tests.wasm!config_tests::docket_tests::test_docket_header_and_url_consistency::h43ebf403a4dde41c
+   14: 0x19881e4 - config_tests.wasm!spin-test-test-docket-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-judge-header-and-url-consistency ----
+test 'spin-test-test-judge-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb7483e - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_all_judges::h8646984b6cd7fc40
+   16: 0x473f52 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hd80b7f7a6ee65246
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1979e08 - config_tests.wasm!config_tests::judge_tests::test_judge_header_and_url_consistency::h2fa6d2645ed7d60f
+   29: 0x197d427 - config_tests.wasm!spin-test-test-judge-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-list-opinions-returns-array ----
+test 'spin-test-test-list-opinions-returns-array' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x196decd - config_tests.wasm!config_tests::opinion_crud_tests::test_list_opinions_returns_array::h3eddc9535041c4f5
+   14: 0x19814dc - config_tests.wasm!spin-test-test-list-opinions-returns-array
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-sentencing-missing-district-returns-error ----
+test 'spin-test-test-sentencing-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x5bedd1 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_sentencing_repository::SpinKvSentencingRepository::with_store::h8025933c54159564
+   13: 0x7ca5f1 - spin_utopia.wasm!spin_utopia::handlers::sentencing::find_pending::had18e35664894ed5
+   14: 0x4687f2 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hae41be9813f1531c
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x19801b8 - config_tests.wasm!config_tests::sentencing_tests::make_request::h1cb4e5c1aa4de761
+   26: 0x1983d3f - config_tests.wasm!spin-test-test-sentencing-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-list-opinions-url-based ----
+test 'spin-test-test-list-opinions-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x1984cf7 - config_tests.wasm!config_tests::opinion_tests::test_list_opinions_url_based::h2ada35d552bc1afd
+   12: 0x198817b - config_tests.wasm!spin-test-test-list-opinions-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-add-defendant-url-based ----
+test 'spin-test-test-add-defendant-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x771dc8 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::create_case::h5681b994d900d4c8
+   16: 0x45007c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h55502b79e36250c8
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1973215 - config_tests.wasm!config_tests::criminal_case_tests::test_add_defendant_url_based::h048496f67e70dd3a
+   29: 0x198216d - config_tests.wasm!spin-test-test-add-defendant-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-sentencing-header-and-url-consistency ----
+test 'spin-test-test-sentencing-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x19816ae - config_tests.wasm!spin-test-test-sentencing-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-template-header-and-url-consistency ----
+test 'spin-test-test-template-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x198a10e - config_tests.wasm!config_tests::order_tests::test_template_header_and_url_consistency::hefe122127f019408
+   14: 0x197a53b - config_tests.wasm!spin-test-test-template-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-attorney-endpoint ----
+test 'spin-test-test-create-attorney-endpoint' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b44 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199c407 - config_tests.wasm!core::panicking::panic::h42b72918664c199b
+   12: 0x197acaf - config_tests.wasm!spin-test-test-create-attorney-endpoint
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-file-recusal-url-based ----
+test 'spin-test-test-file-recusal-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb75b76 - spin_utopia.wasm!spin_utopia::handlers::judge_url::file_recusal::he9190d09bdf42c63
+   16: 0x47e20f - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hfce3430e4be66d0e
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1979ceb - config_tests.wasm!config_tests::judge_tests::test_file_recusal_url_based::h261da66cd3e4a9d3
+   29: 0x197d436 - config_tests.wasm!spin-test-test-file-recusal-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-case-assignment-url-based ----
+test 'spin-test-test-get-case-assignment-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb7598a - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_case_assignment::hb52b8d21a22ce0a2
+   16: 0x46470f - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::ha19f2c97b73fdb9f
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1979afe - config_tests.wasm!config_tests::judge_tests::test_get_case_assignment_url_based::h3ef47855a2d0b9ae
+   29: 0x1982122 - config_tests.wasm!spin-test-test-get-case-assignment-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-case-statistics-url-based ----
+test 'spin-test-test-get-case-statistics-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x77238c - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::get_case_statistics::h113eeeffd9e32d38
+   16: 0x452c11 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h6046d6644df9402e
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1972707 - config_tests.wasm!config_tests::criminal_case_tests::test_get_case_statistics_url_based::h981f34b30b8a7c36
+   29: 0x197aea7 - config_tests.wasm!spin-test-test-get-case-statistics-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-deadline-missing-district-returns-error ----
+test 'spin-test-test-deadline-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x9a5879 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_deadline_repository::SpinKvDeadlineRepository::with_store::h096f051a7bbd6527
+   13: 0x61b5e8 - spin_utopia.wasm!spin_utopia::handlers::deadline::get_urgent_deadlines::hbee6e87fdaf1a7e5
+   14: 0x47a756 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::heba70a4124857f32
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x197b3f7 - config_tests.wasm!config_tests::deadline_tests::make_request::h98b20abae78a4c2d
+   26: 0x197f4bf - config_tests.wasm!spin-test-test-deadline-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-check-conflicts-url-based ----
+test 'spin-test-test-check-conflicts-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb755b2 - spin_utopia.wasm!spin_utopia::handlers::judge_url::check_conflicts::hd0f5a28bf760d048
+   16: 0x466ad4 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::ha6e6cfd7a3abfcf0
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x19797d0 - config_tests.wasm!config_tests::judge_tests::test_check_conflicts_url_based::hcb851efb870b7968
+   29: 0x198a887 - config_tests.wasm!spin-test-test-check-conflicts-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-opinion-with-invalid-json-returns-bad-request ----
+test 'spin-test-test-create-opinion-with-invalid-json-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x1987df1 - config_tests.wasm!spin-test-test-create-opinion-with-invalid-json-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-case-url-based ----
+test 'spin-test-test-create-case-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x771dc8 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::create_case::h5681b994d900d4c8
+   16: 0x45007c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h55502b79e36250c8
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1971953 - config_tests.wasm!config_tests::criminal_case_tests::test_create_case_url_based::h92ca96ab3b8dd7c5
+   29: 0x197d481 - config_tests.wasm!spin-test-test-create-case-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-verify-routing-consistency ----
+test 'spin-test-test-verify-routing-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x197eef8 - config_tests.wasm!config_tests::attorney_complete_tests::test_verify_routing_consistency::h6a675855f9ca267a
+   14: 0x197ceae - config_tests.wasm!spin-test-test-verify-routing-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-party ----
+test 'spin-test-test-create-party' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b44 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199c407 - config_tests.wasm!core::panicking::panic::h42b72918664c199b
+   12: 0x197d0f9 - config_tests.wasm!spin-test-test-create-party
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-assign-case-url-based ----
+test 'spin-test-test-assign-case-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb7579e - spin_utopia.wasm!spin_utopia::handlers::judge_url::assign_case::h64da2f99ee03f225
+   16: 0x461291 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h993b91ef7a1981d3
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1979a1d - config_tests.wasm!config_tests::judge_tests::test_assign_case_url_based::h7e94b444b9827cab
+   29: 0x1982131 - config_tests.wasm!spin-test-test-assign-case-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-workload-stats-url-based ----
+test 'spin-test-test-get-workload-stats-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb74c16 - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_workload_stats::h7d69454c91f1a0ed
+   16: 0x458744 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h75bbce471b8b8ecf
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x19793bc - config_tests.wasm!config_tests::judge_tests::test_get_workload_stats_url_based::hd72cab493e5ad5c3
+   29: 0x19885c8 - config_tests.wasm!spin-test-test-get-workload-stats-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-delete-existing-opinion-returns-no-content ----
+test 'spin-test-test-delete-existing-opinion-returns-no-content' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x196e4e1 - config_tests.wasm!config_tests::opinion_crud_tests::test_delete_existing_opinion_returns_no_content::h9803943c537f7456
+   14: 0x197ef91 - config_tests.wasm!spin-test-test-delete-existing-opinion-returns-no-content
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-missing-district-in-header-routing-returns-bad-request ----
+test 'spin-test-test-missing-district-in-header-routing-returns-bad-request' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x8dc801 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_document_repository::SpinKvDocumentRepository::with_store::hd353b4796b322276
+   13: 0x910186 - spin_utopia.wasm!spin_utopia::handlers::opinion::list_opinions::h577fa72391af38bb
+   14: 0x468ac3 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hae786aed34c990a1
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x196e56f - config_tests.wasm!config_tests::opinion_crud_tests::test_missing_district_in_header_routing_returns_bad_request::h7ad4aace841485e8
+   26: 0x197c9c0 - config_tests.wasm!spin-test-test-missing-district-in-header-routing-returns-bad-request
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-header-and-url-consistency ----
+test 'spin-test-test-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x7721a0 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::search_cases::he0c0f6282a974cfd
+   16: 0x464af7 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::ha1f164b8a2e77141
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1973881 - config_tests.wasm!config_tests::criminal_case_tests::test_header_and_url_consistency::h6d5d93f5976796ee
+   29: 0x198214f - config_tests.wasm!spin-test-test-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-missing-district-returns-error-cases ----
+test 'spin-test-test-missing-district-returns-error-cases' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0x5ece1e - spin_utopia.wasm!spin_utopia::adapters::spin_kv_case_repository::SpinKvCaseRepository::with_store::h784e93cfa8fc00c8
+   13: 0x8942d4 - spin_utopia.wasm!spin_utopia::handlers::criminal_case::search_cases::h14feef512b2b9a78
+   14: 0x46994a - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hb3a4169752374014
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   26: 0x1973b49 - config_tests.wasm!config_tests::criminal_case_tests::test_missing_district_returns_error_cases::ha89055b0ad632896
+   27: 0x19885d7 - config_tests.wasm!spin-test-test-missing-district-returns-error-cases
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-judge-url-based ----
+test 'spin-test-test-create-judge-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb74652 - spin_utopia.wasm!spin_utopia::handlers::judge_url::create_judge::h7a24badc6495ede0
+   16: 0x43f414 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h1660b99bb52974c0
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197863c - config_tests.wasm!config_tests::judge_tests::make_request::h58c1fd98ef0b0ae5
+   28: 0x1978b3a - config_tests.wasm!config_tests::judge_tests::test_create_judge_url_based::h2aaf08ceb65ac251
+   29: 0x197d463 - config_tests.wasm!spin-test-test-create-judge-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-schedule-court-event-url-based ----
+test 'spin-test-test-schedule-court-event-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x771dc8 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::create_case::h5681b994d900d4c8
+   16: 0x45007c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h55502b79e36250c8
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9bc1d - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x197352b - config_tests.wasm!config_tests::criminal_case_tests::test_schedule_court_event_url_based::h4afa1bcc224669bc
+   29: 0x198215e - config_tests.wasm!spin-test-test-schedule-court-event-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-deadline-header-and-url-consistency ----
+test 'spin-test-test-deadline-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x197c986 - config_tests.wasm!config_tests::deadline_tests::test_deadline_header_and_url_consistency::hb7b333abe82efa56
+   14: 0x197f54e - config_tests.wasm!spin-test-test-deadline-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-opinion-url-based ----
+test 'spin-test-test-create-opinion-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x1984b70 - config_tests.wasm!config_tests::opinion_tests::test_create_opinion_url_based::hb8f0e7b67bb0d718
+   12: 0x1981a7c - config_tests.wasm!spin-test-test-create-opinion-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-get-existing-opinion-returns-success ----
+test 'spin-test-test-get-existing-opinion-returns-success' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x196dbfc - config_tests.wasm!config_tests::opinion_crud_tests::test_get_existing_opinion_returns_success::ha85c3b56517f8e38
+   14: 0x197a16e - config_tests.wasm!spin-test-test-get-existing-opinion-returns-success
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-count-by-status-header-based ----
+test 'spin-test-test-count-by-status-header-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x1972c22 - config_tests.wasm!config_tests::criminal_case_tests::test_count_by_status_header_based::he2ae344ae4f5139d
+   14: 0x198217c - config_tests.wasm!spin-test-test-count-by-status-header-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-judges-endpoint-url-routing ----
+test 'spin-test-test-judges-endpoint-url-routing' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0xb74457 - spin_utopia.wasm!spin_utopia::handlers::judge_url::add_district_header::hcb43bf36c7193a06
+   15: 0xb7483e - spin_utopia.wasm!spin_utopia::handlers::judge_url::get_all_judges::h8646984b6cd7fc40
+   16: 0x473f52 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::hd80b7f7a6ee65246
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x197597f - config_tests.wasm!config_tests::routing_tests::make_request::hcf7c4e1fc48a2e43
+   28: 0x198a159 - config_tests.wasm!spin-test-test-judges-endpoint-url-routing
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-create-judge-header-based ----
+test 'spin-test-test-create-judge-header-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x1978afc - config_tests.wasm!config_tests::judge_tests::test_create_judge_header_based::h5ef67ff37ae786ca
+   12: 0x19840e8 - config_tests.wasm!spin-test-test-create-judge-header-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-order-header-and-url-consistency ----
+test 'spin-test-test-order-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x198a006 - config_tests.wasm!config_tests::order_tests::test_order_header_and_url_consistency::h9cdff73996949904
+   14: 0x197a54a - config_tests.wasm!spin-test-test-order-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-add-representation ----
+test 'spin-test-test-add-representation' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b44 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199c407 - config_tests.wasm!core::panicking::panic::h42b72918664c199b
+   12: 0x197a893 - config_tests.wasm!spin-test-test-add-representation
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-speedy-trial-missing-district-returns-error ----
+test 'spin-test-test-speedy-trial-missing-district-returns-error' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0xc564ad - spin_utopia.wasm!abort
+    1: 0xc4adb6 - spin_utopia.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0xc46347 - spin_utopia.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0xc4633d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0xc4c80d - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0xc4c40f - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0xc4c2d6 - spin_utopia.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0xc4b26b - spin_utopia.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0xc4b1d7 - spin_utopia.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0xc4bcbd - spin_utopia.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0xc5fcac - spin_utopia.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0xc618cc - spin_utopia.wasm!core::result::unwrap_failed::heb00d4d50e638a08
+   12: 0xabb317 - spin_utopia.wasm!spin_utopia::adapters::spin_kv_docket_repository::SpinKvDocketRepository::with_store::h084d8ae5728b9f64
+   13: 0xb2e2c0 - spin_utopia.wasm!spin_utopia::handlers::docket::get_approaching_deadlines::hd08f85310bef3ad7
+   14: 0x451d8a - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::h5c396ffe23cbfbae
+   15: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   16: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   17: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   18: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   19: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   20: 0x5795 - <unknown>!<wasm function 104>
+   21: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   22: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   23: 0x2047 - <unknown>!<wasm function 53>
+   24: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   25: 0x196fba3 - config_tests.wasm!config_tests::docket_tests::make_request::h024074655391a6e3
+   26: 0x197a5b5 - config_tests.wasm!spin-test-test-speedy-trial-missing-district-returns-error
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-count-by-status-url-based ----
+test 'spin-test-test-count-by-status-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x772950 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::count_by_status::h7d3c46841833d8a5
+   16: 0x465f1c - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::ha4303e770ade87a6
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1972c87 - config_tests.wasm!config_tests::criminal_case_tests::test_count_by_status_url_based::h9ff170d77f0d2099
+   29: 0x197d472 - config_tests.wasm!spin-test-test-count-by-status-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-search-cases-url-based ----
+test 'spin-test-test-search-cases-url-based' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x2850d4 - spin_test_virt.wasm!__rust_start_panic
+    1: 0x284eb0 - spin_test_virt.wasm!rust_panic
+    2: 0x284c66 - spin_test_virt.wasm!std::panicking::rust_panic_with_hook::h50e657195af0239c
+    3: 0x284137 - spin_test_virt.wasm!std::panicking::begin_panic_handler::{{closure}}::h0187e6969a85aab0
+    4: 0x284067 - spin_test_virt.wasm!std::sys_common::backtrace::__rust_end_short_backtrace::h575fb82445d56667
+    5: 0x2847fe - spin_test_virt.wasm!rust_begin_unwind
+    6: 0x29768f - spin_test_virt.wasm!core::panicking::panic_fmt::ha6764f2272b7fb95
+    7: 0x298da7 - spin_test_virt.wasm!core::panicking::panic::h864593189f35325f
+    8: 0x41b0f - spin_test_virt.wasm!<spin_test_virt::wasi::http::Fields as spin_test_virt::bindings::exports::wasi::http::types::GuestFields>::set::habf51fbb9be39bbf
+    9: 0x9e139 - spin_test_virt.wasm!spin_test_virt::bindings::exports::wasi::http::types::_export_method_fields_set_cabi::h5abb92c0326716a9
+   10: 0x86ca3 - spin_test_virt.wasm!wasi:http/types@0.2.0#[method]fields.set
+   11: 0x1fe1 - <unknown>!<wasm function 76>
+   12: 0x1857d78 - wit-component:shim!indirect-wasi:http/types@0.2.0-[method]fields.set
+   13: 0xc22efb - spin_utopia.wasm!spin_sdk::wit::wasi::http0_2_0::types::Fields::set::he886307fa344c000
+   14: 0x771bcd - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::add_district_header::hcc946047f70d688b
+   15: 0x7721a0 - spin_utopia.wasm!spin_utopia::handlers::criminal_case_url::search_cases::he0c0f6282a974cfd
+   16: 0x464af7 - spin_utopia.wasm!<F as spin_sdk::http::router::Handler>::handle::{{closure}}::ha1f164b8a2e77141
+   17: 0xc2b749 - spin_utopia.wasm!<alloc::boxed::Box<dyn spin_sdk::http::router::Handler> as spin_sdk::http::router::Handler>::handle::{{closure}}::h1b6255c66b0e82da
+   18: 0xb51c85 - spin_utopia.wasm!spin_executor::run::h5e53f2e63611faf5
+   19: 0xb9dfa5 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::{{closure}}::hc17eb5482140d729
+   20: 0xb9c2a1 - spin_utopia.wasm!spin_utopia::__spin_wasi_http::<impl spin_utopia::__spin_wasi_http::preamble::exports::wasi::http::incoming_handler::Guest for spin_utopia::__spin_wasi_http::preamble::Spin>::handle::ha1826a838a399cf4
+   21: 0xb502e2 - spin_utopia.wasm!wasi:http/incoming-handler@0.2.0#handle
+   22: 0x5795 - <unknown>!<wasm function 104>
+   23: 0x18ad6bd - router.wasm!<router::Component as router::bindings::exports::wasi::http::incoming_handler::Guest>::handle::ha50de62a29cb8b3e
+   24: 0x18adfc1 - router.wasm!wasi:http/incoming-handler@0.2.0#handle
+   25: 0x2047 - <unknown>!<wasm function 53>
+   26: 0x1991f0d - config_tests.wasm!spin_test_sdk::perform_request::h8724e91b3678e35f
+   27: 0x1971455 - config_tests.wasm!config_tests::criminal_case_tests::make_request::he2fb34686462ac23
+   28: 0x1971c84 - config_tests.wasm!config_tests::criminal_case_tests::test_search_cases_url_based::hc451dadd12bf5e08
+   29: 0x198a8a5 - config_tests.wasm!spin-test-test-search-cases-url-based
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+---- test-calendar-header-and-url-consistency ----
+test 'spin-test-test-calendar-header-and-url-consistency' failed 
+Caused by: error while executing at wasm backtrace:
+    0: 0x1999a44 - config_tests.wasm!abort
+    1: 0x1995823 - config_tests.wasm!std::sys::pal::wasi::helpers::abort_internal::hcc3b2e0cde3c9001
+    2: 0x1993aa4 - config_tests.wasm!std::process::abort::h0e38511b4c8b6f04
+    3: 0x1993a9a - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_abort
+    4: 0x1996c26 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::__rust_start_panic
+    5: 0x1996a97 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_panic
+    6: 0x1996a1c - config_tests.wasm!std::panicking::rust_panic_with_hook::h085fb375cd657b2f
+    7: 0x1995b12 - config_tests.wasm!std::panicking::begin_panic_handler::{{closure}}::he68af7f9d5c53e56
+    8: 0x1995a7e - config_tests.wasm!std::sys::backtrace::__rust_end_short_backtrace::h4c38003a22ca226f
+    9: 0x1996403 - config_tests.wasm!__rustc[5224e6b81cd82a8f]::rust_begin_unwind
+   10: 0x199c43e - config_tests.wasm!core::panicking::panic_fmt::h4e32e8d1cab5f47e
+   11: 0x199de35 - config_tests.wasm!core::panicking::assert_failed_inner::hf7ede4d3870aaaec
+   12: 0x1986426 - config_tests.wasm!core::panicking::assert_failed::h168e3f8c09ecb509
+   13: 0x1970f0a - config_tests.wasm!config_tests::docket_tests::test_calendar_header_and_url_consistency::h00a746efdc3b6ee9
+   14: 0x198a5fe - config_tests.wasm!spin-test-test-calendar-header-and-url-consistency
+Caused by: wasm trap: wasm `unreachable` instruction executed
+
+
+failures:
+    test-get-all-judges-url-based
+    test-get-case-by-id-url-based
+    test-update-case-status-url-based
+    test-order-missing-district-returns-error
+    test-get-case-statistics-header-based
+    test-create-opinion-with-invalid-data-returns-bad-request
+    test-create-deadline-with-invalid-data-returns-bad-request
+    test-create-opinion-returns-created
+    test-search-judges-url-based
+    test-create-case-header-based
+    test-get-pending-recusals-url-based
+    test-calculate-guidelines-invalid-data-returns-bad-request
+    test-opinion-missing-district-returns-error
+    test-update-existing-opinion-returns-success
+    test-opinion-header-and-url-consistency
+    test-create-sentencing-with-invalid-data-returns-bad-request
+    test-judge-missing-district-returns-error
+    test-get-available-judges-url-based
+    test-docket-header-and-url-consistency
+    test-judge-header-and-url-consistency
+    test-list-opinions-returns-array
+    test-sentencing-missing-district-returns-error
+    test-list-opinions-url-based
+    test-add-defendant-url-based
+    test-sentencing-header-and-url-consistency
+    test-template-header-and-url-consistency
+    test-create-attorney-endpoint
+    test-file-recusal-url-based
+    test-get-case-assignment-url-based
+    test-get-case-statistics-url-based
+    test-deadline-missing-district-returns-error
+    test-check-conflicts-url-based
+    test-create-opinion-with-invalid-json-returns-bad-request
+    test-create-case-url-based
+    test-verify-routing-consistency
+    test-create-party
+    test-assign-case-url-based
+    test-get-workload-stats-url-based
+    test-delete-existing-opinion-returns-no-content
+    test-missing-district-in-header-routing-returns-bad-request
+    test-header-and-url-consistency
+    test-missing-district-returns-error-cases
+    test-create-judge-url-based
+    test-schedule-court-event-url-based
+    test-deadline-header-and-url-consistency
+    test-create-opinion-url-based
+    test-get-existing-opinion-returns-success
+    test-count-by-status-header-based
+    test-judges-endpoint-url-routing
+    test-create-judge-header-based
+    test-order-header-and-url-consistency
+    test-add-representation
+    test-speedy-trial-missing-district-returns-error
+    test-count-by-status-url-based
+    test-search-cases-url-based
+    test-calendar-header-and-url-consistency
+
+test result: [0m[31mFAILED[0m. 207 passed; 56 failed; 0 ignored; 0 measured; 0 filtered out; finished in 347.43s
+

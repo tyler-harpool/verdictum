@@ -2,6 +2,7 @@
 //!
 //! Implements attorney and party persistence using Spin's key-value store.
 
+use crate::adapters::store_utils::open_validated_store;
 use crate::domain::attorney::{
     Attorney, AttorneyStatus, Party, PartyStatus, AttorneyRepresentation,
     ConflictCheck, ServiceRecord, AttorneyMetrics, BarAdmission, FederalAdmission,
@@ -23,7 +24,7 @@ impl SpinKvAttorneyRepository {
     /// Create repository with specific store name for multi-tenancy
     /// MUST fail if the store doesn't exist to prevent data mixing
     pub fn with_store(store_name: String) -> Self {
-        let store = Store::open(&store_name)
+        let store = open_validated_store(&store_name)
             .expect(&format!("Failed to open store: {}. In development, use 'default' as tenant ID", store_name));
         Self { store }
     }
@@ -136,11 +137,43 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
         self.list_with_prefix("attorney:")
     }
 
-    fn update_attorney(&self, attorney: Attorney) -> Result<Attorney> {
+    fn update_attorney(&self, mut attorney: Attorney) -> Result<Attorney> {
         if attorney.id.is_empty() {
             return Err(anyhow::anyhow!("Cannot update attorney without ID"));
         }
-        self.save_attorney(attorney)
+
+        // Clean up old indexes if the attorney exists and bar number changed
+        if let Some(existing) = self.find_attorney_by_id(&attorney.id)? {
+            if existing.bar_number != attorney.bar_number {
+                // Delete the old bar number index
+                let old_bar_key = format!("idx:bar:{}", existing.bar_number);
+                self.store.delete(&old_bar_key)?;
+            }
+
+            // Handle firm index changes
+            if existing.firm_name != attorney.firm_name {
+                if let Some(ref old_firm) = existing.firm_name {
+                    let old_firm_key = format!("idx:firm:{}:{}", old_firm, attorney.id);
+                    self.store.delete(&old_firm_key)?;
+                }
+            }
+        }
+
+        // Update the attorney (this will create new indexes)
+        let key = self.get_key("attorney", &attorney.id);
+        self.save_json(&key, &attorney)?;
+
+        // Create bar number index
+        let bar_key = format!("idx:bar:{}", attorney.bar_number);
+        self.store.set(&bar_key, attorney.id.as_bytes())?;
+
+        // Create firm index if needed
+        if let Some(ref firm) = attorney.firm_name {
+            let firm_key = format!("idx:firm:{}:{}", firm, attorney.id);
+            self.store.set(&firm_key, attorney.id.as_bytes())?;
+        }
+
+        Ok(attorney)
     }
 
     fn delete_attorney(&self, id: &str) -> Result<()> {

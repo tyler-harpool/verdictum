@@ -3,7 +3,7 @@
 use crate::domain::sentencing::*;
 use crate::ports::sentencing_repository::SentencingRepository;
 use crate::utils::repository_factory::RepositoryFactory;
-use spin_sdk::http::{Params, Request, Response};
+use crate::utils::json_response as json;use spin_sdk::http::{Params, Request, Response};
 
 /// Create a new sentencing record
 #[utoipa::path(
@@ -20,7 +20,13 @@ use spin_sdk::http::{Params, Request, Response};
     ),
 )]
 pub fn create_sentencing(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let body = req.body().to_vec();
 
@@ -67,7 +73,13 @@ pub fn create_sentencing(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn get_sentencing(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 
@@ -104,7 +116,13 @@ pub fn get_sentencing(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn update_sentencing(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let body = req.body().to_vec();
 
@@ -147,7 +165,13 @@ pub fn update_sentencing(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn delete_sentencing(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 
@@ -176,7 +200,13 @@ pub fn delete_sentencing(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn find_by_case(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let case_id = params.get("case_id").unwrap_or("").to_string();
 
@@ -207,7 +237,13 @@ pub fn find_by_case(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn find_by_defendant(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let defendant_id = params.get("defendant_id").unwrap_or("").to_string();
 
@@ -238,7 +274,13 @@ pub fn find_by_defendant(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn find_by_judge(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let judge_id = params.get("judge_id").unwrap_or("").to_string();
 
@@ -268,7 +310,13 @@ pub fn find_by_judge(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn find_pending(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_pending_sentencing() {
         Ok(sentencings) => Response::builder()
@@ -297,7 +345,13 @@ pub fn find_pending(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn calculate_guidelines(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let body = req.body().to_vec();
 
@@ -335,7 +389,13 @@ pub fn calculate_guidelines(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn get_departure_stats(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_departure_rates() {
         Ok(stats) => Response::builder()
@@ -363,7 +423,13 @@ pub fn get_departure_stats(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn get_variance_stats(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_variance_rates() {
         Ok(stats) => Response::builder()
@@ -393,7 +459,13 @@ pub fn get_variance_stats(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn add_departure(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -434,7 +506,13 @@ pub fn add_departure(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn add_variance(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -473,7 +551,13 @@ pub fn add_variance(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_substantial_assistance(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_substantial_assistance_cases() {
         Ok(sentencings) => Response::builder()
@@ -503,7 +587,13 @@ pub fn get_substantial_assistance(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn add_special_condition(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -544,7 +634,13 @@ pub fn add_special_condition(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn update_supervised_release(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -583,7 +679,13 @@ pub fn update_supervised_release(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn find_active_supervision(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_active_supervision() {
         Ok(sentencings) => Response::builder()
@@ -613,7 +715,13 @@ pub fn find_active_supervision(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn add_bop_designation(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -652,7 +760,13 @@ pub fn add_bop_designation(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_rdap_eligible(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_rdap_eligible() {
         Ok(sentencings) => Response::builder()
@@ -681,7 +795,13 @@ pub fn get_rdap_eligible(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn get_judge_stats(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let judge_id = params.get("judge_id").unwrap_or("").to_string();
 
@@ -711,7 +831,13 @@ pub fn get_judge_stats(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn get_district_stats(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_district_stats() {
         Ok(stats) => Response::builder()
@@ -739,7 +865,13 @@ pub fn get_district_stats(req: Request, _params: Params) -> Response {
     ),
 )]
 pub fn get_trial_penalty(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.get_trial_penalty_analysis() {
         Ok(stats) => Response::builder()
@@ -769,7 +901,13 @@ pub fn get_trial_penalty(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn add_prior_sentence(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
     let body = req.body().to_vec();
@@ -809,7 +947,13 @@ pub fn add_prior_sentence(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn find_upcoming(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let days_str = params.get("days").unwrap_or("30");
     let days: i32 = days_str.parse().unwrap_or(30);
@@ -840,7 +984,13 @@ pub fn find_upcoming(req: Request, params: Params) -> Response {
     ),
 )]
 pub fn find_appeal_deadlines(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     match repo.find_appeal_deadline_approaching() {
         Ok(sentencings) => Response::builder()
@@ -870,7 +1020,13 @@ pub fn find_appeal_deadlines(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn find_by_date_range(req: Request, _params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     // Parse query parameters
     let query = req.query();
@@ -913,7 +1069,13 @@ pub fn find_by_date_range(req: Request, _params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn get_offense_type_stats(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let offense_type = params.get("offense_type").unwrap_or("").to_string();
 
@@ -944,7 +1106,13 @@ pub fn get_offense_type_stats(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn calculate_criminal_history_points(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 
@@ -974,7 +1142,13 @@ pub fn calculate_criminal_history_points(req: Request, params: Params) -> Respon
     tag = "Sentencing",
 )]
 pub fn calculate_offense_level(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 
@@ -1018,7 +1192,13 @@ pub fn calculate_offense_level(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn lookup_guidelines_range(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 
@@ -1062,7 +1242,13 @@ pub fn lookup_guidelines_range(req: Request, params: Params) -> Response {
     tag = "Sentencing",
 )]
 pub fn check_safety_valve_eligible(req: Request, params: Params) -> Response {
-    let repo = RepositoryFactory::sentencing_repo(&req);
+    let repo = match RepositoryFactory::sentencing_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return json::error_response(&e),
+
+    };
 
     let id = params.get("id").unwrap_or("").to_string();
 

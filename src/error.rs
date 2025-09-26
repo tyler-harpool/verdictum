@@ -41,6 +41,8 @@ pub enum ApiError {
     ValidationError(String),
     /// Invalid input error (400)
     InvalidInput(String),
+    /// Conflict - resource already exists (409)
+    Conflict(String),
 }
 
 impl fmt::Display for ApiError {
@@ -55,6 +57,7 @@ impl fmt::Display for ApiError {
             ApiError::SerializationError(msg) => write!(f, "Serialization error: {}", msg),
             ApiError::ValidationError(msg) => write!(f, "Validation error: {}", msg),
             ApiError::InvalidInput(msg) => write!(f, "Invalid input: {}", msg),
+            ApiError::Conflict(msg) => write!(f, "Conflict: {}", msg),
         }
     }
 }
@@ -87,6 +90,11 @@ impl IntoResponse for ApiError {
             ApiError::InvalidInput(msg) => (
                 400,
                 "Invalid input".to_string(),
+                Some(msg),
+            ),
+            ApiError::Conflict(msg) => (
+                409,
+                "Conflict".to_string(),
                 Some(msg),
             ),
         };

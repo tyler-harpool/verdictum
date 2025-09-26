@@ -4,6 +4,7 @@
 //! handling the actual integration with external systems.
 
 pub mod pdf_writer_adapter;
+pub mod store_utils;
 pub mod spin_kv_attorney_repository;
 pub mod spin_kv_case_repository;
 pub mod spin_kv_config_repository;

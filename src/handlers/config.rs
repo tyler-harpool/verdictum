@@ -48,7 +48,10 @@ pub fn get_config(req: Request, _params: Params) -> Response {
         .filter(|s| !s.is_empty());
 
     // Create repository and service
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     // Get configuration
@@ -88,7 +91,10 @@ pub fn get_district_overrides(req: Request, _params: Params) -> Response {
         )),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     let result = futures::executor::block_on(service.get_district_overrides(district_id));
@@ -142,7 +148,10 @@ pub fn get_judge_overrides(req: Request, _params: Params) -> Response {
         )),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     let result = futures::executor::block_on(service.get_judge_overrides(district_id, judge_id));
@@ -190,7 +199,10 @@ pub fn update_district_config(req: Request, _params: Params) -> Response {
         Err(e) => return json::error_response(&e),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     // Validate updates
@@ -255,7 +267,10 @@ pub fn update_judge_config(req: Request, _params: Params) -> Response {
         Err(e) => return json::error_response(&e),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     // Validate updates
@@ -299,7 +314,10 @@ pub fn clear_district_overrides(req: Request, _params: Params) -> Response {
         )),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     let result = futures::executor::block_on(service.clear_district_overrides(district_id));
@@ -351,7 +369,10 @@ pub fn clear_judge_overrides(req: Request, _params: Params) -> Response {
         )),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     let result = futures::executor::block_on(service.clear_judge_overrides(district_id, judge_id));
@@ -403,7 +424,10 @@ pub fn preview_config(req: Request, _params: Params) -> Response {
         Err(e) => return json::error_response(&e),
     };
 
-    let repo = Arc::new(RepositoryFactory::config_repo(&req)) as Arc<dyn ConfigRepository>;
+    let repo = match RepositoryFactory::config_repo(&req) {
+        Ok(r) => Arc::new(r) as Arc<dyn ConfigRepository>,
+        Err(e) => return json::error_response(&e),
+    };
     let service = ConfigService::new(repo);
 
     // Validate proposed changes

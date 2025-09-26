@@ -4,7 +4,7 @@
 //! extensions, and compliance reporting in the federal court system.
 
 use crate::utils::repository_factory::RepositoryFactory;
-use crate::domain::deadline::{
+use crate::utils::json_response as json;use crate::domain::deadline::{
     Deadline, DeadlineType, DeadlineStatus, ExtensionRequest,
     ExtensionStatus, DeadlineCalculator, DeadlineMonitor, FederalRule
 };
@@ -147,7 +147,16 @@ pub fn create_deadline(req: Request, _params: Params) -> ApiResult<impl IntoResp
         reminders_sent: Vec::new(),
     };
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.save_deadline(&deadline)?;
 
     Ok(ResponseBuilder::new(201)
@@ -177,7 +186,16 @@ pub fn get_case_deadlines(req: Request, params: Params) -> ApiResult<impl IntoRe
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let mut deadlines = repo.find_deadlines_by_case(case_id)?;
 
     // Update statuses
@@ -210,7 +228,16 @@ pub fn get_deadline(req: Request, params: Params) -> ApiResult<impl IntoResponse
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid deadline ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deadline = repo
         .find_deadline_by_id(id)?
         .ok_or_else(|| ApiError::NotFound("Deadline not found".to_string()))?;
@@ -242,7 +269,16 @@ pub fn complete_deadline(req: Request, params: Params) -> ApiResult<impl IntoRes
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid deadline ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.complete_deadline(id, Utc::now())?;
 
     let deadline = repo
@@ -280,7 +316,16 @@ pub fn request_extension(req: Request, params: Params) -> ApiResult<impl IntoRes
     let body = req.body();
     let request: RequestExtensionRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deadline = repo
         .find_deadline_by_id(deadline_id)?
         .ok_or_else(|| ApiError::NotFound("Deadline not found".to_string()))?;
@@ -338,7 +383,16 @@ pub fn rule_on_extension(req: Request, params: Params) -> ApiResult<impl IntoRes
     let body = req.body();
     let request: RuleOnExtensionRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let status = request.status.clone();
     repo.update_extension_status(extension_id, status)?;
 
@@ -390,7 +444,16 @@ pub fn get_upcoming_deadlines(req: Request, params: Params) -> ApiResult<impl In
         .and_then(|d| d.parse::<i64>().ok())
         .unwrap_or(30);
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let mut deadlines = repo.find_upcoming_deadlines(days)?;
 
     // Update statuses
@@ -416,7 +479,13 @@ pub fn get_upcoming_deadlines(req: Request, params: Params) -> ApiResult<impl In
     ),
 )]
 pub fn get_urgent_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let all_deadlines = repo.find_deadlines_by_status(DeadlineStatus::Pending)?;
     let urgent = DeadlineMonitor::get_urgent_deadlines(&all_deadlines);
 
@@ -456,7 +525,13 @@ pub fn calculate_frcp_deadlines(req: Request, _params: Params) -> ApiResult<impl
     }
 
     // Save all calculated deadlines
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     for deadline in &deadlines {
         repo.save_deadline(deadline)?;
     }
@@ -505,7 +580,16 @@ pub fn search_deadlines(req: Request, _params: Params) -> ApiResult<impl IntoRes
         limit: query_parser::get_usize(&params, "limit").unwrap_or(50),
     };
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let (deadlines, total) = repo.search_deadlines(query)?;
 
 
@@ -536,7 +620,16 @@ pub fn get_compliance_stats(req: Request, params: Params) -> ApiResult<impl Into
         .get("case_id")
         .and_then(|id| Uuid::parse_str(id).ok());
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let stats = repo.get_compliance_statistics(case_id)?;
     let response = ComplianceStatsResponse::from_statistics(stats);
 
@@ -574,7 +667,16 @@ pub fn generate_compliance_report(req: Request, params: Params) -> ApiResult<imp
         .map(|d| d.with_timezone(&Utc))
         .unwrap_or_else(Utc::now);
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let report = repo.generate_compliance_report(start_date, end_date)?;
 
     Ok(ResponseBuilder::new(200)
@@ -600,7 +702,16 @@ pub fn generate_compliance_report(req: Request, params: Params) -> ApiResult<imp
 pub fn get_performance_metrics(req: Request, params: Params) -> ApiResult<impl IntoResponse> {
     let party = params.get("party").map(String::from);
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let metrics = repo.get_performance_metrics(party)?;
 
     Ok(ResponseBuilder::new(200)
@@ -623,7 +734,13 @@ pub fn get_performance_metrics(req: Request, params: Params) -> ApiResult<impl I
     ),
 )]
 pub fn get_missed_jurisdictional(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let missed = repo.find_missed_jurisdictional()?;
 
     Ok(ResponseBuilder::new(200)
@@ -646,7 +763,13 @@ pub fn get_missed_jurisdictional(req: Request, _params: Params) -> ApiResult<imp
     ),
 )]
 pub fn get_pending_reminders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let reminders = repo.get_pending_reminders()?;
 
     Ok(ResponseBuilder::new(200)
@@ -669,7 +792,13 @@ pub fn get_pending_reminders(req: Request, _params: Params) -> ApiResult<impl In
     ),
 )]
 pub fn send_reminders(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let reminders = repo.get_pending_reminders()?;
 
     // In a real system, this would send emails/notifications
@@ -715,7 +844,16 @@ pub fn get_deadlines_by_type(req: Request, params: Params) -> ApiResult<impl Int
 
     let deadline_type: DeadlineType = serde_json::from_str(&format!("\"{}\"", deadline_type_str))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deadlines = repo.find_deadlines_by_type(case_id, deadline_type)?;
 
     Ok(ResponseBuilder::new(200)
@@ -750,7 +888,16 @@ pub fn update_deadline_status(req: Request, params: Params) -> ApiResult<impl In
     let body = req.body();
     let update: StatusUpdate = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.update_deadline_status(id, update.status)?;
 
     Ok(ResponseBuilder::new(200)
@@ -780,7 +927,16 @@ pub fn delete_deadline(req: Request, params: Params) -> ApiResult<impl IntoRespo
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid deadline ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deleted = repo.delete_deadline(id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -809,7 +965,16 @@ pub fn get_reminders_by_deadline(req: Request, params: Params) -> ApiResult<impl
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid deadline ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let reminders = repo.find_reminders_by_deadline(deadline_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -837,7 +1002,16 @@ pub fn get_reminders_by_recipient(req: Request, params: Params) -> ApiResult<imp
         .get("recipient")
         .ok_or_else(|| ApiError::BadRequest("Recipient required".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let reminders = repo.find_reminders_by_recipient(recipient)?;
 
     Ok(ResponseBuilder::new(200)
@@ -867,7 +1041,16 @@ pub fn acknowledge_reminder(req: Request, params: Params) -> ApiResult<impl Into
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid reminder ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.acknowledge_reminder(reminder_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -897,7 +1080,16 @@ pub fn get_extension_by_id(req: Request, params: Params) -> ApiResult<impl IntoR
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid extension ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let extension = repo
         .find_extension_by_id(id)?
         .ok_or_else(|| ApiError::NotFound("Extension not found".to_string()))?;
@@ -928,7 +1120,16 @@ pub fn get_extensions_by_deadline(req: Request, params: Params) -> ApiResult<imp
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid deadline ID".to_string()))?;
 
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let extensions = repo.find_extensions_by_deadline(deadline_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -951,7 +1152,13 @@ pub fn get_extensions_by_deadline(req: Request, params: Params) -> ApiResult<imp
     ),
 )]
 pub fn get_pending_extensions(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::deadline_repo(&req);
+    let repo = match RepositoryFactory::deadline_repo(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let extensions = repo.find_pending_extensions()?;
 
 

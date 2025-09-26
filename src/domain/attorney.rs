@@ -685,6 +685,47 @@ pub struct CreateAttorneyRequest {
     pub address: Address,
 }
 
+/// Request DTO for updating an attorney - all fields are optional for partial updates
+#[derive(Debug, Clone, Default, Serialize, Deserialize, ToSchema)]
+#[serde(default)]
+pub struct UpdateAttorneyRequest {
+    pub bar_number: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub middle_name: Option<String>,
+    pub firm_name: Option<String>,
+    pub email: Option<String>,
+    pub phone: Option<String>,
+    pub fax: Option<String>,
+    pub address: Option<Address>,
+
+    // Bar admissions
+    pub bar_admissions: Option<Vec<BarAdmission>>,
+    pub federal_admissions: Option<Vec<FederalAdmission>>,
+    pub pro_hac_vice_admissions: Option<Vec<ProHacViceAdmission>>,
+
+    // ECF privileges
+    pub ecf_registration: Option<ECFRegistration>,
+
+    // CJA Panel
+    pub cja_panel_member: Option<bool>,
+    pub cja_panel_districts: Option<Vec<String>>,
+    pub cja_appointments: Option<Vec<CJAAppointment>>,
+
+    // Practice areas
+    pub practice_areas: Option<Vec<PracticeArea>>,
+    pub languages_spoken: Option<Vec<String>>,
+
+    // Status
+    pub status: Option<AttorneyStatus>,
+    pub discipline_history: Option<Vec<DisciplinaryAction>>,
+
+    // Metrics
+    pub cases_handled: Option<i32>,
+    pub win_rate_percentage: Option<f64>,
+    pub avg_case_duration_days: Option<i32>,
+}
+
 /// Request DTO for creating a new party
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct CreatePartyRequest {

@@ -19,7 +19,7 @@ use utoipa::ToSchema;
 /// Helper macro to get tenant-specific repository
 macro_rules! get_tenant_repo {
     ($req:expr) => {{
-        RepositoryFactory::document_repo($req)
+        RepositoryFactory::document_repo($req)?
     }}
 }
 

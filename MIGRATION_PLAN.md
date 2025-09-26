@@ -124,9 +124,19 @@ router.post("/api/courts/:district/cases", handlers::cases_url::create_case);
 - [x] Verify KV store isolation maintained
 - [x] Migration tests passing
 
+### Cases Domain (✅ Complete)
+- [x] Migrated all 17 handlers to URL-based routing
+- [x] Created comprehensive test suite
+- [x] Both header-based and URL-based patterns working
+- [x] Tests passing for both patterns
+
+### Judges Domain (✅ Complete)
+- [x] Migrated all 14 handlers to URL-based routing
+- [x] Created comprehensive test suite
+- [x] Both header-based and URL-based patterns working
+- [x] Tests passing for both patterns
+
 ### Remaining Domains (🚧 In Progress)
-- [ ] Cases domain
-- [ ] Judges domain
 - [ ] Attorneys domain
 - [ ] Docket domain
 - [ ] Orders domain

@@ -7,6 +7,7 @@ use crate::domain::criminal_case::{CaseStatus, CasePriority, CrimeType, Criminal
 use crate::error::{ApiError, ApiResult};
 use crate::ports::case_repository::{CaseRepository, CaseQuery, CaseQueryRepository};
 use crate::utils::repository_factory::RepositoryFactory;
+use crate::utils::json_response as json;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use spin_sdk::http::{IntoResponse, Params, Request, ResponseBuilder};
@@ -113,7 +114,13 @@ pub fn create_case(req: Request, _p: Params) -> ApiResult<impl IntoResponse> {
     );
 
     // Use repository to persist
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     repository.save(&case)?;
 
     Ok(ResponseBuilder::new(201)
@@ -145,7 +152,16 @@ pub fn get_case_by_id(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
 
     let id = Uuid::parse_str(id_str)?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     match repository.find_by_id(id)? {
         Some(case) => Ok(ResponseBuilder::new(200)
@@ -180,7 +196,16 @@ pub fn search_cases(req: Request, _p: Params) -> ApiResult<impl IntoResponse> {
     let query_string = req.query();
     let params = parse_case_query(query_string)?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let (cases, total) = repository.search(params)?;
 
     let response = CaseSearchResponse {
@@ -215,7 +240,13 @@ pub struct CaseSearchResponse {
     )
 )]
 pub fn get_case_statistics(req: Request, _p: Params) -> ApiResult<impl IntoResponse> {
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let stats = repository.get_statistics()?;
 
     Ok(ResponseBuilder::new(200)
@@ -252,7 +283,16 @@ pub fn update_case_status(req: Request, p: Params) -> ApiResult<impl IntoRespons
     let id = Uuid::parse_str(id_str)?;
     let update_req: UpdateStatusRequest = serde_json::from_slice(req.body())?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case with id {} not found", id)))?;
@@ -319,7 +359,16 @@ pub fn get_case_by_number(req: Request, p: Params) -> ApiResult<impl IntoRespons
     let case_number = p.get("case_number")
         .ok_or_else(|| ApiError::Internal("Missing path parameter 'case_number'".to_string()))?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     match repository.find_by_case_number(case_number)? {
         Some(case) => Ok(ResponseBuilder::new(200)
@@ -357,7 +406,16 @@ pub fn update_case_priority(req: Request, p: Params) -> ApiResult<impl IntoRespo
     let id = Uuid::parse_str(id_str)?;
     let update_req: UpdatePriorityRequest = serde_json::from_slice(req.body())?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case with id {} not found", id)))?;
@@ -403,7 +461,16 @@ pub fn add_defendant(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
         return Err(ApiError::BadRequest("Defendant name cannot be empty".to_string()));
     }
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case with id {} not found", id)))?;
@@ -449,7 +516,16 @@ pub fn add_evidence(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
         return Err(ApiError::BadRequest("Evidence description cannot be empty".to_string()));
     }
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case with id {} not found", id)))?;
@@ -495,7 +571,16 @@ pub fn add_note(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
         return Err(ApiError::BadRequest("Note content cannot be empty".to_string()));
     }
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case with id {} not found", id)))?;
@@ -530,7 +615,16 @@ pub fn delete_case(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
 
     let id = Uuid::parse_str(id_str)?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
 
     if repository.delete(id)? {
         Ok(ResponseBuilder::new(204).build())
@@ -557,7 +651,16 @@ pub fn get_cases_by_judge(req: Request, p: Params) -> ApiResult<impl IntoRespons
     let judge = p.get("judge")
         .ok_or_else(|| ApiError::Internal("Missing path parameter 'judge'".to_string()))?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let cases = repository.find_by_judge(judge)?;
 
     let response = CaseSearchResponse {
@@ -595,7 +698,16 @@ pub fn count_by_status(req: Request, p: Params) -> ApiResult<impl IntoResponse> 
 
     let status: CaseStatus = serde_json::from_str(&format!("\"{}\"", status_str))?;
 
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let count = repository.count_by_status(status)?;
 
     let response = CountResponse { count };
@@ -690,7 +802,13 @@ pub fn enter_plea(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
     let id = Uuid::parse_str(id_str).map_err(|_| ApiError::BadRequest("Invalid case ID format".to_string()))?;
 
     let plea_req: EnterPleaRequest = serde_json::from_slice(req.body())?;
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case {} not found", id)))?;
@@ -728,7 +846,13 @@ pub fn schedule_court_event(req: Request, p: Params) -> ApiResult<impl IntoRespo
     let id = Uuid::parse_str(id_str).map_err(|_| ApiError::BadRequest("Invalid case ID format".to_string()))?;
 
     let event_req: ScheduleEventRequest = serde_json::from_slice(req.body())?;
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case {} not found", id)))?;
@@ -766,7 +890,13 @@ pub fn file_motion(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
     let id = Uuid::parse_str(id_str).map_err(|_| ApiError::BadRequest("Invalid case ID format".to_string()))?;
 
     let motion_req: FileMotionRequest = serde_json::from_slice(req.body())?;
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case {} not found", id)))?;
@@ -804,7 +934,13 @@ pub fn rule_on_motion(req: Request, p: Params) -> ApiResult<impl IntoResponse> {
     let id = Uuid::parse_str(id_str).map_err(|_| ApiError::BadRequest("Invalid case ID format".to_string()))?;
 
     let ruling_req: RuleOnMotionRequest = serde_json::from_slice(req.body())?;
-    let repository = RepositoryFactory::case_repo(&req);
+    let repository = match RepositoryFactory::case_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
 
     let mut case = repository.find_by_id(id)?
         .ok_or_else(|| ApiError::NotFound(format!("Case {} not found", id)))?;

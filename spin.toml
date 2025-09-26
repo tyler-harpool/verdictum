@@ -14,7 +14,8 @@ component = "spin-utopia"
 source = "target/wasm32-wasip1/release/spin_utopia.wasm"
 allowed_outbound_hosts = []
 # Declare all stores that will be used (runtime-config will provide paths)
-key_value_stores = ["default", "sdny", "edny", "ndca", "cdca", "nybk", "edtx", "fisa", "tax", "generic"]
+# Additional stores added for test compatibility
+key_value_stores = ["default", "sdny", "edny", "ndca", "cdca", "nybk", "edtx", "fisa", "tax", "generic", "test", "ndny", "wdny", "sdtx", "ndil", "ddc", "district9", "district12"]
 
 [component.spin-utopia.build]
 command = "cargo build --target wasm32-wasip1 --release"

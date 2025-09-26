@@ -142,7 +142,16 @@ pub fn create_judge(req: Request, _params: Params) -> ApiResult<impl IntoRespons
         request.courtroom,
     );
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.save_judge(&judge)?;
 
     Ok(ResponseBuilder::new(201)
@@ -165,7 +174,13 @@ pub fn create_judge(req: Request, _params: Params) -> ApiResult<impl IntoRespons
     ),
 )]
 pub fn get_all_judges(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let judges = repo.find_all_judges()?;
 
     Ok(ResponseBuilder::new(200)
@@ -195,7 +210,16 @@ pub fn get_judge_by_id(req: Request, params: Params) -> ApiResult<impl IntoRespo
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid judge ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let judge = repo
         .find_judge_by_id(id)?
         .ok_or_else(|| ApiError::NotFound("Judge not found".to_string()))?;
@@ -231,7 +255,16 @@ pub fn update_judge_status(req: Request, params: Params) -> ApiResult<impl IntoR
     let body = req.body();
     let request: UpdateJudgeStatusRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let mut judge = repo
         .find_judge_by_id(id)?
         .ok_or_else(|| ApiError::NotFound("Judge not found".to_string()))?;
@@ -259,7 +292,13 @@ pub fn update_judge_status(req: Request, params: Params) -> ApiResult<impl IntoR
     ),
 )]
 pub fn get_available_judges(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let judges = repo.find_available_judges()?;
 
     Ok(ResponseBuilder::new(200)
@@ -287,7 +326,16 @@ pub fn assign_case(req: Request, _params: Params) -> ApiResult<impl IntoResponse
     let body = req.body();
     let request: AssignCaseRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let available_judges = repo.find_available_judges()?;
 
     // Use the assignment service to find the best judge
@@ -342,7 +390,16 @@ pub fn get_case_assignment(req: Request, params: Params) -> ApiResult<impl IntoR
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let assignment = repo
         .find_assignment_by_case(case_id)?
         .ok_or_else(|| ApiError::NotFound("Assignment not found".to_string()))?;
@@ -391,7 +448,16 @@ pub fn file_recusal(req: Request, params: Params) -> ApiResult<impl IntoResponse
         replacement_judge_id: None,
     };
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.save_recusal(&motion)?;
 
     Ok(ResponseBuilder::new(201)
@@ -425,7 +491,16 @@ pub fn rule_on_recusal(req: Request, params: Params) -> ApiResult<impl IntoRespo
     let body = req.body();
     let request: RuleOnRecusalRequest = serde_json::from_slice(body)?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let mut motion = repo
         .find_recusal_by_id(recusal_id)?
         .ok_or_else(|| ApiError::NotFound("Recusal motion not found".to_string()))?;
@@ -487,7 +562,13 @@ pub fn rule_on_recusal(req: Request, params: Params) -> ApiResult<impl IntoRespo
     ),
 )]
 pub fn get_pending_recusals(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let recusals = repo.find_pending_recusals()?;
 
     Ok(ResponseBuilder::new(200)
@@ -532,7 +613,16 @@ pub fn add_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse
         notes: request.notes,
     };
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     repo.save_conflict(judge_id, &conflict)?;
 
     Ok(ResponseBuilder::new(201)
@@ -560,7 +650,16 @@ pub fn check_conflicts(req: Request, params: Params) -> ApiResult<impl IntoRespo
         .get("party")
         .ok_or_else(|| ApiError::BadRequest("Party name required".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let conflicts = repo.find_conflicts_by_party(party_name)?;
 
 
@@ -590,7 +689,13 @@ pub fn check_conflicts(req: Request, params: Params) -> ApiResult<impl IntoRespo
     ),
 )]
 pub fn get_workload_stats(req: Request, _params: Params) -> ApiResult<impl IntoResponse> {
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+        Ok(r) => r,
+
+        Err(e) => return Err(e),
+
+    };
     let stats = repo.get_workload_statistics()?;
     let response = WorkloadResponse::from_statistics(stats);
 
@@ -636,7 +741,16 @@ pub fn search_judges(req: Request, _params: Params) -> ApiResult<impl IntoRespon
         limit: query_parser::get_usize(&params, "limit").unwrap_or(50),
     };
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let (judges, total) = repo.search_judges(query)?;
 
 
@@ -669,7 +783,16 @@ pub fn get_judges_by_status(req: Request, params: Params) -> ApiResult<impl Into
 
     let status: JudgeStatus = serde_json::from_str(&format!("\"{}\"", status_str))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let judges = repo.find_judges_by_status(status)?;
 
     Ok(ResponseBuilder::new(200)
@@ -697,7 +820,16 @@ pub fn get_judges_by_district(req: Request, params: Params) -> ApiResult<impl In
         .get("district")
         .ok_or_else(|| ApiError::BadRequest("District required".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let judges = repo.find_judges_by_district(district)?;
 
     Ok(ResponseBuilder::new(200)
@@ -727,7 +859,16 @@ pub fn delete_judge(req: Request, params: Params) -> ApiResult<impl IntoResponse
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid judge ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deleted = repo.delete_judge(id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -756,7 +897,16 @@ pub fn get_assignment_history(req: Request, params: Params) -> ApiResult<impl In
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let history = repo.find_assignment_history(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -786,7 +936,16 @@ pub fn delete_assignment(req: Request, params: Params) -> ApiResult<impl IntoRes
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid assignment ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deleted = repo.delete_assignment(id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -815,7 +974,16 @@ pub fn get_recusals_by_case(req: Request, params: Params) -> ApiResult<impl Into
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid case ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let recusals = repo.find_recusals_by_case(case_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -844,7 +1012,16 @@ pub fn get_recusals_by_judge(req: Request, params: Params) -> ApiResult<impl Int
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid judge ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let recusals = repo.find_recusals_by_judge(judge_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -873,7 +1050,16 @@ pub fn get_conflicts_by_judge(req: Request, params: Params) -> ApiResult<impl In
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid judge ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let conflicts = repo.find_conflicts_by_judge(judge_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -907,7 +1093,16 @@ pub fn has_conflict(req: Request, params: Params) -> ApiResult<impl IntoResponse
         .get("party")
         .ok_or_else(|| ApiError::BadRequest("Party name required".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let has_conflict = repo.has_conflict(judge_id, party_name)?;
 
     Ok(ResponseBuilder::new(200)
@@ -943,7 +1138,16 @@ pub fn delete_conflict(req: Request, params: Params) -> ApiResult<impl IntoRespo
         .and_then(|id| Uuid::parse_str(id).ok())
         .ok_or_else(|| ApiError::BadRequest("Invalid conflict ID".to_string()))?;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let deleted = repo.delete_conflict(judge_id, conflict_id)?;
 
     Ok(ResponseBuilder::new(200)
@@ -976,7 +1180,16 @@ pub fn get_judges_on_vacation(req: Request, _params: Params) -> ApiResult<impl I
     let end_date = query_parser::get_datetime(&query_params, "end")
         .unwrap_or_else(|| Utc::now() + chrono::Duration::days(30));
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let judges = repo.find_judges_on_vacation(start_date, end_date)?;
 
     Ok(ResponseBuilder::new(200)
@@ -1014,7 +1227,16 @@ pub fn process_recusal(req: Request, params: Params) -> ApiResult<impl IntoRespo
     // Log the requested replacement judge for audit purposes
     let _replacement_id = request.replacement_judge_id;
 
-    let repo = RepositoryFactory::judge_repo(&req);
+    let repo = match RepositoryFactory::judge_repo_validated(&req) {
+
+
+        Ok(r) => r,
+
+
+        Err(e) => return Err(e),
+
+
+    };
     let motion = repo
         .find_recusal_by_id(recusal_id)?
         .ok_or_else(|| ApiError::NotFound("Recusal motion not found".to_string()))?;

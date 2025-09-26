@@ -90,6 +90,25 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.patch("/api/cases/:id/priority", handlers::criminal_case::update_case_priority);
     router.delete("/api/cases/:id", handlers::criminal_case::delete_case);
 
+    // Criminal Case API endpoints (URL-based - NEW)
+    router.get("/api/courts/:district/cases", handlers::criminal_case_url::search_cases);
+    router.get("/api/courts/:district/cases/statistics", handlers::criminal_case_url::get_case_statistics);
+    router.get("/api/courts/:district/cases/by-number/:case_number", handlers::criminal_case_url::get_case_by_number);
+    router.get("/api/courts/:district/cases/by-judge/:judge", handlers::criminal_case_url::get_cases_by_judge);
+    router.get("/api/courts/:district/cases/count-by-status/:status", handlers::criminal_case_url::count_by_status);
+    router.get("/api/courts/:district/cases/:id", handlers::criminal_case_url::get_case_by_id);
+    router.post("/api/courts/:district/cases", handlers::criminal_case_url::create_case);
+    router.post("/api/courts/:district/cases/:id/defendants", handlers::criminal_case_url::add_defendant);
+    router.post("/api/courts/:district/cases/:id/evidence", handlers::criminal_case_url::add_evidence);
+    router.post("/api/courts/:district/cases/:id/notes", handlers::criminal_case_url::add_note);
+    router.post("/api/courts/:district/cases/:id/plea", handlers::criminal_case_url::enter_plea);
+    router.post("/api/courts/:district/cases/:id/events", handlers::criminal_case_url::schedule_court_event);
+    router.post("/api/courts/:district/cases/:id/motions", handlers::criminal_case_url::file_motion);
+    router.patch("/api/courts/:district/cases/:id/motions/ruling", handlers::criminal_case_url::rule_on_motion);
+    router.patch("/api/courts/:district/cases/:id/status", handlers::criminal_case_url::update_case_status);
+    router.patch("/api/courts/:district/cases/:id/priority", handlers::criminal_case_url::update_case_priority);
+    router.delete("/api/courts/:district/cases/:id", handlers::criminal_case_url::delete_case);
+
     // Judge Management API endpoints
     router.post("/api/judges", handlers::judge::create_judge);
     router.get("/api/judges", handlers::judge::get_all_judges);
@@ -109,6 +128,26 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.post("/api/judges/:judge_id/recusals", handlers::judge::file_recusal);
     router.patch("/api/recusals/:recusal_id/ruling", handlers::judge::rule_on_recusal);
     router.get("/api/recusals/pending", handlers::judge::get_pending_recusals);
+
+    // Judge Management API endpoints (URL-based - NEW)
+    router.post("/api/courts/:district/judges", handlers::judge_url::create_judge);
+    router.get("/api/courts/:district/judges", handlers::judge_url::get_all_judges);
+    router.get("/api/courts/:district/judges/available", handlers::judge_url::get_available_judges);
+    router.get("/api/courts/:district/judges/workload", handlers::judge_url::get_workload_stats);
+    router.get("/api/courts/:district/judges/search", handlers::judge_url::search_judges);
+    router.get("/api/courts/:district/judges/:id", handlers::judge_url::get_judge_by_id);
+    router.patch("/api/courts/:district/judges/:id/status", handlers::judge_url::update_judge_status);
+    router.post("/api/courts/:district/judges/:judge_id/conflicts", handlers::judge_url::add_conflict);
+    router.get("/api/courts/:district/judges/conflicts/check/:party", handlers::judge_url::check_conflicts);
+
+    // Case Assignment endpoints (URL-based - NEW)
+    router.post("/api/courts/:district/assignments", handlers::judge_url::assign_case);
+    router.get("/api/courts/:district/assignments/case/:case_id", handlers::judge_url::get_case_assignment);
+
+    // Recusal endpoints (URL-based - NEW)
+    router.post("/api/courts/:district/judges/:judge_id/recusals", handlers::judge_url::file_recusal);
+    router.patch("/api/courts/:district/recusals/:recusal_id/ruling", handlers::judge_url::rule_on_recusal);
+    router.get("/api/courts/:district/recusals/pending", handlers::judge_url::get_pending_recusals);
 
     // Docket Management API endpoints
     router.post("/api/docket/entries", handlers::docket::create_docket_entry);
@@ -327,6 +366,7 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.get("/api/attorneys/bar-number/:bar_number", handlers::attorney::get_attorney_by_bar_number);
     router.get("/api/attorneys/:id", handlers::attorney::get_attorney);
     router.put("/api/attorneys/:id", handlers::attorney::update_attorney);
+    router.patch("/api/attorneys/:id", handlers::attorney::update_attorney);  // Support PATCH method too
     router.delete("/api/attorneys/:id", handlers::attorney::delete_attorney);
     router.get("/api/attorneys/status/:status", handlers::attorney::get_attorneys_by_status);
     router.get("/api/attorneys/firm/:firm_name", handlers::attorney::get_attorneys_by_firm);
@@ -368,6 +408,266 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.post("/api/attorneys/:id/disciplinary-actions", handlers::attorney::add_disciplinary_action);
     router.get("/api/attorneys/:id/disciplinary-actions", handlers::attorney::get_disciplinary_history);
     router.get("/api/attorneys/with-discipline", handlers::attorney::get_attorneys_with_discipline);
+
+
+    // Attorney Management API endpoints (URL-based - NEW)
+    router.post("/api/courts/:district/attorneys", handlers::attorney_url::create_attorney);
+    router.get("/api/courts/:district/attorneys", handlers::attorney_url::list_attorneys);
+    router.get("/api/courts/:district/attorneys/search", handlers::attorney_url::search_attorneys);
+    router.get("/api/courts/:district/attorneys/bar-number/:bar_number", handlers::attorney_url::get_attorney_by_bar_number);
+    router.get("/api/courts/:district/attorneys/:id", handlers::attorney_url::get_attorney);
+    router.put("/api/courts/:district/attorneys/:id", handlers::attorney_url::update_attorney);
+    router.delete("/api/courts/:district/attorneys/:id", handlers::attorney_url::delete_attorney);
+    router.get("/api/courts/:district/attorneys/status/:status", handlers::attorney_url::get_attorneys_by_status);
+    router.get("/api/courts/:district/attorneys/firm/:firm_name", handlers::attorney_url::get_attorneys_by_firm);
+    router.post("/api/courts/:district/attorneys/:id/bar-admissions", handlers::attorney_url::add_bar_admission);
+    router.delete("/api/courts/:district/attorneys/:id/bar-admissions/:state", handlers::attorney_url::remove_bar_admission);
+    router.get("/api/courts/:district/attorneys/bar-state/:state", handlers::attorney_url::get_attorneys_by_bar_state);
+    router.post("/api/courts/:district/attorneys/:id/federal-admissions", handlers::attorney_url::add_federal_admission);
+    router.delete("/api/courts/:district/attorneys/:id/federal-admissions/:court", handlers::attorney_url::remove_federal_admission);
+    router.get("/api/courts/:district/attorneys/federal-court/:court", handlers::attorney_url::get_attorneys_admitted_to_court);
+    router.post("/api/courts/:district/attorneys/:id/pro-hac-vice", handlers::attorney_url::add_pro_hac_vice);
+    router.patch("/api/courts/:district/attorneys/:id/pro-hac-vice/:case_id/status", handlers::attorney_url::update_pro_hac_vice_status);
+    router.get("/api/courts/:district/attorneys/pro-hac-vice/active", handlers::attorney_url::get_active_pro_hac_vice);
+    router.get("/api/courts/:district/attorneys/pro-hac-vice/case/:case_id", handlers::attorney_url::get_pro_hac_vice_by_case);
+    router.post("/api/courts/:district/attorneys/:id/cja-panel/:district", handlers::attorney_url::add_to_cja_panel);
+    router.delete("/api/courts/:district/attorneys/:id/cja-panel/:district", handlers::attorney_url::remove_from_cja_panel);
+    router.get("/api/courts/:district/attorneys/cja-panel/:district", handlers::attorney_url::get_cja_panel_attorneys);
+    router.post("/api/courts/:district/attorneys/:id/cja-appointments", handlers::attorney_url::add_cja_appointment);
+    router.get("/api/courts/:district/attorneys/:id/cja-appointments", handlers::attorney_url::get_cja_appointments);
+    router.get("/api/courts/:district/attorneys/cja/pending-vouchers", handlers::attorney_url::get_pending_cja_vouchers);
+    router.put("/api/courts/:district/attorneys/:id/ecf-registration", handlers::attorney_url::update_ecf_registration);
+    router.get("/api/courts/:district/attorneys/:id/is-in-good-standing", handlers::attorney_url::check_good_standing);
+    router.get("/api/courts/:district/attorneys/:id/can-practice/:court", handlers::attorney_url::check_federal_practice);
+    router.get("/api/courts/:district/attorneys/:id/has-ecf-privileges", handlers::attorney_url::check_ecf_privileges);
+    router.post("/api/courts/:district/attorneys/:id/calculate-win-rate", handlers::attorney_url::calculate_attorney_win_rate);
+    router.get("/api/courts/:district/attorneys/ecf-access", handlers::attorney_url::get_attorneys_with_ecf);
+    router.delete("/api/courts/:district/attorneys/:id/ecf-access", handlers::attorney_url::revoke_ecf_access);
+    router.post("/api/courts/:district/attorneys/:id/disciplinary-actions", handlers::attorney_url::add_disciplinary_action);
+    router.get("/api/courts/:district/attorneys/:id/disciplinary-actions", handlers::attorney_url::get_disciplinary_history);
+    router.get("/api/courts/:district/attorneys/with-discipline", handlers::attorney_url::get_attorneys_with_discipline);
+    router.post("/api/courts/:district/parties", handlers::attorney_url::create_party);
+    router.get("/api/courts/:district/parties/:id", handlers::attorney_url::get_party);
+    router.put("/api/courts/:district/parties/:id", handlers::attorney_url::update_party);
+    router.delete("/api/courts/:district/parties/:id", handlers::attorney_url::delete_party);
+    router.get("/api/courts/:district/parties/case/:case_id", handlers::attorney_url::list_parties_by_case);
+    router.get("/api/courts/:district/parties/attorney/:attorney_id", handlers::attorney_url::list_parties_by_attorney);
+    router.patch("/api/courts/:district/parties/:id/status", handlers::attorney_url::update_party_status);
+    router.get("/api/courts/:district/parties/:id/needs-service", handlers::attorney_url::check_party_needs_service);
+    router.get("/api/courts/:district/parties/:id/lead-counsel", handlers::attorney_url::get_party_lead_counsel);
+    router.get("/api/courts/:district/parties/:id/is-represented", handlers::attorney_url::check_party_represented);
+    router.get("/api/courts/:district/parties/unrepresented", handlers::attorney_url::get_unrepresented_parties);
+    router.post("/api/courts/:district/representations", handlers::attorney_url::add_representation);
+    router.post("/api/courts/:district/representations/:id/end", handlers::attorney_url::end_representation);
+    router.get("/api/courts/:district/representations/:id", handlers::attorney_url::get_representation);
+    router.get("/api/courts/:district/representations/attorney/:attorney_id/active", handlers::attorney_url::get_active_representations);
+    router.get("/api/courts/:district/representations/case/:case_id", handlers::attorney_url::get_case_representations);
+    router.post("/api/courts/:district/representations/substitute", handlers::attorney_url::substitute_attorney);
+    router.post("/api/courts/:district/service-records", handlers::attorney_url::create_service_record);
+    router.get("/api/courts/:district/service-records/document/:document_id", handlers::attorney_url::get_service_by_document);
+    router.get("/api/courts/:district/service-records/party/:party_id", handlers::attorney_url::get_service_by_party);
+    router.post("/api/courts/:district/service-records/:id/complete", handlers::attorney_url::mark_service_completed);
+    router.post("/api/courts/:district/conflict-checks", handlers::attorney_url::create_conflict_check);
+    router.get("/api/courts/:district/conflict-checks/attorney/:attorney_id", handlers::attorney_url::get_attorney_conflicts);
+    router.post("/api/courts/:district/conflict-checks/check", handlers::attorney_url::check_party_conflicts);
+    router.post("/api/courts/:district/conflict-checks/:id/clear", handlers::attorney_url::clear_conflict);
+    router.get("/api/courts/:district/attorneys/:id/metrics", handlers::attorney_url::get_attorney_metrics);
+    router.get("/api/courts/:district/attorneys/:id/win-rate", handlers::attorney_url::get_attorney_win_rate);
+    router.get("/api/courts/:district/attorneys/:id/case-count", handlers::attorney_url::get_attorney_case_count);
+    router.get("/api/courts/:district/attorneys/top-performers", handlers::attorney_url::get_top_attorneys);
+    router.post("/api/courts/:district/attorneys/bulk/update-status", handlers::attorney_url::bulk_update_status);
+    router.post("/api/courts/:district/service-records/bulk/:document_id", handlers::attorney_url::bulk_add_to_service);
+    router.post("/api/courts/:district/representations/migrate", handlers::attorney_url::migrate_representations);
+
+    // Docket Management API endpoints (URL-based - NEW) - 27 endpoints total
+    // Docket Entry Management (12 endpoints)
+    router.post("/api/courts/:district/docket/entries", handlers::docket_url::create_docket_entry);
+    router.get("/api/courts/:district/docket/case/:case_id", handlers::docket_url::get_case_docket);
+    router.get("/api/courts/:district/docket/entries/:id", handlers::docket_url::get_docket_entry);
+    router.post("/api/courts/:district/docket/entries/:entry_id/attachments", handlers::docket_url::add_attachment);
+    router.get("/api/courts/:district/docket/search", handlers::docket_url::search_docket);
+    router.get("/api/courts/:district/docket/sheet/:case_id", handlers::docket_url::generate_docket_sheet);
+    router.get("/api/courts/:district/docket/case/:case_id/type/:type", handlers::docket_url::get_entries_by_type);
+    router.get("/api/courts/:district/docket/case/:case_id/sealed", handlers::docket_url::get_sealed_entries);
+    router.get("/api/courts/:district/docket/case/:case_id/search/:text", handlers::docket_url::search_entries);
+    router.delete("/api/courts/:district/docket/entries/:id", handlers::docket_url::delete_entry);
+    router.get("/api/courts/:district/docket/statistics/:case_id", handlers::docket_url::get_filing_statistics);
+    router.get("/api/courts/:district/docket/immediate-service/:entry_type", handlers::docket_url::check_immediate_service);
+
+    // Calendar Management (9 endpoints)
+    router.post("/api/courts/:district/calendar/events", handlers::docket_url::schedule_event);
+    router.get("/api/courts/:district/calendar/case/:case_id", handlers::docket_url::get_case_calendar);
+    router.get("/api/courts/:district/calendar/judge/:judge_id", handlers::docket_url::get_judge_schedule);
+    router.patch("/api/courts/:district/calendar/events/:event_id/status", handlers::docket_url::update_event_status);
+    router.get("/api/courts/:district/calendar/available-slot/:judge_id", handlers::docket_url::find_available_slot);
+    router.get("/api/courts/:district/calendar/utilization", handlers::docket_url::get_courtroom_utilization);
+    router.get("/api/courts/:district/calendar/courtroom/:courtroom", handlers::docket_url::get_events_by_courtroom);
+    router.delete("/api/courts/:district/calendar/events/:id", handlers::docket_url::delete_event);
+    router.get("/api/courts/:district/calendar/search", handlers::docket_url::search_calendar);
+
+    // Speedy Trial Management (6 endpoints)
+    router.post("/api/courts/:district/speedy-trial/:case_id", handlers::docket_url::init_speedy_trial);
+    router.get("/api/courts/:district/speedy-trial/:case_id", handlers::docket_url::get_speedy_trial);
+    router.post("/api/courts/:district/speedy-trial/:case_id/delays", handlers::docket_url::add_excludable_delay);
+    router.get("/api/courts/:district/speedy-trial/approaching", handlers::docket_url::get_approaching_deadlines);
+    router.get("/api/courts/:district/speedy-trial/violations", handlers::docket_url::get_violations);
+    router.patch("/api/courts/:district/speedy-trial/:case_id/clock", handlers::docket_url::update_clock);
+    router.get("/api/courts/:district/speedy-trial/approaching/:case_id", handlers::docket_url::check_deadline_approaching);
+
+    // Order Management API endpoints (URL-based - NEW) - 23 endpoints total
+    // Order Management (14 endpoints)
+    router.post("/api/courts/:district/orders", handlers::order_url::create_order);
+    router.get("/api/courts/:district/orders", handlers::order_url::list_orders);
+    router.get("/api/courts/:district/orders/:order_id", handlers::order_url::get_order);
+    router.patch("/api/courts/:district/orders/:order_id", handlers::order_url::update_order);
+    router.delete("/api/courts/:district/orders/:order_id", handlers::order_url::delete_order);
+    router.post("/api/courts/:district/orders/:order_id/sign", handlers::order_url::sign_order);
+    router.post("/api/courts/:district/orders/:order_id/issue", handlers::order_url::issue_order);
+    router.post("/api/courts/:district/orders/:order_id/service", handlers::order_url::add_service_record);
+    router.get("/api/courts/:district/cases/:case_id/orders", handlers::order_url::get_orders_by_case);
+    router.get("/api/courts/:district/judges/:judge_id/orders", handlers::order_url::get_orders_by_judge);
+    router.get("/api/courts/:district/judges/:judge_id/orders/pending-signatures", handlers::order_url::get_pending_signatures);
+    router.get("/api/courts/:district/orders/expiring", handlers::order_url::get_expiring_orders);
+    router.get("/api/courts/:district/orders/statistics", handlers::order_url::get_order_statistics);
+    router.post("/api/courts/:district/orders/from-template", handlers::order_url::create_from_template);
+
+    // Order Template Management (7 endpoints)
+    router.post("/api/courts/:district/templates/orders", handlers::order_url::create_template);
+    router.get("/api/courts/:district/templates/orders", handlers::order_url::list_templates);
+    router.get("/api/courts/:district/templates/orders/active", handlers::order_url::find_active_templates);
+    router.get("/api/courts/:district/templates/orders/:template_id", handlers::order_url::get_template);
+    router.put("/api/courts/:district/templates/orders/:template_id", handlers::order_url::update_template);
+    router.delete("/api/courts/:district/templates/orders/:template_id", handlers::order_url::delete_template);
+    router.post("/api/courts/:district/templates/:template_id/generate-content", handlers::order_url::generate_template_content);
+
+    // Order Status Checks (2 endpoints)
+    router.get("/api/courts/:district/orders/:id/is-expired", handlers::order_url::check_order_expired);
+    router.get("/api/courts/:district/orders/:id/requires-attention", handlers::order_url::check_requires_attention);
+
+    // ====================================================================
+    // Opinion Management - URL-based routing (24 endpoints)
+    // ====================================================================
+
+    // Opinion Management (11 endpoints)
+    router.post("/api/courts/:district/opinions", handlers::opinion_url::create_opinion);
+    router.get("/api/courts/:district/opinions", handlers::opinion_url::list_opinions);
+    router.get("/api/courts/:district/opinions/:opinion_id", handlers::opinion_url::get_opinion);
+    router.patch("/api/courts/:district/opinions/:opinion_id", handlers::opinion_url::update_opinion);
+    router.delete("/api/courts/:district/opinions/:opinion_id", handlers::opinion_url::delete_opinion);
+    router.post("/api/courts/:district/opinions/:opinion_id/file", handlers::opinion_url::file_opinion);
+    router.post("/api/courts/:district/opinions/:opinion_id/publish", handlers::opinion_url::publish_opinion);
+    router.post("/api/courts/:district/opinions/:opinion_id/votes", handlers::opinion_url::add_judge_vote);
+    router.post("/api/courts/:district/opinions/:opinion_id/citations", handlers::opinion_url::add_citation);
+    router.post("/api/courts/:district/opinions/:opinion_id/headnotes", handlers::opinion_url::add_headnote);
+    router.get("/api/courts/:district/opinions/search", handlers::opinion_url::search_opinions);
+
+    // Cross-Entity Opinion Queries (3 endpoints)
+    router.get("/api/courts/:district/cases/:case_id/opinions", handlers::opinion_url::get_opinions_by_case);
+    router.get("/api/courts/:district/judges/:judge_id/opinions", handlers::opinion_url::get_opinions_by_author);
+    router.get("/api/courts/:district/opinions/precedential", handlers::opinion_url::get_precedential_opinions);
+
+    // Draft Management (5 endpoints)
+    router.post("/api/courts/:district/opinions/:opinion_id/drafts", handlers::opinion_url::create_draft);
+    router.get("/api/courts/:district/opinions/:opinion_id/drafts", handlers::opinion_url::get_drafts);
+    router.get("/api/courts/:district/opinions/:opinion_id/drafts/current", handlers::opinion_url::get_current_draft);
+    router.post("/api/courts/:district/opinions/:opinion_id/drafts/:draft_id/comments", handlers::opinion_url::add_draft_comment);
+    router.patch("/api/courts/:district/opinions/:opinion_id/drafts/:draft_id/comments/:comment_id/resolve", handlers::opinion_url::resolve_draft_comment);
+
+    // Statistics & Validation (5 endpoints)
+    router.get("/api/courts/:district/opinions/statistics", handlers::opinion_url::get_opinion_statistics);
+    router.get("/api/courts/:district/opinions/citations/statistics", handlers::opinion_url::get_citation_statistics);
+    router.get("/api/courts/:district/opinions/:id/is-majority", handlers::opinion_url::is_majority_opinion);
+    router.get("/api/courts/:district/opinions/:id/is-binding", handlers::opinion_url::is_binding_opinion);
+    router.get("/api/courts/:district/opinions/:id/calculate-statistics", handlers::opinion_url::calculate_opinion_statistics);
+
+    // ====================================================================
+    // Deadline Management - URL-based routing (26 endpoints)
+    // ====================================================================
+
+    // Core Deadline Management (8 endpoints)
+    router.post("/api/courts/:district/deadlines", handlers::deadline_url::create_deadline);
+    router.get("/api/courts/:district/deadlines/case/:case_id", handlers::deadline_url::get_case_deadlines);
+    router.get("/api/courts/:district/deadlines/:id", handlers::deadline_url::get_deadline);
+    router.post("/api/courts/:district/deadlines/:id/complete", handlers::deadline_url::complete_deadline);
+    router.get("/api/courts/:district/deadlines/upcoming", handlers::deadline_url::get_upcoming_deadlines);
+    router.get("/api/courts/:district/deadlines/urgent", handlers::deadline_url::get_urgent_deadlines);
+    router.get("/api/courts/:district/deadlines/search", handlers::deadline_url::search_deadlines);
+    router.post("/api/courts/:district/deadlines/calculate", handlers::deadline_url::calculate_frcp_deadlines);
+
+    // Extension Management (5 endpoints)
+    router.post("/api/courts/:district/deadlines/:deadline_id/extensions", handlers::deadline_url::request_extension);
+    router.patch("/api/courts/:district/extensions/:extension_id/ruling", handlers::deadline_url::rule_on_extension);
+    router.get("/api/courts/:district/extensions/:id", handlers::deadline_url::get_extension_by_id);
+    router.get("/api/courts/:district/extensions/deadline/:deadline_id", handlers::deadline_url::get_extensions_by_deadline);
+    router.get("/api/courts/:district/extensions/pending", handlers::deadline_url::get_pending_extensions);
+
+    // Compliance & Reporting (4 endpoints)
+    router.get("/api/courts/:district/compliance/stats", handlers::deadline_url::get_compliance_stats);
+    router.get("/api/courts/:district/compliance/report", handlers::deadline_url::generate_compliance_report);
+    router.get("/api/courts/:district/compliance/performance", handlers::deadline_url::get_performance_metrics);
+    router.get("/api/courts/:district/compliance/missed-jurisdictional", handlers::deadline_url::get_missed_jurisdictional);
+
+    // Reminder Management (5 endpoints)
+    router.get("/api/courts/:district/reminders/pending", handlers::deadline_url::get_pending_reminders);
+    router.post("/api/courts/:district/reminders/send", handlers::deadline_url::send_reminders);
+    router.get("/api/courts/:district/reminders/deadline/:deadline_id", handlers::deadline_url::get_reminders_by_deadline);
+    router.get("/api/courts/:district/reminders/recipient/:recipient", handlers::deadline_url::get_reminders_by_recipient);
+    router.post("/api/courts/:district/reminders/:reminder_id/acknowledge", handlers::deadline_url::acknowledge_reminder);
+
+    // Additional Deadline Operations (4 endpoints)
+    router.get("/api/courts/:district/deadlines/case/:case_id/type/:type", handlers::deadline_url::get_deadlines_by_type);
+    router.patch("/api/courts/:district/deadlines/:id/status", handlers::deadline_url::update_deadline_status);
+    router.delete("/api/courts/:district/deadlines/:id", handlers::deadline_url::delete_deadline);
+    router.get("/api/courts/:district/federal-rules", handlers::deadline_url::get_federal_rules);
+
+    // ====================================================================
+    // Sentencing Management - URL-based routing (31 endpoints)
+    // ====================================================================
+
+    // Core Sentencing Management (8 endpoints)
+    router.post("/api/courts/:district/sentencing", handlers::sentencing_url::create_sentencing);
+    router.get("/api/courts/:district/sentencing/:id", handlers::sentencing_url::get_sentencing);
+    router.put("/api/courts/:district/sentencing/:id", handlers::sentencing_url::update_sentencing);
+    router.delete("/api/courts/:district/sentencing/:id", handlers::sentencing_url::delete_sentencing);
+    router.get("/api/courts/:district/sentencing/case/:case_id", handlers::sentencing_url::find_by_case);
+    router.get("/api/courts/:district/sentencing/defendant/:defendant_id", handlers::sentencing_url::find_by_defendant);
+    router.get("/api/courts/:district/sentencing/judge/:judge_id", handlers::sentencing_url::find_by_judge);
+    router.get("/api/courts/:district/sentencing/pending", handlers::sentencing_url::find_pending);
+
+    // Guidelines Calculation (5 endpoints)
+    router.post("/api/courts/:district/sentencing/calculate-guidelines", handlers::sentencing_url::calculate_guidelines);
+    router.get("/api/courts/:district/sentencing/:id/criminal-history-points", handlers::sentencing_url::calculate_criminal_history_points);
+    router.post("/api/courts/:district/sentencing/:id/calculate-offense-level", handlers::sentencing_url::calculate_offense_level);
+    router.post("/api/courts/:district/sentencing/:id/lookup-guidelines-range", handlers::sentencing_url::lookup_guidelines_range);
+    router.get("/api/courts/:district/sentencing/:id/safety-valve-eligible", handlers::sentencing_url::check_safety_valve_eligible);
+
+    // Departures & Variances (4 endpoints)
+    router.get("/api/courts/:district/sentencing/statistics/departures", handlers::sentencing_url::get_departure_stats);
+    router.get("/api/courts/:district/sentencing/statistics/variances", handlers::sentencing_url::get_variance_stats);
+    router.post("/api/courts/:district/sentencing/:id/departure", handlers::sentencing_url::add_departure);
+    router.post("/api/courts/:district/sentencing/:id/variance", handlers::sentencing_url::add_variance);
+
+    // Substantial Assistance & Special Conditions (3 endpoints)
+    router.get("/api/courts/:district/sentencing/substantial-assistance", handlers::sentencing_url::get_substantial_assistance);
+    router.post("/api/courts/:district/sentencing/:id/special-condition", handlers::sentencing_url::add_special_condition);
+    router.post("/api/courts/:district/sentencing/:id/prior-sentence", handlers::sentencing_url::add_prior_sentence);
+
+    // Supervised Release & BOP (4 endpoints)
+    router.put("/api/courts/:district/sentencing/:id/supervised-release", handlers::sentencing_url::update_supervised_release);
+    router.get("/api/courts/:district/sentencing/active-supervision", handlers::sentencing_url::find_active_supervision);
+    router.post("/api/courts/:district/sentencing/:id/bop-designation", handlers::sentencing_url::add_bop_designation);
+    router.get("/api/courts/:district/sentencing/rdap-eligible", handlers::sentencing_url::get_rdap_eligible);
+
+    // Statistics & Reporting (5 endpoints)
+    router.get("/api/courts/:district/sentencing/statistics/judge/:judge_id", handlers::sentencing_url::get_judge_stats);
+    router.get("/api/courts/:district/sentencing/statistics/district", handlers::sentencing_url::get_district_stats);
+    router.get("/api/courts/:district/sentencing/statistics/trial-penalty", handlers::sentencing_url::get_trial_penalty);
+    router.get("/api/courts/:district/sentencing/statistics/offense/:offense_type", handlers::sentencing_url::get_offense_type_stats);
+    router.get("/api/courts/:district/sentencing/date-range", handlers::sentencing_url::find_by_date_range);
+
+    // Upcoming & Appeals (2 endpoints)
+    router.get("/api/courts/:district/sentencing/upcoming/:days", handlers::sentencing_url::find_upcoming);
+    router.get("/api/courts/:district/sentencing/appeal-deadlines", handlers::sentencing_url::find_appeal_deadlines);
 
     // Party Management endpoints
     router.post("/api/parties", handlers::attorney::create_party);

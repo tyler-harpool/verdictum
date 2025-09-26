@@ -17,8 +17,14 @@ pub fn error_response(error: &ApiError) -> Response {
     let status = match error {
         ApiError::NotFound(_) => 404,
         ApiError::BadRequest(_) => 400,
+        ApiError::ValidationError(_) => 400,
+        ApiError::InvalidInput(_) => 400,
+        ApiError::SerializationError(_) => 400,
+        ApiError::Forbidden(_) => 403,
+        ApiError::Conflict(_) => 409,
         ApiError::StorageError(_) => 500,
-        _ => 500,
+        ApiError::Internal(_) => 500,
+        ApiError::InternalServerError(_) => 500,
     };
 
     Response::builder()
