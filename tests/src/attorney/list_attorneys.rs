@@ -69,9 +69,9 @@ fn list_attorneys_request(district: &str) -> (u16, Value) {
     let body = response.body_as_string().unwrap_or_default();
 
     let body_json: Value = if body.is_empty() {
-        json!([])
+        json!({"data": [], "meta": {}})
     } else {
-        serde_json::from_str(&body).unwrap_or(json!([]))
+        serde_json::from_str(&body).unwrap_or(json!({"data": [], "meta": {}}))
     };
 
     (status, body_json)
@@ -97,10 +97,12 @@ fn test_list_attorneys_empty() {
     let (status, attorneys) = list_attorneys_request("district9");
 
     assert_eq!(status, 200, "List should return 200");
-    assert!(attorneys.is_array(), "Response should be an array");
+    assert!(attorneys.is_object(), "Response should be an object");
+    assert!(attorneys["data"].is_array(), "Response should have data array");
+    assert!(attorneys["meta"].is_object(), "Response should have meta object");
 
     // District9 might have some attorneys from other tests, but it should still be a valid array
-    let attorneys_array = attorneys.as_array().unwrap();
+    let _attorneys_array = attorneys["data"].as_array().unwrap();
     // Array should exist (may or may not be empty depending on other tests)
 }
 
@@ -117,9 +119,10 @@ fn test_list_attorneys_with_data() {
     let (status, attorneys) = list_attorneys_request("district12");
 
     assert_eq!(status, 200, "List should return 200");
-    assert!(attorneys.is_array(), "Response should be an array");
+    assert!(attorneys.is_object(), "Response should be an object");
+    assert!(attorneys["data"].is_array(), "Response should have data array");
 
-    let attorneys_array = attorneys.as_array().unwrap();
+    let attorneys_array = attorneys["data"].as_array().unwrap();
     assert!(attorneys_array.len() >= 3, "Should have at least 3 attorneys");
 
     // Check that our attorneys are in the list
@@ -167,8 +170,9 @@ fn test_list_attorneys_returns_full_objects() {
     let (status, attorneys) = list_attorneys_request("district9");
 
     assert_eq!(status, 200, "List should return 200");
+    assert!(attorneys["data"].is_array(), "Response should have data array");
 
-    let attorneys_array = attorneys.as_array().unwrap();
+    let attorneys_array = attorneys["data"].as_array().unwrap();
     assert!(attorneys_array.len() >= 1, "Should have at least 1 attorney");
 
     // Find our attorney (the one with FULL in bar number)
@@ -204,8 +208,9 @@ fn test_list_attorneys_after_deletion() {
     let (status, attorneys) = list_attorneys_request("district12");
 
     assert_eq!(status, 200, "List should return 200");
+    assert!(attorneys["data"].is_array(), "Response should have data array");
 
-    let attorneys_array = attorneys.as_array().unwrap();
+    let attorneys_array = attorneys["data"].as_array().unwrap();
     let ids: Vec<String> = attorneys_array
         .iter()
         .filter_map(|a| a["id"].as_str().map(String::from))

@@ -4,6 +4,8 @@
 //! for the ToDo API and Criminal Case Management applications.
 
 pub mod attorney;
+pub mod attorney_case;
+pub mod attorney_conflict;
 pub mod config;
 pub mod criminal_case;
 pub mod deadline;
@@ -13,6 +15,7 @@ pub mod features;
 pub mod judge;
 pub mod opinion;
 pub mod order;
+pub mod pagination;
 pub mod sentencing;
 mod todo;
 

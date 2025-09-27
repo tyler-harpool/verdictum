@@ -409,6 +409,15 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.get("/api/attorneys/:id/disciplinary-actions", handlers::attorney::get_disciplinary_history);
     router.get("/api/attorneys/with-discipline", handlers::attorney::get_attorneys_with_discipline);
 
+    // Attorney-Case Relationship endpoints
+    router.post("/api/attorneys/:attorney_id/cases", handlers::attorney::assign_attorney_to_case);
+    router.get("/api/attorneys/:attorney_id/cases", handlers::attorney::get_attorney_cases);
+    router.delete("/api/attorneys/:attorney_id/cases/:case_id", handlers::attorney::remove_attorney_from_case);
+    router.get("/api/attorneys/:attorney_id/case-load", handlers::attorney::get_attorney_case_load);
+    router.get("/api/attorneys/:attorney_id/representation-history", handlers::attorney::get_attorney_representation_history);
+
+    // Attorney Conflict Checking endpoints
+    router.post("/api/attorneys/:attorney_id/conflict-check", handlers::attorney::check_attorney_conflicts);
 
     // Attorney Management API endpoints (URL-based - NEW)
     router.post("/api/courts/:district/attorneys", handlers::attorney_url::create_attorney);

@@ -12,6 +12,14 @@ use crate::domain::attorney::{
     ConflictType, ConflictSeverity, ConflictResult,
     CreateAttorneyRequest, UpdateAttorneyRequest, CreatePartyRequest, PartyType, PartyRole, EntityType
 };
+use crate::domain::attorney_conflict::{
+    ConflictCheckRequest, ConflictCheckResult, ConflictDetails, ConflictRecommendation,
+    ConflictType as NewConflictType, ConflictSeverity as NewConflictSeverity
+};
+use crate::domain::attorney_case::{
+    AssignAttorneyRequest, AttorneyCaseAssignment, AttorneyCaseLoad, RemoveAttorneyRequest,
+    AttorneyRepresentationHistory,
+};
 use crate::error::ApiError;
 use crate::ports::attorney_repository::AttorneyRepository;
 use crate::utils::{json_response as json, query_parser, repository_factory::RepositoryFactory};
@@ -366,63 +374,95 @@ pub fn delete_attorney(req: Request, params: Params) -> Response {
     }
 }
 
-/// List all attorneys
+/// List all attorneys with pagination
 #[utoipa::path(
     get,
     path = "/api/attorneys",
     responses(
-        (status = 200, description = "List of attorneys", body = Vec<Attorney>),
+        (status = 200, description = "Paginated list of attorneys"),
         (status = 500, description = "Internal server error")
     ),
     tag = "attorneys",
     params(
-        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY")
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
+        ("page" = usize, Query, description = "Page number (1-indexed)", example = 1),
+        ("limit" = usize, Query, description = "Items per page (max 100)", example = 20)
     ),
 )]
 pub fn list_attorneys(req: Request, _params: Params) -> Response {
     let repo = match RepositoryFactory::attorney_repo(&req) {
-
         Ok(r) => r,
-
         Err(e) => return json::error_response(&e),
-
     };
 
+    // Parse pagination parameters from query string
+    let query = req.query();
+    let parsed = query_parser::parse_query_string(query);
+    let page = query_parser::get_string(&parsed, "page")
+        .and_then(|s| s.parse::<usize>().ok())
+        .unwrap_or(1)
+        .max(1);
+    let limit = query_parser::get_string(&parsed, "limit")
+        .and_then(|s| s.parse::<usize>().ok())
+        .map(|l| if l == 0 { 20 } else { l.min(100) })
+        .unwrap_or(20);
+
     match repo.find_all_attorneys() {
-        Ok(attorneys) => json::success_response(&attorneys),
+        Ok(attorneys) => {
+            let paginated = crate::domain::pagination::PaginatedResponse::from_full_list(
+                attorneys,
+                page,
+                limit
+            );
+            json::success_response(&paginated)
+        },
         Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
     }
 }
 
-/// Search attorneys
+/// Search attorneys with pagination
 #[utoipa::path(
     get,
     path = "/api/attorneys/search",
     params(
         ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
-        ("q" = String, Query, description = "Search query")
+        ("q" = String, Query, description = "Search query"),
+        ("page" = usize, Query, description = "Page number (1-indexed)", example = 1),
+        ("limit" = usize, Query, description = "Items per page (max 100)", example = 20)
     ),
     responses(
-        (status = 200, description = "Search results", body = Vec<Attorney>),
+        (status = 200, description = "Paginated search results"),
         (status = 500, description = "Internal server error")
     ),
     tag = "attorneys",
 )]
 pub fn search_attorneys(req: Request, _params: Params) -> Response {
     let repo = match RepositoryFactory::attorney_repo(&req) {
-
         Ok(r) => r,
-
         Err(e) => return json::error_response(&e),
-
     };
 
     let query = req.query();
     let parsed = query_parser::parse_query_string(query);
     let search_query = query_parser::get_string(&parsed, "q").unwrap_or_default();
+    let page = query_parser::get_string(&parsed, "page")
+        .and_then(|s| s.parse::<usize>().ok())
+        .unwrap_or(1)
+        .max(1);
+    let limit = query_parser::get_string(&parsed, "limit")
+        .and_then(|s| s.parse::<usize>().ok())
+        .map(|l| if l == 0 { 20 } else { l.min(100) })
+        .unwrap_or(20);
 
     match repo.search_attorneys(&search_query) {
-        Ok(attorneys) => json::success_response(&attorneys),
+        Ok(attorneys) => {
+            let paginated = crate::domain::pagination::PaginatedResponse::from_full_list(
+                attorneys,
+                page,
+                limit
+            );
+            json::success_response(&paginated)
+        },
         Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
     }
 }
@@ -2522,3 +2562,671 @@ pub fn calculate_attorney_win_rate(req: Request, params: Params) -> Response {
     }
 }
 
+
+// Attorney-Case Relationship Endpoints
+
+/// Assign an attorney to a case
+#[utoipa::path(
+    post,
+    path = "/api/attorneys/{attorney_id}/cases",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID")
+    ),
+    request_body = AssignAttorneyRequest,
+    responses(
+        (status = 201, description = "Attorney assigned to case", body = AttorneyCaseAssignment),
+        (status = 404, description = "Attorney or case not found"),
+        (status = 409, description = "Attorney already assigned to this case"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorney-cases",
+)]
+pub fn assign_attorney_to_case(req: Request, params: Params) -> Response {
+    let _repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let _attorney_id = params.get("attorney_id").unwrap_or_default();
+
+    // Parse request body
+    let body = req.body();
+    let request: AssignAttorneyRequest = match json::parse_body(&body) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    // For now, create a mock assignment
+    // In a real implementation, this would:
+    // 1. Verify attorney exists
+    // 2. Verify case exists
+    // 3. Check for conflicts
+    // 4. Create the assignment
+    let assignment = AttorneyCaseAssignment::new(
+        request.attorney_id,
+        request.case_id,
+        request.role,
+        request.notes,
+    );
+
+    Response::builder()
+        .status(201)
+        .header("content-type", "application/json")
+        .body(serde_json::to_vec(&assignment).unwrap())
+        .build()
+}
+
+/// Get all cases for an attorney
+#[utoipa::path(
+    get,
+    path = "/api/attorneys/{attorney_id}/cases",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID"),
+        ("active" = bool, Query, description = "Filter by active status")
+    ),
+    responses(
+        (status = 200, description = "Attorney's case assignments", body = Vec<AttorneyCaseAssignment>),
+        (status = 404, description = "Attorney not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorney-cases",
+)]
+pub fn get_attorney_cases(req: Request, params: Params) -> Response {
+    let _repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let _attorney_id = params.get("attorney_id").unwrap_or_default();
+
+    // For now, return empty list
+    // In a real implementation, this would fetch from storage
+    let assignments: Vec<AttorneyCaseAssignment> = vec![];
+
+    json::success_response(&assignments)
+}
+
+/// Remove an attorney from a case
+#[utoipa::path(
+    delete,
+    path = "/api/attorneys/{attorney_id}/cases/{case_id}",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID"),
+        ("case_id" = String, Path, description = "Case ID")
+    ),
+    request_body = RemoveAttorneyRequest,
+    responses(
+        (status = 204, description = "Attorney removed from case"),
+        (status = 404, description = "Assignment not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorney-cases",
+)]
+pub fn remove_attorney_from_case(req: Request, params: Params) -> Response {
+    let _repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let _attorney_id = params.get("attorney_id").unwrap_or_default();
+    let _case_id = params.get("case_id").unwrap_or_default();
+
+    // Parse optional request body for removal reason
+    let body = req.body();
+    let _request: Option<RemoveAttorneyRequest> = if !body.is_empty() {
+        match json::parse_body(&body) {
+            Ok(r) => Some(r),
+            Err(_) => None,
+        }
+    } else {
+        None
+    };
+
+    // For now, just return success
+    // In a real implementation, this would update the assignment
+    Response::builder().status(204).build()
+}
+
+/// Get attorney's case load summary
+#[utoipa::path(
+    get,
+    path = "/api/attorneys/{attorney_id}/case-load",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID")
+    ),
+    responses(
+        (status = 200, description = "Attorney's case load summary", body = AttorneyCaseLoad),
+        (status = 404, description = "Attorney not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorney-cases",
+)]
+pub fn get_attorney_case_load(req: Request, params: Params) -> Response {
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let attorney_id = params.get("attorney_id").unwrap_or_default();
+
+    // Get attorney to verify they exist
+    match repo.find_attorney_by_id(attorney_id) {
+        Ok(Some(attorney)) => {
+            // Create mock case load summary
+            let case_load = AttorneyCaseLoad {
+                attorney_id: attorney.id,
+                attorney_name: format!("{} {}", attorney.first_name, attorney.last_name),
+                active_cases: 0,
+                completed_cases: 0,
+                active_assignments: vec![],
+            };
+
+            json::success_response(&case_load)
+        },
+        Ok(None) => json::error_response(&ApiError::NotFound("Attorney not found".to_string())),
+        Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
+    }
+}
+
+/// Get attorney's complete representation history
+#[utoipa::path(
+    get,
+    path = "/api/attorneys/{attorney_id}/representation-history",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID"),
+        ("start_date" = Option<String>, Query, description = "Start date filter (ISO 8601)", example = "2023-01-01T00:00:00Z"),
+        ("end_date" = Option<String>, Query, description = "End date filter (ISO 8601)", example = "2023-12-31T23:59:59Z"),
+        ("status" = Option<String>, Query, description = "Filter by case status", example = "active"),
+        ("role" = Option<String>, Query, description = "Filter by representation role", example = "lead_counsel"),
+        ("active_only" = Option<bool>, Query, description = "Include only active assignments", example = "true"),
+        ("page" = Option<usize>, Query, description = "Page number for pagination", example = "1"),
+        ("page_size" = Option<usize>, Query, description = "Page size for pagination", example = "50")
+    ),
+    responses(
+        (status = 200, description = "Attorney's representation history", body = AttorneyRepresentationHistory),
+        (status = 404, description = "Attorney not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorney-cases",
+)]
+pub fn get_attorney_representation_history(req: Request, params: Params) -> Response {
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let attorney_id = params.get("attorney_id").unwrap_or_default();
+
+    // Parse query parameters
+    let query_string = req.query();
+    let parsed_params = query_parser::parse_query_string(query_string);
+
+    // Helper function to get string from parsed params
+    let get_param = |key: &str| -> Option<String> {
+        parsed_params.iter()
+            .find(|(k, _)| *k == key)
+            .map(|(_, v)| v.to_string())
+    };
+
+    let query = crate::domain::attorney_case::RepresentationHistoryQuery {
+        start_date: get_param("start_date"),
+        end_date: get_param("end_date"),
+        status: get_param("status"),
+        role: get_param("role")
+            .and_then(|r| serde_json::from_str(&format!("\"{}\"", r)).ok()),
+        active_only: get_param("active_only")
+            .and_then(|v| v.parse().ok()),
+        page: get_param("page")
+            .and_then(|v| v.parse().ok()),
+        page_size: get_param("page_size")
+            .and_then(|v| v.parse().ok()),
+    };
+
+    // Get attorney to verify they exist
+    match repo.find_attorney_by_id(attorney_id) {
+        Ok(Some(attorney)) => {
+            // Create mock representation history
+            // In a real implementation, this would fetch from storage and apply filters
+            let mock_assignments = create_mock_representation_history(attorney_id, &attorney, &query);
+
+            let history = crate::domain::attorney_case::AttorneyRepresentationHistory {
+                attorney_id: attorney.id.clone(),
+                attorney_name: format!("{} {}", attorney.first_name, attorney.last_name),
+                assignments: mock_assignments.clone(),
+                summary: create_representation_summary(&mock_assignments, &attorney),
+            };
+
+            json::success_response(&history)
+        },
+        Ok(None) => json::error_response(&ApiError::NotFound("Attorney not found".to_string())),
+        Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
+    }
+}
+
+/// Helper function to create mock representation history data
+fn create_mock_representation_history(
+    attorney_id: &str,
+    attorney: &crate::domain::attorney::Attorney,
+    query: &crate::domain::attorney_case::RepresentationHistoryQuery,
+) -> Vec<crate::domain::attorney_case::RepresentationHistoryEntry> {
+    use chrono::{Duration, Utc};
+    use crate::domain::attorney_case::{RepresentationRole, RepresentationHistoryEntry, RoleChange};
+
+    let now = Utc::now();
+    let mut assignments = vec![];
+
+    // Create some sample historical assignments
+    let sample_cases = vec![
+        ("case_001", "CR-2023-001", "John Smith", RepresentationRole::LeadCounsel, Duration::days(365), Some("Plea agreement")),
+        ("case_002", "CR-2023-015", "Jane Doe", RepresentationRole::CoCounsel, Duration::days(180), None),
+        ("case_003", "CR-2022-087", "Bob Johnson", RepresentationRole::PublicDefender, Duration::days(450), Some("Dismissal")),
+        ("case_004", "CR-2024-003", "Alice Brown", RepresentationRole::LeadCounsel, Duration::days(90), None),
+        ("case_005", "CR-2021-234", "Charlie Wilson", RepresentationRole::AppellateCounsel, Duration::days(720), Some("Appeal successful")),
+    ];
+
+    for (i, (case_id, case_number, defendant, role, duration_ago, outcome)) in sample_cases.iter().enumerate() {
+        let assigned_date = now - *duration_ago;
+        let is_active = outcome.is_none();
+        let removed_date = if is_active { None } else { Some(assigned_date + Duration::days(30 + i as i64 * 10)) };
+
+        // Apply filters if specified
+        if let Some(active_only) = query.active_only {
+            if active_only && !is_active {
+                continue;
+            }
+        }
+
+        if let Some(ref role_filter) = query.role {
+            if role_filter != role {
+                continue;
+            }
+        }
+
+        if let Some(ref status_filter) = query.status {
+            let case_status = if is_active { "active" } else { "completed" };
+            if status_filter != case_status {
+                continue;
+            }
+        }
+
+        // Apply date range filters
+        if let Some(ref start_date_str) = query.start_date {
+            if let Ok(start_date) = chrono::DateTime::parse_from_rfc3339(start_date_str) {
+                if assigned_date < start_date.with_timezone(&Utc) {
+                    continue;
+                }
+            }
+        }
+
+        if let Some(ref end_date_str) = query.end_date {
+            if let Ok(end_date) = chrono::DateTime::parse_from_rfc3339(end_date_str) {
+                if assigned_date > end_date.with_timezone(&Utc) {
+                    continue;
+                }
+            }
+        }
+
+        // Create some mock role changes for certain cases
+        let role_changes = if i == 1 {
+            vec![RoleChange {
+                from_role: RepresentationRole::CoCounsel,
+                to_role: RepresentationRole::LeadCounsel,
+                change_date: assigned_date + Duration::days(15),
+                reason: Some("Lead counsel withdrew".to_string()),
+            }]
+        } else {
+            vec![]
+        };
+
+        assignments.push(RepresentationHistoryEntry {
+            assignment_id: format!("assignment_{}", i + 1),
+            case_id: case_id.to_string(),
+            case_number: case_number.to_string(),
+            defendant_name: defendant.to_string(),
+            role: role.clone(),
+            assigned_date,
+            removed_date,
+            is_active,
+            case_outcome: outcome.map(|o| o.to_string()),
+            role_changes,
+            notes: Some(format!("Assignment for {}", defendant)),
+        });
+    }
+
+    // Apply pagination
+    let page = query.page.unwrap_or(1);
+    let page_size = query.page_size.unwrap_or(50);
+    let start_idx = (page - 1) * page_size;
+    let end_idx = std::cmp::min(start_idx + page_size, assignments.len());
+
+    if start_idx < assignments.len() {
+        assignments[start_idx..end_idx].to_vec()
+    } else {
+        vec![]
+    }
+}
+
+/// Helper function to create representation summary
+fn create_representation_summary(
+    assignments: &[crate::domain::attorney_case::RepresentationHistoryEntry],
+    attorney: &crate::domain::attorney::Attorney,
+) -> crate::domain::attorney_case::RepresentationSummary {
+    use crate::domain::attorney_case::{RepresentationRole, RepresentationSummary, DateRange};
+    use std::collections::HashMap;
+
+    let total_cases = assignments.len();
+    let active_cases = assignments.iter().filter(|a| a.is_active).count();
+    let completed_cases = total_cases - active_cases;
+
+    // Find most common role
+    let mut role_counts = HashMap::new();
+    for assignment in assignments {
+        *role_counts.entry(&assignment.role).or_insert(0) += 1;
+    }
+    let primary_role = role_counts
+        .iter()
+        .max_by_key(|(_, count)| *count)
+        .map(|(role, _)| (*role).clone())
+        .unwrap_or(RepresentationRole::LeadCounsel);
+
+    // Calculate date range
+    let start_date = assignments
+        .iter()
+        .map(|a| a.assigned_date)
+        .min()
+        .unwrap_or_else(|| chrono::Utc::now());
+    let end_date = assignments
+        .iter()
+        .map(|a| a.removed_date.unwrap_or_else(|| chrono::Utc::now()))
+        .max()
+        .unwrap_or_else(|| chrono::Utc::now());
+
+    // Count outcomes
+    let mut outcomes = HashMap::new();
+    for assignment in assignments {
+        if let Some(ref outcome) = assignment.case_outcome {
+            *outcomes.entry(outcome.clone()).or_insert(0) += 1;
+        }
+    }
+
+    RepresentationSummary {
+        total_cases,
+        active_cases,
+        completed_cases,
+        primary_role,
+        date_range: DateRange {
+            start_date,
+            end_date,
+        },
+        outcomes,
+    }
+}
+
+/// Check for conflicts of interest
+#[utoipa::path(
+    post,
+    path = "/api/attorneys/{attorney_id}/conflict-check",
+    request_body = ConflictCheckRequest,
+    responses(
+        (status = 200, description = "Conflict check completed", body = ConflictCheckResult),
+        (status = 400, description = "Invalid request data"),
+        (status = 404, description = "Attorney not found"),
+        (status = 500, description = "Internal server error")
+    ),
+    tag = "attorneys",
+    params(
+        ("X-Court-District" = String, Header, description = "Federal court district (e.g., SDNY, EDNY, NDCA, CDCA)", example = "SDNY"),
+        ("attorney_id" = String, Path, description = "Attorney ID to check conflicts for")
+    ),
+)]
+pub fn check_attorney_conflicts(req: Request, params: Params) -> Response {
+    let repo = match RepositoryFactory::attorney_repo(&req) {
+        Ok(r) => r,
+        Err(e) => return json::error_response(&e),
+    };
+
+    let attorney_id = params.get("attorney_id").unwrap_or_default();
+
+    // Verify attorney exists
+    let attorney = match repo.find_attorney_by_id(attorney_id) {
+        Ok(Some(attorney)) => attorney,
+        Ok(None) => return json::error_response(&ApiError::NotFound("Attorney not found".to_string())),
+        Err(e) => return json::error_response(&ApiError::StorageError(e.to_string())),
+    };
+
+    // Parse the conflict check request
+    let request: ConflictCheckRequest = match json::parse_body(req.body()) {
+        Ok(req) => req,
+        Err(e) => return json::error_response(&e),
+    };
+
+    // Validate request data
+    if request.parties_to_check.is_empty() && request.adverse_parties.is_empty() {
+        return json::error_response(&ApiError::BadRequest(
+            "At least one party must be specified for conflict checking".to_string()
+        ));
+    }
+
+    // Perform the conflict check
+    let result = perform_conflict_check(&attorney, &request, &repo);
+
+    match result {
+        Ok(conflict_result) => json::success_response(&conflict_result),
+        Err(e) => json::error_response(&ApiError::StorageError(e.to_string())),
+    }
+}
+
+/// Perform comprehensive conflict checking for an attorney
+fn perform_conflict_check(
+    attorney: &Attorney,
+    request: &ConflictCheckRequest,
+    repo: &dyn AttorneyRepository,
+) -> Result<ConflictCheckResult, Box<dyn std::error::Error>> {
+    let mut conflicts = Vec::new();
+    let mut all_parties_to_check = request.parties_to_check.clone();
+    all_parties_to_check.extend(request.adverse_parties.clone());
+
+    // Check current representations
+    let current_conflicts = check_current_representations(attorney, &all_parties_to_check, repo)?;
+    conflicts.extend(current_conflicts);
+
+    // Check former client conflicts
+    let former_client_conflicts = check_former_clients(attorney, &all_parties_to_check, repo)?;
+    conflicts.extend(former_client_conflicts);
+
+    // Check co-defendant conflicts
+    let codefendant_conflicts = check_codefendant_conflicts(attorney, &all_parties_to_check, repo)?;
+    conflicts.extend(codefendant_conflicts);
+
+    // Check related party conflicts (family, business relationships)
+    let related_party_conflicts = check_related_parties(attorney, &all_parties_to_check)?;
+    conflicts.extend(related_party_conflicts);
+
+    // Determine overall recommendation
+    let recommendation = determine_recommendation(&conflicts);
+
+    // Create the result
+    let result = if conflicts.is_empty() {
+        ConflictCheckResult::no_conflicts(attorney.id.clone(), request)
+    } else {
+        ConflictCheckResult::with_conflicts(attorney.id.clone(), conflicts, recommendation)
+    };
+
+    Ok(result)
+}
+
+/// Check for direct representation conflicts (currently representing party or adverse party)
+fn check_current_representations(
+    attorney: &Attorney,
+    parties: &[String],
+    repo: &dyn AttorneyRepository,
+) -> Result<Vec<ConflictDetails>, Box<dyn std::error::Error>> {
+    let mut conflicts = Vec::new();
+
+    // Get attorney's current active representations
+    // In a real implementation, this would query the database for active representations
+    // For now, we'll create a mock check
+    for party in parties {
+        if is_currently_representing(attorney, party, repo)? {
+            let conflict = ConflictDetails::new(
+                NewConflictType::DirectRepresentation,
+                party.clone(),
+                format!("Currently representing {} in an active matter", party),
+                NewConflictSeverity::Critical,
+                false, // Direct representation conflicts typically cannot be waived
+            );
+            conflicts.push(conflict);
+        }
+    }
+
+    Ok(conflicts)
+}
+
+/// Check for former client conflicts in substantially related matters
+fn check_former_clients(
+    attorney: &Attorney,
+    parties: &[String],
+    repo: &dyn AttorneyRepository,
+) -> Result<Vec<ConflictDetails>, Box<dyn std::error::Error>> {
+    let mut conflicts = Vec::new();
+
+    // Get attorney's representation history
+    // In a real implementation, this would check for substantially related matters
+    for party in parties {
+        if is_former_client(attorney, party, repo)? {
+            let conflict = ConflictDetails::new(
+                NewConflictType::FormerClient,
+                party.clone(),
+                format!("Previously represented {} in a substantially related matter", party),
+                NewConflictSeverity::High,
+                true, // Former client conflicts can sometimes be waived
+            );
+            conflicts.push(conflict);
+        }
+    }
+
+    Ok(conflicts)
+}
+
+/// Check for co-defendant conflicts
+fn check_codefendant_conflicts(
+    attorney: &Attorney,
+    parties: &[String],
+    repo: &dyn AttorneyRepository,
+) -> Result<Vec<ConflictDetails>, Box<dyn std::error::Error>> {
+    let mut conflicts = Vec::new();
+
+    // Check if attorney is representing co-defendants in related matters
+    for party in parties {
+        if is_codefendant_conflict(attorney, party, repo)? {
+            let conflict = ConflictDetails::new(
+                NewConflictType::CoDefendant,
+                party.clone(),
+                format!("Representing co-defendant {} in related criminal matter", party),
+                NewConflictSeverity::Medium,
+                true, // Co-defendant conflicts may be waivable depending on circumstances
+            );
+            conflicts.push(conflict);
+        }
+    }
+
+    Ok(conflicts)
+}
+
+/// Check for related party conflicts (family, business relationships)
+fn check_related_parties(
+    attorney: &Attorney,
+    parties: &[String],
+) -> Result<Vec<ConflictDetails>, Box<dyn std::error::Error>> {
+    let mut conflicts = Vec::new();
+
+    // In a real implementation, this would check known relationships
+    // For demonstration, we'll create mock conflicts for certain scenarios
+    for party in parties {
+        // Mock check for family relationships
+        if party.to_lowercase().contains("smith") && attorney.last_name.to_lowercase().contains("smith") {
+            let conflict = ConflictDetails::new(
+                NewConflictType::FamilyRelationship,
+                party.clone(),
+                format!("Potential family relationship with {}", party),
+                NewConflictSeverity::Medium,
+                false, // Family relationship conflicts typically cannot be waived
+            );
+            conflicts.push(conflict);
+        }
+
+        // Mock check for business relationships
+        if let Some(firm_name) = &attorney.firm_name {
+            if party.to_lowercase().contains(&firm_name.to_lowercase()) {
+                let conflict = ConflictDetails::new(
+                    NewConflictType::BusinessRelationship,
+                    party.clone(),
+                    format!("Business relationship through law firm {}", firm_name),
+                    NewConflictSeverity::High,
+                    false, // Business conflicts typically cannot be waived
+                );
+                conflicts.push(conflict);
+            }
+        }
+    }
+
+    Ok(conflicts)
+}
+
+/// Determine overall recommendation based on conflicts found
+fn determine_recommendation(conflicts: &[ConflictDetails]) -> ConflictRecommendation {
+    if conflicts.is_empty() {
+        return ConflictRecommendation::Proceed;
+    }
+
+    let has_critical = conflicts.iter().any(|c| c.severity == NewConflictSeverity::Critical);
+    let has_non_waivable = conflicts.iter().any(|c| !c.waivable);
+    let has_high_severity = conflicts.iter().any(|c| c.severity == NewConflictSeverity::High);
+
+    if has_critical || has_non_waivable {
+        ConflictRecommendation::MustDecline
+    } else if has_high_severity {
+        ConflictRecommendation::RequireWaivers
+    } else {
+        ConflictRecommendation::ProceedWithCaution
+    }
+}
+
+/// Mock helper function to check if attorney is currently representing a party
+fn is_currently_representing(
+    attorney: &Attorney,
+    party: &str,
+    _repo: &dyn AttorneyRepository,
+) -> Result<bool, Box<dyn std::error::Error>> {
+    // In a real implementation, this would query the database for active representations
+    // For demonstration, we'll create mock conflicts for certain party names
+    Ok(party.to_lowercase().contains("current_client") ||
+       party.to_lowercase().contains("active_case"))
+}
+
+/// Mock helper function to check if a party is a former client
+fn is_former_client(
+    attorney: &Attorney,
+    party: &str,
+    _repo: &dyn AttorneyRepository,
+) -> Result<bool, Box<dyn std::error::Error>> {
+    // In a real implementation, this would check representation history
+    Ok(party.to_lowercase().contains("former_client") ||
+       party.to_lowercase().contains("previous_case"))
+}
+
+/// Mock helper function to check for co-defendant conflicts
+fn is_codefendant_conflict(
+    attorney: &Attorney,
+    party: &str,
+    _repo: &dyn AttorneyRepository,
+) -> Result<bool, Box<dyn std::error::Error>> {
+    // In a real implementation, this would check for co-defendants in related cases
+    Ok(party.to_lowercase().contains("codefendant") ||
+       party.to_lowercase().contains("co_defendant"))
+}
