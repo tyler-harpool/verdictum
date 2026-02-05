@@ -3,7 +3,7 @@
 //! These handlers wrap the existing attorney handlers but extract tenant
 //! information from the URL path instead of headers.
 
-use spin_sdk::http::{IntoResponse, Params, Request, Response};
+use spin_sdk::http::{Params, Request, Response};
 use crate::utils::json_response as json;
 
 /// Helper to create a new request with district header from URL parameter

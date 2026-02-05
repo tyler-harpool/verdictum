@@ -330,7 +330,7 @@ impl FeatureRepository for UnifiedConfigFeatureRepository {
         Ok(Vec::new())
     }
 
-    async fn get_districts_with_feature(&self, feature: &str) -> Result<Vec<String>, ApiError> {
+    async fn get_districts_with_feature(&self, _feature: &str) -> Result<Vec<String>, ApiError> {
         // This would require scanning all districts
         // For now, return empty list
         Ok(Vec::new())

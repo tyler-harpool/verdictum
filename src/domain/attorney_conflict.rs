@@ -206,7 +206,7 @@ impl ConflictCheckRequest {
 
 impl ConflictCheckResult {
     /// Create a new conflict check result with no conflicts
-    pub fn no_conflicts(attorney_id: String, request: &ConflictCheckRequest) -> Self {
+    pub fn no_conflicts(attorney_id: String, _request: &ConflictCheckRequest) -> Self {
         Self {
             check_id: Uuid::new_v4().to_string(),
             attorney_id,

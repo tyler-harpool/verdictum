@@ -5,7 +5,6 @@
 
 use spin_sdk::http::Response;
 use spin_sdk::http::{IntoResponse, Params, Request};
-use crate::utils::json_response;
 
 /// Helper to create a new request with district header from URL parameter
 fn add_district_header(req: Request, params: &Params) -> Result<Request, crate::error::ApiError> {

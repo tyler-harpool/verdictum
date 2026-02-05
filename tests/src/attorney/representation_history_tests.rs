@@ -280,6 +280,12 @@ fn test_get_representation_history_assignment_structure() {
 fn test_get_representation_history_nonexistent_attorney() {
     let _store = key_value::Store::open("district9");
 
+    // Use a dynamically generated fake ID to ensure it doesn't exist
+    let fake_id = format!("fake-{}", std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_millis());
+
     let headers = Headers::new();
     headers
         .append(&"X-Court-District".to_string(), b"district9")
@@ -288,22 +294,23 @@ fn test_get_representation_history_nonexistent_attorney() {
     let request = OutgoingRequest::new(headers);
     request.set_method(&Method::Get).unwrap();
     request
-        .set_path_with_query(Some(
-            "/api/attorneys/00000000-0000-0000-0000-000000000000/representation-history",
-        ))
+        .set_path_with_query(Some(&format!(
+            "/api/attorneys/{}/representation-history",
+            fake_id
+        )))
         .unwrap();
 
     let response = spin_test_sdk::perform_request(request);
 
-    // Handler returns 404 when attorney doesn't exist
+    // Handler should return 404 when attorney doesn't exist
     assert_eq!(response.status(), 404);
 
     let body = response.body_as_string().unwrap_or_default();
     if !body.is_empty() {
-        if let Ok(body_json) = serde_json::from_str::<Value>(&body) {
-            assert!(body_json["error"].is_string());
-            assert!(body_json["error"].as_str().unwrap().contains("not found"));
-        }
+        assert!(
+            body.contains("not found") || body.contains("NotFound"),
+            "Error message should indicate attorney not found"
+        );
     }
 }
 

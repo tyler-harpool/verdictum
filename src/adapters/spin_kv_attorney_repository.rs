@@ -137,7 +137,7 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
         self.list_with_prefix("attorney:")
     }
 
-    fn update_attorney(&self, mut attorney: Attorney) -> Result<Attorney> {
+    fn update_attorney(&self, attorney: Attorney) -> Result<Attorney> {
         if attorney.id.is_empty() {
             return Err(anyhow::anyhow!("Cannot update attorney without ID"));
         }

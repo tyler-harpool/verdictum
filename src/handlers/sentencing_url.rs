@@ -4,7 +4,7 @@
 //! and add it as a header before calling the original sentencing handlers.
 
 use crate::utils::json_response as json;
-use spin_sdk::http::{IntoResponse, Params, Request, Response};
+use spin_sdk::http::{Params, Request, Response};
 use crate::error::ApiError;
 
 /// Helper function to extract district from URL params and add as header

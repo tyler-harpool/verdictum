@@ -4,7 +4,7 @@
 //! extensions, and compliance reporting in the federal court system.
 
 use crate::utils::repository_factory::RepositoryFactory;
-use crate::utils::json_response as json;use crate::domain::deadline::{
+use crate::domain::deadline::{
     Deadline, DeadlineType, DeadlineStatus, ExtensionRequest,
     ExtensionStatus, DeadlineCalculator, DeadlineMonitor, FederalRule
 };

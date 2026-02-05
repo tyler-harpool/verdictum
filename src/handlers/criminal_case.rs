@@ -7,7 +7,6 @@ use crate::domain::criminal_case::{CaseStatus, CasePriority, CrimeType, Criminal
 use crate::error::{ApiError, ApiResult};
 use crate::ports::case_repository::{CaseRepository, CaseQuery, CaseQueryRepository};
 use crate::utils::repository_factory::RepositoryFactory;
-use crate::utils::json_response as json;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use spin_sdk::http::{IntoResponse, Params, Request, ResponseBuilder};
