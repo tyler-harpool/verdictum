@@ -255,17 +255,18 @@ pub fn validate_tenant_id(req: &Request) -> Result<String, String> {
     let tenant_id = get_tenant_id(req);
 
     // Check if tenant was actually found
-    if tenant_id.is_empty() || tenant_id == "" {
+    if tenant_id.is_empty() || tenant_id == "TENANT_NOT_SPECIFIED" {
         return Err("Missing required header: X-Court-District or X-Tenant-ID".to_string());
     }
 
     // Check if it's a valid district
     let store_name = get_store_name(&tenant_id);
-    if store_name.starts_with("TENANT_NOT_SPECIFIED") {
+    let store_lower = store_name.to_lowercase();
+    if store_lower == "tenant_not_specified" || store_lower.starts_with("tenant_not_specified") {
         return Err("Missing required header: X-Court-District or X-Tenant-ID".to_string());
     }
 
-    if store_name.starts_with("UNKNOWN_TENANT_") {
+    if store_name.starts_with("UNKNOWN_TENANT_") || store_lower.starts_with("unknown_tenant_") {
         return Err(format!("Invalid district: {}", tenant_id));
     }
 

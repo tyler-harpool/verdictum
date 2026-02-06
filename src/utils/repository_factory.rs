@@ -60,6 +60,7 @@ use crate::adapters::{
     spin_kv_docket_repository::SpinKvDocketRepository,
     spin_kv_document_repository::SpinKvDocumentRepository,
     spin_kv_judge_repository::SpinKvJudgeRepository,
+    spin_kv_rules_repository::SpinKvRulesRepository,
     spin_kv_sentencing_repository::SpinKvSentencingRepository,
     unified_config_feature_repository::UnifiedConfigFeatureRepository,
 };
@@ -194,6 +195,22 @@ impl RepositoryFactory {
             .map_err(|e| ApiError::BadRequest(e))?;
         let store_name = tenant::get_store_name(&tenant_id);
         Ok(SpinKvJudgeRepository::with_store(store_name))
+    }
+
+    /// Get tenant-specific rules repository
+    pub fn rules_repo(req: &Request) -> Result<SpinKvRulesRepository, ApiError> {
+        let tenant_id = tenant::get_tenant_id(req);
+        let store_name = tenant::get_store_name(&tenant_id);
+        Self::validate_tenant(&store_name)?;
+        Ok(SpinKvRulesRepository::with_store(store_name))
+    }
+
+    /// Creates a rules repository with validation
+    pub fn rules_repo_validated(req: &Request) -> Result<SpinKvRulesRepository, ApiError> {
+        let tenant_id = tenant::validate_tenant_id(req)
+            .map_err(|e| ApiError::BadRequest(e))?;
+        let store_name = tenant::get_store_name(&tenant_id);
+        Ok(SpinKvRulesRepository::with_store(store_name))
     }
 
     /// Get tenant-specific sentencing repository

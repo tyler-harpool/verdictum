@@ -75,11 +75,12 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.get("/api/cases", handlers::criminal_case::search_cases);
     router.get("/api/cases/statistics", handlers::criminal_case::get_case_statistics);
     router.get("/api/cases/by-number/:case_number", handlers::criminal_case::get_case_by_number);
-    router.get("/api/cases/by-judge/:judge", handlers::criminal_case::get_cases_by_judge);
+    router.get("/api/cases/by-judge/:judge_id", handlers::criminal_case::get_cases_by_judge);
     router.get("/api/cases/count-by-status/:status", handlers::criminal_case::count_by_status);
     router.get("/api/cases/:id", handlers::criminal_case::get_case_by_id);
     router.post("/api/cases", handlers::criminal_case::create_case);
     router.post("/api/cases/:id/defendants", handlers::criminal_case::add_defendant);
+    router.post("/api/cases/:id/defendants/:defendant_id/charges", handlers::criminal_case::add_charge);
     router.post("/api/cases/:id/evidence", handlers::criminal_case::add_evidence);
     router.post("/api/cases/:id/notes", handlers::criminal_case::add_note);
     router.post("/api/cases/:id/plea", handlers::criminal_case::enter_plea);
@@ -90,15 +91,37 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.patch("/api/cases/:id/priority", handlers::criminal_case::update_case_priority);
     router.delete("/api/cases/:id", handlers::criminal_case::delete_case);
 
+    // Evidence custody transfers (Phase 2)
+    router.post("/api/cases/:id/evidence/:evidence_id/custody", handlers::criminal_case::add_custody_transfer);
+
+    // Docket entries on cases (Phase 1)
+    router.post("/api/cases/:id/docket", handlers::criminal_case::add_docket_entry);
+    router.get("/api/cases/:id/docket", handlers::criminal_case::get_docket_entries);
+
+    // Sealed case management (Phase 3)
+    router.post("/api/cases/:id/seal", handlers::criminal_case::seal_case);
+    router.post("/api/cases/:id/unseal", handlers::criminal_case::unseal_case);
+
+    // Speedy trial clock on cases (Phase 4)
+    router.post("/api/cases/:id/speedy-trial/start", handlers::criminal_case::start_speedy_trial);
+    router.post("/api/cases/:id/speedy-trial/exclude", handlers::criminal_case::add_case_excludable_delay);
+    router.get("/api/cases/:id/speedy-trial", handlers::criminal_case::get_case_speedy_trial);
+
+    // CVRA victim management (Phase 5)
+    router.post("/api/cases/:id/victims", handlers::criminal_case::add_victim);
+    router.get("/api/cases/:id/victims", handlers::criminal_case::get_victims);
+    router.post("/api/cases/:id/victims/:victim_id/notifications", handlers::criminal_case::send_victim_notification);
+
     // Criminal Case API endpoints (URL-based - NEW)
     router.get("/api/courts/:district/cases", handlers::criminal_case_url::search_cases);
     router.get("/api/courts/:district/cases/statistics", handlers::criminal_case_url::get_case_statistics);
     router.get("/api/courts/:district/cases/by-number/:case_number", handlers::criminal_case_url::get_case_by_number);
-    router.get("/api/courts/:district/cases/by-judge/:judge", handlers::criminal_case_url::get_cases_by_judge);
+    router.get("/api/courts/:district/cases/by-judge/:judge_id", handlers::criminal_case_url::get_cases_by_judge);
     router.get("/api/courts/:district/cases/count-by-status/:status", handlers::criminal_case_url::count_by_status);
     router.get("/api/courts/:district/cases/:id", handlers::criminal_case_url::get_case_by_id);
     router.post("/api/courts/:district/cases", handlers::criminal_case_url::create_case);
     router.post("/api/courts/:district/cases/:id/defendants", handlers::criminal_case_url::add_defendant);
+    router.post("/api/courts/:district/cases/:id/defendants/:defendant_id/charges", handlers::criminal_case_url::add_charge);
     router.post("/api/courts/:district/cases/:id/evidence", handlers::criminal_case_url::add_evidence);
     router.post("/api/courts/:district/cases/:id/notes", handlers::criminal_case_url::add_note);
     router.post("/api/courts/:district/cases/:id/plea", handlers::criminal_case_url::enter_plea);
@@ -108,6 +131,27 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.patch("/api/courts/:district/cases/:id/status", handlers::criminal_case_url::update_case_status);
     router.patch("/api/courts/:district/cases/:id/priority", handlers::criminal_case_url::update_case_priority);
     router.delete("/api/courts/:district/cases/:id", handlers::criminal_case_url::delete_case);
+
+    // Evidence custody transfers - URL-based (Phase 2)
+    router.post("/api/courts/:district/cases/:id/evidence/:evidence_id/custody", handlers::criminal_case_url::add_custody_transfer);
+
+    // Docket entries on cases - URL-based (Phase 1)
+    router.post("/api/courts/:district/cases/:id/docket", handlers::criminal_case_url::add_docket_entry);
+    router.get("/api/courts/:district/cases/:id/docket", handlers::criminal_case_url::get_docket_entries);
+
+    // Sealed case management - URL-based (Phase 3)
+    router.post("/api/courts/:district/cases/:id/seal", handlers::criminal_case_url::seal_case);
+    router.post("/api/courts/:district/cases/:id/unseal", handlers::criminal_case_url::unseal_case);
+
+    // Speedy trial clock on cases - URL-based (Phase 4)
+    router.post("/api/courts/:district/cases/:id/speedy-trial/start", handlers::criminal_case_url::start_speedy_trial);
+    router.post("/api/courts/:district/cases/:id/speedy-trial/exclude", handlers::criminal_case_url::add_case_excludable_delay);
+    router.get("/api/courts/:district/cases/:id/speedy-trial", handlers::criminal_case_url::get_case_speedy_trial);
+
+    // CVRA victim management - URL-based (Phase 5)
+    router.post("/api/courts/:district/cases/:id/victims", handlers::criminal_case_url::add_victim);
+    router.get("/api/courts/:district/cases/:id/victims", handlers::criminal_case_url::get_victims);
+    router.post("/api/courts/:district/cases/:id/victims/:victim_id/notifications", handlers::criminal_case_url::send_victim_notification);
 
     // Judge Management API endpoints
     router.post("/api/judges", handlers::judge::create_judge);
@@ -148,6 +192,28 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     router.post("/api/courts/:district/judges/:judge_id/recusals", handlers::judge_url::file_recusal);
     router.patch("/api/courts/:district/recusals/:recusal_id/ruling", handlers::judge_url::rule_on_recusal);
     router.get("/api/courts/:district/recusals/pending", handlers::judge_url::get_pending_recusals);
+
+    // Rules Engine API endpoints (Header-based)
+    router.post("/api/rules", handlers::rules::create_rule);
+    router.get("/api/rules", handlers::rules::list_rules);
+    router.get("/api/rules/category/:category", handlers::rules::get_rules_by_category);
+    router.get("/api/rules/trigger/:trigger", handlers::rules::get_rules_by_trigger);
+    router.get("/api/rules/jurisdiction/:jurisdiction", handlers::rules::get_active_rules_for_jurisdiction);
+    router.post("/api/rules/evaluate", handlers::rules::evaluate_rules);
+    router.get("/api/rules/:id", handlers::rules::get_rule);
+    router.put("/api/rules/:id", handlers::rules::update_rule);
+    router.delete("/api/rules/:id", handlers::rules::delete_rule);
+
+    // Rules Engine API endpoints (URL-based)
+    router.post("/api/courts/:district/rules", handlers::rules_url::create_rule);
+    router.get("/api/courts/:district/rules", handlers::rules_url::list_rules);
+    router.get("/api/courts/:district/rules/category/:category", handlers::rules_url::get_rules_by_category);
+    router.get("/api/courts/:district/rules/trigger/:trigger", handlers::rules_url::get_rules_by_trigger);
+    router.get("/api/courts/:district/rules/jurisdiction/:jurisdiction", handlers::rules_url::get_active_rules_for_jurisdiction);
+    router.post("/api/courts/:district/rules/evaluate", handlers::rules_url::evaluate_rules);
+    router.get("/api/courts/:district/rules/:id", handlers::rules_url::get_rule);
+    router.put("/api/courts/:district/rules/:id", handlers::rules_url::update_rule);
+    router.delete("/api/courts/:district/rules/:id", handlers::rules_url::delete_rule);
 
     // Docket Management API endpoints
     router.post("/api/docket/entries", handlers::docket::create_docket_entry);
@@ -755,6 +821,16 @@ async fn handle_spin_todo_api(req: Request) -> anyhow::Result<impl IntoResponse>
     // Signature Management endpoints
     router.post("/api/signatures", handlers::pdf_hexagonal::store_signature);
     router.get("/api/signatures/:judge_id", handlers::pdf_hexagonal::get_signature);
+
+    // Filing Pipeline API endpoints (Header-based)
+    router.get("/api/filings/jurisdictions", handlers::filing::list_jurisdictions);
+    router.post("/api/filings/validate", handlers::filing::validate_filing);
+    router.post("/api/filings", handlers::filing::submit_filing);
+
+    // Filing Pipeline API endpoints (URL-based)
+    router.get("/api/courts/:district/filings/jurisdictions", handlers::filing_url::list_jurisdictions);
+    router.post("/api/courts/:district/filings/validate", handlers::filing_url::validate_filing);
+    router.post("/api/courts/:district/filings", handlers::filing_url::submit_filing);
 
     // Documentation endpoints
     router.get(

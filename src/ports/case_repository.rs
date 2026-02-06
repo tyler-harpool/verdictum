@@ -27,8 +27,8 @@ pub trait CaseRepository {
     /// Find cases by status
     fn find_by_status(&self, status: CaseStatus) -> Result<Vec<CriminalCase>>;
 
-    /// Find cases by assigned judge
-    fn find_by_judge(&self, judge: &str) -> Result<Vec<CriminalCase>>;
+    /// Find cases by assigned judge ID
+    fn find_by_judge(&self, judge_id: Uuid) -> Result<Vec<CriminalCase>>;
 
     /// Delete a case (returns true if case existed)
     fn delete(&self, id: Uuid) -> Result<bool>;
@@ -42,7 +42,7 @@ pub trait CaseRepository {
 pub struct CaseQuery {
     pub status: Option<CaseStatus>,
     pub priority: Option<CasePriority>,
-    pub judge: Option<String>,
+    pub judge_id: Option<Uuid>,
     pub is_active: Option<bool>,
     pub offset: usize,
     pub limit: usize,

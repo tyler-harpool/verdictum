@@ -73,7 +73,7 @@ pub struct ConflictOfInterest {
     pub party_name: Option<String>,
     pub law_firm: Option<String>,
     pub corporation: Option<String>,
-    pub conflict_type: ConflictType,
+    pub conflict_type: JudgeConflictType,
     pub start_date: DateTime<Utc>,
     pub end_date: Option<DateTime<Utc>>,
     pub notes: String,
@@ -81,7 +81,7 @@ pub struct ConflictOfInterest {
 
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
-pub enum ConflictType {
+pub enum JudgeConflictType {
     FinancialInterest,
     PriorRepresentation,
     FamilyRelationship,

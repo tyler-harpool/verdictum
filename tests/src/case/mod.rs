@@ -15,3 +15,10 @@ pub mod motions;
 
 // Search and query operations
 pub mod search_cases;
+
+// Domain enhancement features
+pub mod docket_entries;
+pub mod evidence;
+pub mod sealed_cases;
+pub mod speedy_trial;
+pub mod victims;

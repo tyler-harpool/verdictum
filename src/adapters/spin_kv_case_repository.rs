@@ -89,11 +89,11 @@ impl CaseRepository for SpinKvCaseRepository {
         Ok(cases.into_iter().filter(|c| c.status == status).collect())
     }
 
-    fn find_by_judge(&self, judge: &str) -> Result<Vec<CriminalCase>> {
+    fn find_by_judge(&self, judge_id: Uuid) -> Result<Vec<CriminalCase>> {
         let cases = self.find_all_cases()?;
         Ok(cases
             .into_iter()
-            .filter(|c| c.assigned_judge.to_lowercase() == judge.to_lowercase())
+            .filter(|c| c.assigned_judge_id == Some(judge_id))
             .collect())
     }
 
@@ -138,8 +138,8 @@ impl CaseQueryRepository for SpinKvCaseRepository {
             cases.retain(|c| c.priority == priority);
         }
 
-        if let Some(judge) = query.judge {
-            cases.retain(|c| c.assigned_judge.to_lowercase().contains(&judge.to_lowercase()));
+        if let Some(judge_id) = query.judge_id {
+            cases.retain(|c| c.assigned_judge_id == Some(judge_id));
         }
 
         if let Some(is_active) = query.is_active {
@@ -170,7 +170,7 @@ impl CaseQueryRepository for SpinKvCaseRepository {
             open_cases: cases.iter().filter(|c| matches!(c.status, CaseStatus::Filed | CaseStatus::Arraigned)).count(),
             under_investigation: cases.iter().filter(|c| matches!(c.status, CaseStatus::Discovery | CaseStatus::PretrialMotions)).count(),
             closed_cases: cases.iter().filter(|c| matches!(c.status, CaseStatus::Sentenced | CaseStatus::Dismissed)).count(),
-            cold_cases: 0, // No longer applicable in federal court context
+            cold_cases: 0,
             critical_priority: cases.iter().filter(|c| c.priority == CasePriority::Critical).count(),
             high_priority: cases.iter().filter(|c| c.priority == CasePriority::High).count(),
         };

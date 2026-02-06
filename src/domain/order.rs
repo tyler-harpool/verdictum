@@ -7,6 +7,9 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
+// Re-export common types so existing import paths continue to work
+pub use super::common::{ElectronicSignature, ServiceMethod, ServiceStatus};
+
 /// Represents a judicial order in the system
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct JudicialOrder {
@@ -66,16 +69,7 @@ pub enum OrderStatus {
     Expired,
 }
 
-/// Electronic signature information
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub struct ElectronicSignature {
-    pub judge_id: String,
-    pub judge_name: String,
-    pub signature_hash: String,
-    pub signed_at: DateTime<Utc>,
-    pub certificate_id: String,
-    pub ip_address: String,
-}
+// ElectronicSignature is imported from common module
 
 /// Service record for an order
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
@@ -89,26 +83,7 @@ pub struct ServiceRecord {
     pub status: ServiceStatus,
 }
 
-/// Method of service
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ServiceMethod {
-    ElectronicFiling,
-    PersonalService,
-    CertifiedMail,
-    RegularMail,
-    Publication,
-    Other(String),
-}
-
-/// Status of service
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ServiceStatus {
-    Pending,
-    Served,
-    Failed,
-    Returned,
-    Waived,
-}
+// ServiceMethod and ServiceStatus are imported from common module
 
 /// Metadata for orders
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]

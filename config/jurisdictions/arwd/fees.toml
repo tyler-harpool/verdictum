@@ -1,0 +1,146 @@
+# ARWD (Western District of Arkansas) Fee Schedule
+#
+# Court fees for the Western District of Arkansas.
+# Based on 28 U.S.C. 1914 and the Judicial Conference fee schedule.
+# Updated for FY2026.
+
+[metadata]
+jurisdiction_id = "arwd"
+effective_date = "2025-01-01"
+source = "28 U.S.C. 1914; Judicial Conference Fee Schedule"
+
+# --- Civil Filing Fees ---
+
+[[fees]]
+fee_id = "civil-complaint"
+category = "civil_filing"
+description = "Filing a civil action (complaint)"
+amount = 405.00
+statute = "28 U.S.C. 1914(a)"
+waivable = true
+waiver_form = "AO 240"
+
+[[fees]]
+fee_id = "civil-appeal"
+category = "civil_filing"
+description = "Filing a notice of appeal in a civil case"
+amount = 605.00
+statute = "28 U.S.C. 1913"
+waivable = true
+waiver_form = "AO 240"
+
+[[fees]]
+fee_id = "civil-misc-action"
+category = "civil_filing"
+description = "Filing a miscellaneous civil action"
+amount = 52.00
+statute = "28 U.S.C. 1914"
+waivable = false
+
+# --- Criminal Filing Fees ---
+
+[[fees]]
+fee_id = "criminal-appeal"
+category = "criminal_filing"
+description = "Filing a notice of appeal in a criminal case"
+amount = 305.00
+statute = "28 U.S.C. 1917"
+waivable = true
+waiver_form = "CJA 23"
+
+# --- Administrative Fees ---
+
+[[fees]]
+fee_id = "search-records"
+category = "administrative"
+description = "Search of court records (per name or item searched)"
+amount = 32.00
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "certification"
+category = "administrative"
+description = "Certification of any document"
+amount = 11.00
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "exemplification"
+category = "administrative"
+description = "Exemplification of any document"
+amount = 23.00
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "copy-per-page"
+category = "administrative"
+description = "Reproduction of any document (per page)"
+amount = 0.50
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "pacer-per-page"
+category = "administrative"
+description = "PACER access fee (per page)"
+amount = 0.10
+statute = "E-Government Act of 2002"
+waivable = false
+cap = 3.00
+cap_description = "Cap of $3.00 per document"
+
+# --- Pro Hac Vice & Admission Fees ---
+
+[[fees]]
+fee_id = "bar-admission"
+category = "admission"
+description = "Admission to the bar of this court"
+amount = 225.00
+statute = "ARWD Local Rule 83.5"
+waivable = false
+
+[[fees]]
+fee_id = "pro-hac-vice"
+category = "admission"
+description = "Pro hac vice admission"
+amount = 100.00
+statute = "ARWD Local Rule 83.5(d)"
+waivable = false
+
+# --- Miscellaneous Fees ---
+
+[[fees]]
+fee_id = "habeas-corpus"
+category = "habeas"
+description = "Filing a petition for habeas corpus"
+amount = 5.00
+statute = "28 U.S.C. 1914(a)"
+waivable = true
+waiver_form = "AO 240"
+
+[[fees]]
+fee_id = "registered-mail"
+category = "administrative"
+description = "Collection made by registered or certified mail"
+amount = 7.00
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "returned-check"
+category = "administrative"
+description = "Fee for returned check"
+amount = 53.00
+statute = "Judicial Conference Fee Schedule"
+waivable = false
+
+[[fees]]
+fee_id = "electronic-transcript"
+category = "administrative"
+description = "Electronic public access to transcripts (per page)"
+amount = 0.10
+statute = "Judicial Conference Fee Schedule"
+waivable = false

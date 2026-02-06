@@ -14,7 +14,6 @@ use crate::domain::attorney::{
 };
 use crate::domain::attorney_conflict::{
     ConflictCheckRequest, ConflictCheckResult, ConflictDetails, ConflictRecommendation,
-    ConflictType as NewConflictType, ConflictSeverity as NewConflictSeverity
 };
 use crate::domain::attorney_case::{
     AssignAttorneyRequest, AttorneyCaseAssignment, AttorneyCaseLoad, RemoveAttorneyRequest,
@@ -3074,10 +3073,10 @@ fn check_current_representations(
     for party in parties {
         if is_currently_representing(attorney, party, repo)? {
             let conflict = ConflictDetails::new(
-                NewConflictType::DirectRepresentation,
+                ConflictType::DirectRepresentation,
                 party.clone(),
                 format!("Currently representing {} in an active matter", party),
-                NewConflictSeverity::Critical,
+                ConflictSeverity::Critical,
                 false, // Direct representation conflicts typically cannot be waived
             );
             conflicts.push(conflict);
@@ -3100,10 +3099,10 @@ fn check_former_clients(
     for party in parties {
         if is_former_client(attorney, party, repo)? {
             let conflict = ConflictDetails::new(
-                NewConflictType::FormerClient,
+                ConflictType::FormerClient,
                 party.clone(),
                 format!("Previously represented {} in a substantially related matter", party),
-                NewConflictSeverity::High,
+                ConflictSeverity::High,
                 true, // Former client conflicts can sometimes be waived
             );
             conflicts.push(conflict);
@@ -3125,10 +3124,10 @@ fn check_codefendant_conflicts(
     for party in parties {
         if is_codefendant_conflict(attorney, party, repo)? {
             let conflict = ConflictDetails::new(
-                NewConflictType::CoDefendant,
+                ConflictType::CoDefendant,
                 party.clone(),
                 format!("Representing co-defendant {} in related criminal matter", party),
-                NewConflictSeverity::Medium,
+                ConflictSeverity::Medium,
                 true, // Co-defendant conflicts may be waivable depending on circumstances
             );
             conflicts.push(conflict);
@@ -3151,10 +3150,10 @@ fn check_related_parties(
         // Mock check for family relationships
         if party.to_lowercase().contains("smith") && attorney.last_name.to_lowercase().contains("smith") {
             let conflict = ConflictDetails::new(
-                NewConflictType::FamilyRelationship,
+                ConflictType::FamilyRelationship,
                 party.clone(),
                 format!("Potential family relationship with {}", party),
-                NewConflictSeverity::Medium,
+                ConflictSeverity::Medium,
                 false, // Family relationship conflicts typically cannot be waived
             );
             conflicts.push(conflict);
@@ -3164,10 +3163,10 @@ fn check_related_parties(
         if let Some(firm_name) = &attorney.firm_name {
             if party.to_lowercase().contains(&firm_name.to_lowercase()) {
                 let conflict = ConflictDetails::new(
-                    NewConflictType::BusinessRelationship,
+                    ConflictType::BusinessRelationship,
                     party.clone(),
                     format!("Business relationship through law firm {}", firm_name),
-                    NewConflictSeverity::High,
+                    ConflictSeverity::High,
                     false, // Business conflicts typically cannot be waived
                 );
                 conflicts.push(conflict);
@@ -3184,9 +3183,9 @@ fn determine_recommendation(conflicts: &[ConflictDetails]) -> ConflictRecommenda
         return ConflictRecommendation::Proceed;
     }
 
-    let has_critical = conflicts.iter().any(|c| c.severity == NewConflictSeverity::Critical);
+    let has_critical = conflicts.iter().any(|c| c.severity == ConflictSeverity::Critical);
     let has_non_waivable = conflicts.iter().any(|c| !c.waivable);
-    let has_high_severity = conflicts.iter().any(|c| c.severity == NewConflictSeverity::High);
+    let has_high_severity = conflicts.iter().any(|c| c.severity == ConflictSeverity::High);
 
     if has_critical || has_non_waivable {
         ConflictRecommendation::MustDecline

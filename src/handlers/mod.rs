@@ -46,9 +46,17 @@ pub(crate) mod order;
 pub(crate) mod order_url;
 /// PDF generation handlers using hexagonal architecture
 pub(crate) mod pdf_hexagonal;
+/// Rules engine management handlers
+pub(crate) mod rules;
+/// URL-based rules engine handlers (for migration)
+pub(crate) mod rules_url;
 /// Federal sentencing management handlers
 pub(crate) mod sentencing;
 /// URL-based sentencing handlers (for migration)
 pub(crate) mod sentencing_url;
 /// ToDo item CRUD operation handlers
 pub(crate) mod todo;
+/// Filing pipeline handlers
+pub(crate) mod filing;
+/// URL-based filing pipeline handlers (for migration)
+pub(crate) mod filing_url;

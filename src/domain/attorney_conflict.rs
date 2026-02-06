@@ -8,6 +8,9 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
+// Re-export common types so existing import paths continue to work
+pub use super::common::{ConflictSeverity, ConflictType};
+
 /// Request to check for conflicts of interest
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct ConflictCheckRequest {
@@ -42,32 +45,7 @@ pub struct ConflictCheckResult {
     pub notes: Option<String>,
 }
 
-/// Types of conflicts that can be identified
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema, PartialEq)]
-pub enum ConflictType {
-    /// Currently representing the party or an adverse party
-    DirectRepresentation,
-    /// Previously represented the party and matter is substantially related
-    FormerClient,
-    /// Representing a co-defendant in same or related matter
-    CoDefendant,
-    /// Personal interest in the outcome of the matter
-    PersonalInterest,
-    /// Financial interest in a party or the outcome
-    FinancialInterest,
-    /// Family relationship with a party
-    FamilyRelationship,
-    /// Business relationship with a party
-    BusinessRelationship,
-    /// Attorney's law firm represents an adverse party
-    FirmConflict,
-    /// Positional conflict - taking inconsistent legal positions
-    PositionalConflict,
-    /// Issue conflict - working on matters with conflicting interests
-    IssueConflict,
-    /// Other type of conflict
-    Other(String),
-}
+// ConflictType is imported from common module
 
 /// Detailed information about a specific conflict
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
@@ -100,20 +78,7 @@ pub struct ConflictDetails {
     pub additional_details: Option<String>,
 }
 
-/// Severity levels for conflicts of interest
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema, PartialEq)]
-pub enum ConflictSeverity {
-    /// No actual conflict, but flagged for review
-    Informational,
-    /// Minor conflict that can typically be waived
-    Low,
-    /// Moderate conflict requiring careful consideration
-    Medium,
-    /// Serious conflict that should generally be avoided
-    High,
-    /// Severe conflict that cannot be waived
-    Critical,
-}
+// ConflictSeverity is imported from common module
 
 /// Overall recommendation based on conflict check results
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema, PartialEq)]
@@ -246,7 +211,7 @@ impl ConflictCheckResult {
     pub fn max_severity(&self) -> Option<ConflictSeverity> {
         self.conflicts.iter()
             .map(|c| &c.severity)
-            .max_by(|a, b| conflict_severity_order(a).cmp(&conflict_severity_order(b)))
+            .max_by(|a, b| a.order().cmp(&b.order()))
             .cloned()
     }
 
@@ -301,45 +266,7 @@ impl ConflictDetails {
     }
 }
 
-/// Helper function to determine conflict severity ordering for comparison
-fn conflict_severity_order(severity: &ConflictSeverity) -> u8 {
-    match severity {
-        ConflictSeverity::Informational => 0,
-        ConflictSeverity::Low => 1,
-        ConflictSeverity::Medium => 2,
-        ConflictSeverity::High => 3,
-        ConflictSeverity::Critical => 4,
-    }
-}
-
-impl ConflictType {
-    /// Check if this conflict type typically requires special handling
-    pub fn requires_special_handling(&self) -> bool {
-        matches!(self,
-            ConflictType::DirectRepresentation |
-            ConflictType::FormerClient |
-            ConflictType::FirmConflict |
-            ConflictType::PositionalConflict
-        )
-    }
-
-    /// Get a human-readable description of the conflict type
-    pub fn description(&self) -> &str {
-        match self {
-            ConflictType::DirectRepresentation => "Currently representing party or adverse party",
-            ConflictType::FormerClient => "Previously represented party in substantially related matter",
-            ConflictType::CoDefendant => "Representing co-defendant in same or related matter",
-            ConflictType::PersonalInterest => "Personal interest in the outcome",
-            ConflictType::FinancialInterest => "Financial interest in party or outcome",
-            ConflictType::FamilyRelationship => "Family relationship with party",
-            ConflictType::BusinessRelationship => "Business relationship with party",
-            ConflictType::FirmConflict => "Law firm represents adverse party",
-            ConflictType::PositionalConflict => "Taking inconsistent legal positions",
-            ConflictType::IssueConflict => "Working on matters with conflicting interests",
-            ConflictType::Other(_) => "Other type of conflict",
-        }
-    }
-}
+// conflict_severity_order and ConflictType methods are now in common module
 
 #[cfg(test)]
 mod tests {
@@ -396,14 +323,14 @@ mod tests {
 
     #[test]
     fn test_conflict_severity_ordering() {
-        assert!(conflict_severity_order(&ConflictSeverity::Critical) >
-                conflict_severity_order(&ConflictSeverity::High));
-        assert!(conflict_severity_order(&ConflictSeverity::High) >
-                conflict_severity_order(&ConflictSeverity::Medium));
-        assert!(conflict_severity_order(&ConflictSeverity::Medium) >
-                conflict_severity_order(&ConflictSeverity::Low));
-        assert!(conflict_severity_order(&ConflictSeverity::Low) >
-                conflict_severity_order(&ConflictSeverity::Informational));
+        assert!(ConflictSeverity::Critical.order() >
+                ConflictSeverity::High.order());
+        assert!(ConflictSeverity::High.order() >
+                ConflictSeverity::Medium.order());
+        assert!(ConflictSeverity::Medium.order() >
+                ConflictSeverity::Low.order());
+        assert!(ConflictSeverity::Low.order() >
+                ConflictSeverity::Informational.order());
     }
 
     #[test]

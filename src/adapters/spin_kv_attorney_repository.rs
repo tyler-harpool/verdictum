@@ -7,7 +7,7 @@ use crate::domain::attorney::{
     Attorney, AttorneyStatus, Party, PartyStatus, AttorneyRepresentation,
     ConflictCheck, ServiceRecord, AttorneyMetrics, BarAdmission, FederalAdmission,
     ProHacViceAdmission, CJAAppointment, ECFRegistration, DisciplinaryAction,
-    ServiceMethod, VoucherStatus
+    ServiceMethod, VoucherStatus, RepresentationStatus
 };
 use crate::ports::attorney_repository::AttorneyRepository;
 use anyhow::Result;
@@ -592,6 +592,7 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
                     party_id: rep.party_id.clone(),
                     case_id: rep.case_id.clone(),
                     representation_type: rep.representation_type.clone(),
+                    status: RepresentationStatus::Active,
                     start_date: Utc::now(),
                     end_date: None,
                     lead_counsel: rep.lead_counsel,
@@ -601,6 +602,7 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
                     withdrawal_reason: None,
                     court_appointed: rep.court_appointed,
                     cja_appointment_id: rep.cja_appointment_id.clone(),
+                    notes: Some("Substituted attorney".to_string()),
                 };
                 self.add_representation(new_rep)?;
             }
@@ -877,6 +879,7 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
                 party_id: rep.party_id,
                 case_id: rep.case_id,
                 representation_type: rep.representation_type,
+                status: RepresentationStatus::Active,
                 start_date: Utc::now(),
                 end_date: None,
                 lead_counsel: rep.lead_counsel,
@@ -886,6 +889,7 @@ impl AttorneyRepository for SpinKvAttorneyRepository {
                 withdrawal_reason: None,
                 court_appointed: rep.court_appointed,
                 cja_appointment_id: rep.cja_appointment_id,
+                notes: Some("Migrated attorney representation".to_string()),
             };
             self.add_representation(new_rep)?;
         }

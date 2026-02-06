@@ -153,6 +153,17 @@ pub fn add_defendant(req: Request, params: Params) -> Response {
     }
 }
 
+pub fn add_charge(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::add_charge(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
 pub fn add_evidence(req: Request, params: Params) -> Response {
     let req = match add_district_header(req, &params) {
         Ok(r) => r,
@@ -225,6 +236,147 @@ pub fn delete_case(req: Request, params: Params) -> Response {
         Err(e) => return crate::utils::json_response::error_response(&e),
     };
     match crate::handlers::criminal_case::delete_case(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+// ============================================================================
+// Phase 2: Evidence Chain of Custody URL wrappers
+// ============================================================================
+
+pub fn add_custody_transfer(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::add_custody_transfer(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+// ============================================================================
+// Phase 1: Docket Entry URL wrappers
+// ============================================================================
+
+pub fn add_docket_entry(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::add_docket_entry(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn get_docket_entries(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::get_docket_entries(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+// ============================================================================
+// Phase 3: Sealed Case URL wrappers
+// ============================================================================
+
+pub fn seal_case(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::seal_case(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn unseal_case(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::unseal_case(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+// ============================================================================
+// Phase 4: Speedy Trial Clock URL wrappers
+// ============================================================================
+
+pub fn start_speedy_trial(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::start_speedy_trial(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn add_case_excludable_delay(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::add_case_excludable_delay(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn get_case_speedy_trial(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::get_case_speedy_trial(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+// ============================================================================
+// Phase 5: CVRA Victim URL wrappers
+// ============================================================================
+
+pub fn add_victim(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::add_victim(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn get_victims(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::get_victims(req, params) {
+        Ok(resp) => resp.into_response(),
+        Err(e) => crate::utils::json_response::error_response(&e),
+    }
+}
+
+pub fn send_victim_notification(req: Request, params: Params) -> Response {
+    let req = match add_district_header(req, &params) {
+        Ok(r) => r,
+        Err(e) => return crate::utils::json_response::error_response(&e),
+    };
+    match crate::handlers::criminal_case::send_victim_notification(req, params) {
         Ok(resp) => resp.into_response(),
         Err(e) => crate::utils::json_response::error_response(&e),
     }

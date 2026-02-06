@@ -336,14 +336,13 @@ pub fn sign_order(req: Request, params: Params) -> ApiResult<impl IntoResponse> 
         return Err(ApiError::BadRequest("Order already signed".to_string()));
     }
     
-    let signature = ElectronicSignature {
-        judge_id: request.judge_id,
-        judge_name: request.judge_name,
-        signature_hash: uuid::Uuid::new_v4().to_string(),
-        signed_at: Utc::now(),
-        certificate_id: request.certificate_id,
-        ip_address: "127.0.0.1".to_string(), // Would get from request context
-    };
+    let signature = ElectronicSignature::for_judge(
+        request.judge_id,
+        request.judge_name,
+        uuid::Uuid::new_v4().to_string(),
+        request.certificate_id,
+        "127.0.0.1".to_string(), // Would get from request context
+    );
     
     order.sign(signature);
     let updated = repo.update_order(order)?;

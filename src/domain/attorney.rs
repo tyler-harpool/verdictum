@@ -8,6 +8,9 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use uuid::Uuid;
 
+// Re-export common types so existing import paths continue to work
+pub use super::common::{ConflictSeverity, ConflictType, ServiceMethod};
+
 /// Attorney profile and credentials
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct Attorney {
@@ -351,28 +354,18 @@ pub enum RepresentationStatus {
     Completed,
 }
 
-/// Representation record linking attorney and party
+/// Attorney representation record - unified model for attorney-party-case relationships
+///
+/// Tracks the full lifecycle of an attorney's representation of a party in a case,
+/// including role details, appointment type, and withdrawal information.
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 pub struct Representation {
     pub id: String,
     pub attorney_id: String,
     pub party_id: String,
     pub case_id: String,
+    pub representation_type: RepresentationType,
     pub status: RepresentationStatus,
-    pub start_date: DateTime<Utc>,
-    pub end_date: Option<DateTime<Utc>>,
-    pub representation_type: RepresentationType,
-    pub notes: Option<String>,
-}
-
-/// Attorney representation record
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub struct AttorneyRepresentation {
-    pub id: String,
-    pub attorney_id: String,
-    pub party_id: String,
-    pub case_id: String,
-    pub representation_type: RepresentationType,
     pub start_date: DateTime<Utc>,
     pub end_date: Option<DateTime<Utc>>,
     pub lead_counsel: bool,
@@ -382,7 +375,11 @@ pub struct AttorneyRepresentation {
     pub withdrawal_reason: Option<WithdrawalReason>,
     pub court_appointed: bool,
     pub cja_appointment_id: Option<String>,
+    pub notes: Option<String>,
 }
+
+/// Type alias for backward compatibility
+pub type AttorneyRepresentation = Representation;
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, ToSchema)]
 pub enum RepresentationType {
@@ -423,17 +420,7 @@ pub struct ServiceRecord {
     pub notes: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ServiceMethod {
-    PersonalService,
-    CertifiedMail,
-    RegularMail,
-    Email,
-    ECF,
-    Publication,
-    Waiver,
-    Other,
-}
+// ServiceMethod is imported from common module
 
 /// Attorney performance metrics
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
@@ -497,25 +484,7 @@ pub struct ConflictResult {
     pub severity: ConflictSeverity,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ConflictType {
-    CurrentClient,
-    FormerClient,
-    PersonalInterest,
-    FinancialInterest,
-    FamilyRelationship,
-    BusinessRelationship,
-    PriorInvolvement,
-    Other,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ConflictSeverity {
-    None,
-    Waivable,
-    NonWaivable,
-    PotentialFuture,
-}
+// ConflictType and ConflictSeverity are imported from common module
 
 /// Individual conflict of interest record
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
@@ -532,15 +501,7 @@ pub struct Conflict {
     pub severity: ConflictSeverity,
 }
 
-/// Service status for documents
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
-pub enum ServiceStatus {
-    Pending,
-    Served,
-    Failed,
-    Waived,
-    Returned,
-}
+// ServiceStatus is imported from common module
 
 impl Attorney {
     /// Create a new attorney

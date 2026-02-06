@@ -1,0 +1,201 @@
+# ARWD (Western District of Arkansas) Rule Pack
+#
+# Contains local rules, administrative procedures, and applicable
+# federal rules for the Western District of Arkansas.
+
+# --- Local Rules ---
+
+[[rules]]
+rule_id = "arwd-lr-7.2b"
+jurisdiction_id = "arwd"
+rule_source = "local_rule"
+rule_number = "7.2(b)"
+rule_category = "deadline"
+trigger_event = "motion_filed"
+action = "generate_deadline"
+source_text = "A response to a motion must be filed within fourteen (14) days after service of the motion."
+
+[rules.condition]
+document_type = ["motion"]
+excluded_types = ["summary_judgment"]
+
+[rules.parameters]
+deadline_days = 14
+deadline_description = "Response to motion due"
+
+[[rules]]
+rule_id = "arwd-lr-7.2c"
+jurisdiction_id = "arwd"
+rule_source = "local_rule"
+rule_number = "7.2(c)"
+rule_category = "deadline"
+trigger_event = "motion_filed"
+action = "generate_deadline"
+source_text = "A reply to a response to a motion for summary judgment must be filed within seven (7) days."
+
+[rules.condition]
+document_type = ["summary_judgment_reply"]
+
+[rules.parameters]
+deadline_days = 7
+deadline_description = "Reply to summary judgment response due"
+
+[[rules]]
+rule_id = "arwd-lr-5.1b"
+jurisdiction_id = "arwd"
+rule_source = "local_rule"
+rule_number = "5.1(b)"
+rule_category = "filing"
+trigger_event = "document_filed"
+action = "enforce"
+source_text = "An electronically filed document must include a signature block containing /s/ followed by the attorney's name and bar number."
+
+[rules.condition]
+filing_method = ["electronic"]
+
+[rules.parameters]
+required_format = "/s/ [Attorney Name], Bar No. [Number]"
+validation_message = "Electronic signature must include /s/ format with bar number"
+
+[[rules]]
+rule_id = "arwd-lr-56.1"
+jurisdiction_id = "arwd"
+rule_source = "local_rule"
+rule_number = "56.1"
+rule_category = "filing"
+trigger_event = "document_filed"
+action = "enforce"
+source_text = "A motion for summary judgment must be accompanied by a separate statement of undisputed material facts."
+
+[rules.condition]
+document_type = ["summary_judgment"]
+
+[rules.parameters]
+required_attachment = "statement_of_facts"
+validation_message = "Summary judgment motion requires separate statement of undisputed material facts"
+
+[[rules]]
+rule_id = "arwd-lr-77.1"
+jurisdiction_id = "arwd"
+rule_source = "local_rule"
+rule_number = "77.1"
+rule_category = "procedural"
+trigger_event = "case_filed"
+action = "enforce"
+source_text = "Criminal cases arising in the Harrison Division shall be assigned to the Fayetteville Division."
+
+[rules.condition]
+case_type = ["criminal"]
+division = ["harrison", "HAR"]
+
+[rules.parameters]
+routing_division = "FAY"
+routing_reason = "Criminal cases from Harrison route to Fayetteville per LR 77.1"
+
+# --- Administrative Procedures ---
+
+[[rules]]
+rule_id = "arwd-admin-iii.a.3"
+jurisdiction_id = "arwd"
+rule_source = "admin_procedure"
+rule_number = "III.A.3"
+rule_category = "filing"
+trigger_event = "document_filed"
+action = "enforce"
+source_text = "Documents may be filed electronically 24 hours a day. When a specific time of day is not set by court, the filing deadline is midnight Central Time."
+
+[rules.condition]
+# Applies to all filings
+
+[rules.parameters]
+filing_deadline = "midnight"
+timezone = "America/Chicago"
+validation_message = "Filing deadline is midnight Central Time"
+
+# --- Federal Rules ---
+
+[[rules]]
+rule_id = "frcp-5.2"
+jurisdiction_id = "arwd"
+rule_source = "frcp"
+rule_number = "5.2"
+rule_category = "privacy"
+trigger_event = "document_filed"
+action = "enforce"
+source_text = "Unless the court orders otherwise, an electronic or paper filing with the court that contains an individual's social-security number, taxpayer-identification number, or birth date, the name of an individual known to be a minor, or a financial-account number, a party or nonparty making the filing may include only the last four digits of the social-security number and taxpayer-identification number."
+
+[rules.condition]
+# Applies to all document filings
+
+[rules.parameters]
+pii_types = ["ssn", "taxpayer_id", "date_of_birth", "minor_name", "financial_account"]
+validation_message = "PII must be redacted per FRCP 5.2"
+
+[[rules]]
+rule_id = "frcp-6"
+jurisdiction_id = "arwd"
+rule_source = "frcp"
+rule_number = "6"
+rule_category = "deadline"
+trigger_event = "document_filed"
+action = "enforce"
+source_text = "When computing any time period specified in these rules, in a local rule, or in a court order: exclude the day of the event that triggers the period; count every day including intermediate Saturdays, Sundays, and legal holidays, but if the period is less than 11 days exclude intermediate Saturdays, Sundays, and legal holidays."
+
+[rules.condition]
+# Applies to all deadline computations
+
+[rules.parameters]
+short_period_threshold = 11
+exclude_weekends_for_short = true
+exclude_holidays_for_short = true
+
+[[rules]]
+rule_id = "frcp-12a"
+jurisdiction_id = "arwd"
+rule_source = "frcp"
+rule_number = "12(a)"
+rule_category = "deadline"
+trigger_event = "document_filed"
+action = "generate_deadline"
+source_text = "A defendant must serve an answer within 21 days after being served with the summons and complaint."
+
+[rules.condition]
+document_type = ["complaint", "summons"]
+
+[rules.parameters]
+deadline_days = 21
+deadline_description = "Answer to complaint due"
+
+[[rules]]
+rule_id = "frcp-15a3"
+jurisdiction_id = "arwd"
+rule_source = "frcp"
+rule_number = "15(a)(3)"
+rule_category = "deadline"
+trigger_event = "document_filed"
+action = "generate_deadline"
+source_text = "A party must respond to an amended pleading within 14 days after service of the amended pleading."
+
+[rules.condition]
+document_type = ["amended_pleading"]
+
+[rules.parameters]
+deadline_days = 14
+deadline_description = "Response to amended pleading due"
+
+[[rules]]
+rule_id = "frcp-33-34"
+jurisdiction_id = "arwd"
+rule_source = "frcp"
+rule_number = "33/34"
+rule_category = "deadline"
+trigger_event = "document_filed"
+action = "generate_deadline"
+source_text = "The responding party must serve its answers and any objections within 30 days after being served with the interrogatories or requests for production."
+
+[rules.condition]
+document_type = ["interrogatories", "request_for_production", "discovery_request"]
+
+[rules.parameters]
+deadline_days = 30
+deadline_description = "Response to discovery request due"

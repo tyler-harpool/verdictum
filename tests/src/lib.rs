@@ -6,7 +6,7 @@
 // Domain modules
 pub mod monitoring;
 pub mod attorney;
-// TODO: Enable case module once criminal case repository is implemented
-// pub mod case;
-// TODO: Enable judge_tests module once judge repository is fully implemented
-// pub mod judge_tests;
+pub mod case;
+pub mod deadline;
+pub mod rules;
+pub mod filing;

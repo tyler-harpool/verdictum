@@ -175,7 +175,7 @@ impl PdfWriterAdapter {
         content.begin_text();
         content.set_font(Name(b"F1"), 8.0);
         content.next_line(350.0, y_position);
-        let doc_id = format!("Doc ID: {}", signature.verification_code);
+        let doc_id = format!("Doc ID: {}", signature.verification_code.as_deref().unwrap_or("N/A"));
         content.show(Str(doc_id.as_bytes()));
         content.end_text();
 

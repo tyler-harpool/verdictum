@@ -5,7 +5,7 @@
 
 use crate::domain::judge::{
     Judge, JudgeTitle, JudgeStatus, CaseAssignment, RecusalMotion,
-    ConflictOfInterest, ConflictType, RecusalReason, RecusalStatus,
+    ConflictOfInterest, JudgeConflictType, RecusalReason, RecusalStatus,
     AssignmentType, JudgeAssignmentService, CaseType
 };
 use crate::error::{ApiError, ApiResult};
@@ -90,7 +90,7 @@ pub struct AddConflictRequest {
     pub party_name: Option<String>,
     pub law_firm: Option<String>,
     pub corporation: Option<String>,
-    pub conflict_type: ConflictType,
+    pub conflict_type: JudgeConflictType,
     pub notes: String,
 }
 

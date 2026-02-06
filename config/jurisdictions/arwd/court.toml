@@ -1,0 +1,77 @@
+# ARWD (Western District of Arkansas) Court Configuration
+#
+# Contains court metadata, division details, and judge assignments
+# for the Western District of Arkansas.
+
+[court]
+name = "Western District of Arkansas"
+code = "arwd"
+circuit = "8th"
+timezone = "America/Chicago"
+filing_deadline = "midnight"
+clerk_office_hours = "8:30 AM - 4:30 PM CT"
+website = "https://www.arwd.uscourts.gov"
+
+[[divisions]]
+name = "Fort Smith"
+code = "FSM"
+staffed = true
+address = "Judge Isaac C. Parker Federal Building, 30 S. 6th St., Fort Smith, AR 72901"
+
+[[divisions]]
+name = "Fayetteville"
+code = "FAY"
+staffed = true
+address = "35 E. Mountain St., Fayetteville, AR 72701"
+
+[[divisions]]
+name = "Harrison"
+code = "HAR"
+staffed = true
+criminal_routing = "FAY"
+
+[[divisions]]
+name = "Hot Springs"
+code = "HSP"
+staffed = false
+routing = "FSM"
+
+[[divisions]]
+name = "El Dorado"
+code = "ELD"
+staffed = false
+routing = "FSM"
+
+[[divisions]]
+name = "Texarkana"
+code = "TXK"
+staffed = false
+routing = "FSM"
+
+[[judges]]
+name = "Timothy L. Brooks"
+initials = "TLB"
+type = "District"
+division = "FAY"
+status = "active"
+
+[[judges]]
+name = "P.K. Holmes III"
+initials = "PKH"
+type = "District"
+division = "FSM"
+status = "senior"
+
+[[judges]]
+name = "Susan O. Hickey"
+initials = "SOH"
+type = "District"
+division = "FSM"
+status = "active"
+
+[[judges]]
+name = "Timothy L. Barnes"
+initials = "TLB2"
+type = "Magistrate"
+division = "FAY"
+status = "active"

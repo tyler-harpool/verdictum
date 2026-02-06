@@ -2,6 +2,9 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+// Re-export common ElectronicSignature so existing import paths work
+pub use super::common::ElectronicSignature;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DocumentId(Uuid);
 
@@ -124,35 +127,7 @@ pub enum DocumentMetadata {
     },
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ElectronicSignature {
-    pub signer_name: String,
-    pub signed_at: DateTime<Utc>,
-    pub signature_hash: String,
-    pub verification_code: String,
-}
-
-impl ElectronicSignature {
-    pub fn new(signer_name: String, signature_data: &str) -> Self {
-        use sha2::{Sha256, Digest};
-
-        let mut hasher = Sha256::new();
-        hasher.update(signature_data.as_bytes());
-        hasher.update(signer_name.as_bytes());
-        let timestamp = Utc::now();
-        hasher.update(timestamp.to_string().as_bytes());
-
-        let hash = format!("{:x}", hasher.finalize());
-        let verification_code = format!("DOC-{}", &hash[..8].to_uppercase());
-
-        Self {
-            signer_name,
-            signed_at: timestamp,
-            signature_hash: hash,
-            verification_code,
-        }
-    }
-}
+// ElectronicSignature is imported from common module
 
 #[derive(Debug, Clone)]
 pub struct GeneratedDocument {
