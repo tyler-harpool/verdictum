@@ -1,3 +1,7 @@
 target/
 .spin/
 .DS_Store
+TESTING_STATUS.md
+TEST_SUMMARY.md
+*.docx
+arwd-rules/
