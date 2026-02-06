@@ -684,7 +684,469 @@ let repository = Postgres[Entity]Repository::new("postgresql://...").await?;
 
 NO other code changes required. Domain, services, handlers, and tests remain unchanged.
 
+## UTOIPA (OpenAPI DOCUMENTATION)
 
+### Cargo.toml Setup
+
+The project uses `utoipa` for auto-generated OpenAPI specs. Dependencies in `Cargo.toml`:
+
+```toml
+[dependencies]
+utoipa = { version = "5.4.0", features = ["uuid", "chrono"] }
+utoipa-swagger-ui = "9.0.2"
+```
+
+**REQUIREMENTS:**
+- `utoipa` MUST include `uuid` and `chrono` features for proper schema generation of `Uuid` and `DateTime<Utc>` fields
+- `utoipa-swagger-ui` provides the `/docs` Swagger UI endpoint
+
+### ToSchema on Domain Models
+
+All domain models that appear in API requests or responses MUST derive `ToSchema`:
+
+```rust
+use utoipa::ToSchema;
+
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[schema(example = serde_json::json!({
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "caseNumber": "1:24-cr-00001",
+    "title": "United States v. Smith"
+}))]
+pub struct CriminalCase {
+    pub id: CaseId,
+    pub case_number: CaseNumber,
+    pub title: CaseTitle,
+    // ...
+}
+```
+
+**REQUIREMENTS:**
+- Every domain model used in an API response MUST derive `ToSchema`
+- Every HTTP request/response model MUST derive `ToSchema`
+- Use `#[schema(example = ...)]` to provide meaningful example values
+- Value objects (`CaseId`, `CaseNumber`, etc.) MUST also derive `ToSchema`
+- Nested types referenced by `ToSchema` structs MUST themselves derive `ToSchema`
+
+### Handler Path Annotations
+
+Every HTTP handler MUST have a full `#[utoipa::path]` annotation:
+
+```rust
+#[utoipa::path(
+    get,
+    path = "/api/courts/{district}/cases/{id}",
+    tags = ["cases"],
+    summary = "Get a criminal case by ID",
+    description = "Retrieves a single criminal case record by its UUID, scoped to the specified court district.",
+    params(
+        ("district" = String, Path, description = "Court district code (e.g., SDNY, EDTX)"),
+        ("id" = String, Path, description = "Case UUID")
+    ),
+    responses(
+        (status = 200, description = "Case found", body = CriminalCaseResponse),
+        (status = 404, description = "Case not found", body = ErrorResponse),
+        (status = 500, description = "Internal server error", body = ErrorResponse)
+    )
+)]
+pub async fn get_case<S: CaseService>(
+    req: Request,
+    params: Params,
+    service: S,
+) -> anyhow::Result<impl IntoResponse> {
+    // ...
+}
+```
+
+**REQUIREMENTS:**
+- MUST specify HTTP method (`get`, `post`, `put`, `delete`)
+- MUST specify the full path with path parameters in `{braces}`
+- MUST include `tags` for Swagger UI grouping
+- MUST include `summary` (short) and optionally `description` (detailed)
+- MUST list all path parameters with `params(...)`
+- MUST list all possible response status codes with `responses(...)`
+- Response bodies MUST reference the HTTP response model type, not domain type
+- Error responses MUST reference `ErrorResponse` or equivalent
+
+### OpenAPI Spec Assembly (docs.rs)
+
+The `ApiDoc` struct in `src/handlers/docs.rs` MUST register all paths and schemas:
+
+```rust
+#[derive(OpenApi)]
+#[openapi(
+    info(
+        title = "Lexodus - Federal Judicial Case Management API",
+        description = "Complete federal court case management with 250+ REST endpoints",
+        version = "5.0.0",
+        contact(
+            name = "Tyler Harpool",
+            email = "tylerharpool@gmail.com"
+        )
+    ),
+    tags(
+        (name = "cases", description = "Criminal case management"),
+        (name = "judges", description = "Judge management"),
+        (name = "attorneys", description = "Attorney management"),
+        (name = "deadlines", description = "Deadline tracking"),
+        (name = "docket", description = "Docket & calendar"),
+        (name = "orders", description = "Judicial orders"),
+        (name = "opinions", description = "Judicial opinions"),
+        (name = "rules", description = "Rules engine"),
+        (name = "filing", description = "Electronic filing"),
+        (name = "sentencing", description = "Sentencing management"),
+        (name = "health", description = "Health & monitoring"),
+        (name = "admin", description = "Administrative endpoints")
+    ),
+    paths(
+        // ALL handler functions must be listed here
+    ),
+    components(
+        schemas(
+            // ALL ToSchema models must be listed here
+        )
+    )
+)]
+struct ApiDoc;
+```
+
+**REQUIREMENTS:**
+- Every handler function MUST be listed in `paths(...)`
+- Every `ToSchema` model used in requests/responses MUST be listed in `components(schemas(...))`
+- Tags MUST match the tags used in handler `#[utoipa::path]` annotations
+- API version MUST match `Cargo.toml` version
+- Spec MUST be served at `/docs/openapi.json`
+- Swagger UI MUST be served at `/docs`
+
+### Keeping the Spec in Sync
+
+When adding new endpoints or models:
+
+1. **New handler** → Add `#[utoipa::path]` annotation → Add to `paths(...)` in `ApiDoc`
+2. **New domain model** → Derive `ToSchema` → Add to `components(schemas(...))` in `ApiDoc`
+3. **New HTTP model** → Derive `ToSchema` → Add to `components(schemas(...))` in `ApiDoc`
+4. **Modified model** → Ensure `#[schema(example)]` is updated
+5. **Removed endpoint** → Remove from both handler and `ApiDoc`
+
+**Compile-time enforcement:** If a `#[utoipa::path]` references a type not in `components(schemas(...))`, the build will fail. Use this as a safety net.
+
+## TESTING REQUIREMENTS (4 Layers)
+
+### Layer 1: Unit Tests — Pure Domain Logic
+
+Test domain models, value objects, and validation in isolation. No external dependencies.
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_case_number_validation_valid() {
+        let result = CaseNumber::new("1:24-cr-00001".to_string());
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().0, "1:24-cr-00001");
+    }
+
+    #[test]
+    fn test_case_number_validation_empty() {
+        let result = CaseNumber::new("".to_string());
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_case_number_validation_trims_whitespace() {
+        let result = CaseNumber::new("  1:24-cr-00001  ".to_string());
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().0, "1:24-cr-00001");
+    }
+
+    #[test]
+    fn test_entity_serialization_roundtrip() {
+        let case = CriminalCase {
+            id: CaseId(Uuid::new_v4()),
+            case_number: CaseNumber("1:24-cr-00001".to_string()),
+            // ... all fields
+        };
+        let json = serde_json::to_string(&case).unwrap();
+        let deserialized: CriminalCase = serde_json::from_str(&json).unwrap();
+        assert_eq!(case.id.0, deserialized.id.0);
+    }
+
+    #[test]
+    fn test_entity_deserialization_from_json() {
+        let json = r#"{"id": "550e8400-e29b-41d4-a716-446655440000", "caseNumber": "1:24-cr-00001"}"#;
+        let result: Result<CriminalCase, _> = serde_json::from_str(json);
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_error_display() {
+        let err = ApiError::NotFound { id: "abc".to_string() };
+        assert!(format!("{}", err).contains("abc"));
+    }
+}
+```
+
+**REQUIREMENTS:**
+- Located inline in domain model files with `#[cfg(test)]`
+- Test all value object validation (valid, invalid, edge cases)
+- Test serialization roundtrips (serialize → deserialize → assert equal)
+- Test deserialization from raw JSON strings
+- Test error type Display implementations
+- NO external dependencies (no KV store, no HTTP, no network)
+
+### Layer 2: Service Tests — Domain Services with Mocked Ports
+
+Test business logic orchestration using mock implementations of repository and notification traits.
+
+```rust
+// tests/src/service_tests.rs (or inline in service files)
+#[derive(Clone)]
+struct MockCaseRepository {
+    cases: Arc<Mutex<Vec<CriminalCase>>>,
+    should_fail: bool,
+}
+
+impl MockCaseRepository {
+    fn new() -> Self {
+        Self {
+            cases: Arc::new(Mutex::new(Vec::new())),
+            should_fail: false,
+        }
+    }
+
+    fn with_failure() -> Self {
+        Self {
+            cases: Arc::new(Mutex::new(Vec::new())),
+            should_fail: true,
+        }
+    }
+
+    fn with_seed_data(cases: Vec<CriminalCase>) -> Self {
+        Self {
+            cases: Arc::new(Mutex::new(cases)),
+            should_fail: false,
+        }
+    }
+}
+
+#[async_trait]
+impl CaseRepository for MockCaseRepository {
+    async fn create(&self, request: CreateCaseRequest) -> Result<CriminalCase, ApiError> {
+        if self.should_fail {
+            return Err(ApiError::RepositoryError { message: "Mock failure".into() });
+        }
+        // ... create and store entity
+    }
+    // ... implement all methods
+}
+
+// Happy path
+#[spin_test]
+async fn test_create_case_success() {
+    let repo = MockCaseRepository::new();
+    let notifier = MockNotifier::new();
+    let service = CaseServiceImpl::new(repo.clone(), notifier);
+
+    let request = CreateCaseRequest { /* ... */ };
+    let result = service.create(request).await;
+
+    assert!(result.is_ok());
+    let case = result.unwrap();
+    assert!(!case.id.0.is_nil());
+}
+
+// Error path
+#[spin_test]
+async fn test_create_case_repository_failure() {
+    let repo = MockCaseRepository::with_failure();
+    let notifier = MockNotifier::new();
+    let service = CaseServiceImpl::new(repo, notifier);
+
+    let request = CreateCaseRequest { /* ... */ };
+    let result = service.create(request).await;
+
+    assert!(result.is_err());
+}
+
+// Notification failure should not fail the operation
+#[spin_test]
+async fn test_create_case_notification_failure_succeeds() {
+    let repo = MockCaseRepository::new();
+    let notifier = MockNotifier::with_failure();
+    let service = CaseServiceImpl::new(repo, notifier);
+
+    let request = CreateCaseRequest { /* ... */ };
+    let result = service.create(request).await;
+
+    assert!(result.is_ok()); // Should succeed despite notification failure
+}
+```
+
+**REQUIREMENTS:**
+- Mock ALL repository and notification traits
+- Mock types MUST implement `Clone` (use `Arc<Mutex<>>` for shared state)
+- Provide `new()`, `with_failure()`, and `with_seed_data()` constructors
+- Test happy path for every service method
+- Test error paths (repository failures, not-found, duplicates)
+- Verify notification failures do NOT cause operation failures
+- NO real KV store access — mocks only
+
+### Layer 3: HTTP Integration Tests — spin-test Endpoint Tests
+
+Test full HTTP request/response cycle through the Spin runtime using `spin-test-sdk`.
+
+```rust
+// tests/src/lib.rs
+use spin_test_sdk::{spin_test, bindings::fermyon::spin_test_virt::http_helper};
+
+#[spin_test]
+fn test_create_case_http_201() {
+    let body = r#"{
+        "caseNumber": "1:24-cr-00001",
+        "title": "United States v. Smith",
+        "district": "SDNY"
+    }"#;
+
+    let response = http_helper::make_request(
+        http_helper::Method::Post,
+        "/api/cases",
+        &[("content-type", "application/json")],
+        Some(body.as_bytes()),
+    );
+
+    assert_eq!(response.status, 201);
+    let result: serde_json::Value = serde_json::from_slice(&response.body.unwrap()).unwrap();
+    assert!(result.get("id").is_some());
+    assert_eq!(result["caseNumber"], "1:24-cr-00001");
+}
+
+#[spin_test]
+fn test_create_case_http_400_invalid_json() {
+    let response = http_helper::make_request(
+        http_helper::Method::Post,
+        "/api/cases",
+        &[("content-type", "application/json")],
+        Some(b"not-json"),
+    );
+
+    assert_eq!(response.status, 400);
+}
+
+#[spin_test]
+fn test_get_case_http_404() {
+    let response = http_helper::make_request(
+        http_helper::Method::Get,
+        "/api/cases/00000000-0000-0000-0000-000000000000",
+        &[],
+        None,
+    );
+
+    assert_eq!(response.status, 404);
+}
+
+#[spin_test]
+fn test_openapi_spec_available() {
+    let response = http_helper::make_request(
+        http_helper::Method::Get,
+        "/docs/openapi.json",
+        &[],
+        None,
+    );
+
+    assert_eq!(response.status, 200);
+    let spec: serde_json::Value = serde_json::from_slice(&response.body.unwrap()).unwrap();
+    assert!(spec.get("openapi").is_some());
+    assert!(spec.get("paths").is_some());
+}
+
+// URL-based multi-tenant routes
+#[spin_test]
+fn test_create_case_url_tenant_201() {
+    let body = r#"{"caseNumber": "1:24-cr-00001", "title": "United States v. Smith"}"#;
+
+    let response = http_helper::make_request(
+        http_helper::Method::Post,
+        "/api/courts/sdny/cases",
+        &[("content-type", "application/json")],
+        Some(body.as_bytes()),
+    );
+
+    assert_eq!(response.status, 201);
+}
+```
+
+**REQUIREMENTS:**
+- Located in `tests/src/lib.rs` and submodule files
+- Uses `spin_test_sdk` with `#[spin_test]` attribute
+- Test every endpoint: create (201), get (200), list (200), update (200), delete (204)
+- Test error cases: invalid JSON (400), not found (404), duplicate (409)
+- Test both legacy header-based routes AND URL-based multi-tenant routes
+- Verify OpenAPI spec endpoint returns valid JSON with `openapi` and `paths` keys
+- Verify response body structure (required fields present, correct types)
+- Tests build to `tests/target/wasm32-wasip1/release/` WASM target
+
+### Layer 4: E2E Tests (Optional)
+
+For critical user flows, optional end-to-end tests that exercise the full deployed application.
+
+```bash
+# Run against a locally deployed Spin app
+spin up &
+sleep 2
+
+# Test case lifecycle
+CASE_ID=$(curl -s -X POST http://localhost:3000/api/cases \
+  -H "Content-Type: application/json" \
+  -d '{"caseNumber":"1:24-cr-00001","title":"Test Case"}' | jq -r '.id')
+
+curl -s http://localhost:3000/api/cases/$CASE_ID | jq '.caseNumber'
+# Expected: "1:24-cr-00001"
+
+curl -s -X DELETE http://localhost:3000/api/cases/$CASE_ID
+# Expected: 204
+```
+
+**REQUIREMENTS:**
+- Only for critical workflows (case lifecycle, filing pipeline, deadline chains)
+- Run against `spin up` local deployment
+- NOT required in CI — run manually before major releases
+- Document expected outputs inline
+
+### Running Tests Cheat Sheet
+
+```bash
+# Layer 1: Unit tests (pure domain logic)
+cargo test --lib
+
+# Layer 1+2: All non-integration tests
+cargo test
+
+# Layer 3: spin-test integration tests (requires spin-test CLI)
+spin test
+
+# Layer 3: Build test WASM only (for CI)
+cd tests && cargo build --target wasm32-wasip1 --release
+
+# Run a specific test
+cargo test test_case_number_validation
+
+# Run tests for a specific module
+cargo test domain::criminal_case::tests
+
+# Layer 4: E2E (manual)
+spin up &
+./e2e-tests.sh
+```
+
+**CI Pipeline MUST:**
+1. Run `cargo test --lib` (unit + service tests)
+2. Run `spin test` (HTTP integration tests)
+3. Fail the build on any test failure
+4. Report test results in PR checks
+
+## CODE QUALITY STANDARDS
 
 rust// CORRECT: Improve existing src/domain/models/attorney.rs
 #[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
